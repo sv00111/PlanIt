@@ -8,18 +8,19 @@
 # - download is for downloading files uploaded in the db (does streaming)
 # -------------------------------------------------------------------------
 
+import random
 
 def index():
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
+    # Generate a random number betw 1 and 6.
+    n = random.randint(1, 6)
+    s = '' if n == 1 else 's'
+    # return {'n': n}
+    return dict(enne=n,
+                s=s,
+                mylist=[1, 2, 3, 5, 6, 9])
 
-    if you need a simple wiki simply replace the two lines below with:
-    return auth.wiki()
-    """
-    response.flash = T("Hello World")
-    return dict(message=T('Welcome to web2py!'))
-
+def page():
+    return dict()
 
 def user():
     """
@@ -57,5 +58,4 @@ def call():
     supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
     """
     return service()
-
 

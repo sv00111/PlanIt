@@ -1,0 +1,24 @@
+{{extend 'layout.html'}}
+
+<h1>Hello!</h1>
+
+<p>This is my second example.</p>
+<ul>
+    <li>bread</li>
+    <li>{{=enne}} egg{{=s}}</li>
+</ul>
+<ul>
+    {{for i in range(1, 11):}}
+        <li>{{=i}} little indian{{='' if i == 1 else 's'}}</li>
+    {{pass}}
+</ul>
+
+I said {{=enne}}!
+
+<ul>
+    {{for listel in mylist:}}
+    <li>
+        {{=listel}}
+    </li>
+    {{pass}}
+</ul>
