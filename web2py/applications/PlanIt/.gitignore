@@ -1,8 +1,8 @@
 /sessions/*
 /errors/*
 /.sass-cache/*
-../httpserver.log
-../httpserver.pid
+../../httpserver.log
+../../httpserver.pid
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
