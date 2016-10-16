@@ -42,6 +42,7 @@ def user():
     to decorate functions that need access control
     also notice there is http://..../[app]/appadmin/manage/auth to allow administrator to manage users
     """
+    # return dict(form = auth())
     return dict(login=auth.login(), register=auth.register())
 
 
