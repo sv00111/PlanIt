@@ -2,3 +2,68 @@
 .colorful {
   color: #bb8833;
 }
+
+.navbar-default{
+  display: inline-block;
+  background-color: white;
+  border: none;
+  box-shadow: 0 2px 4px -2px #999;
+  margin: 0;
+}
+
+span.navbar {
+  display: table-cell;
+  vertical-align: middle;
+  width: 100%;
+}
+
+div.nav-link {
+  display: table;
+  text-align: center;
+  width: 100px;
+}
+
+.nav-link-text {
+  color: #999;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.nav-link-text:hover {
+  color:  #00CD00 ;
+  background-color: #FCFCFC;
+  border-radius: 5px;
+}
+
+.navbar {
+  display: inline-block;
+  border-radius: 0px;
+  margin: 0;
+}
+
+.logo-container {
+  display: table;
+  text-align: center;
+  background-color: #5b90f6;
+  width: 200px;
+}
+
+.logo {
+  color: white;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.footer {
+  background-color: #5b90f6;
+  color: white;
+}
+
+.footer a {
+  color: black;
+  text-decoration: underline;
+}
+
+div {
+  display: block;
+}

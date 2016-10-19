@@ -1,3 +1,4 @@
 # pycharm config and settings files
-*.xml
-*.iml
+*.?ml
+*.pyc
+*.log
