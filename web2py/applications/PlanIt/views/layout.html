@@ -39,8 +39,9 @@
                         Plan-It
                     </span>
                 </div>
+            </a>
 
-                <!-- Here is where you would specify the navigation buttons specific to the page -->
+                <!-- Override this in extended file with the navigation buttons specific to the page -->
                 {{block nav-buttons}}
                     <a href="{{=URL('default', 'index')}}">
                         <div class="navbar pull-left nav-link">
@@ -57,8 +58,27 @@
                             </span>
                         </div>
                     </a>
+
+                    {{if auth.user_id:}}
+                        <div class="navbar pull-right nav-link">
+                            <span class="navbar nav-link-text dropdown">
+                                {{=auth.user.first_name}}
+                                <i class="fa fa-angle-down"></i>
+                                <div class="dropdown-content">
+                                    <a href="{{=URL('default','user',args=['logout'])}}">Logout</a>
+                                </div>
+                            </span>
+                        </div>
+                    {{else:}}
+                        <a href="{{=URL('default', 'user', args=['login'])}}">
+                            <div class="navbar pull-right nav-link">
+                                <span class="navbar nav-link-text">
+                                    Login
+                                </span>
+                            </div>
+                        </a>
+                    {{pass}}
                 {{end}}
-            </a>
 
         </nav>
     {{end}}
