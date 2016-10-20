@@ -43,8 +43,21 @@ def user():
     also notice there is http://..../[app]/appadmin/manage/auth to allow administrator to manage users
     """
     # return dict(form = auth())
+
+    # TODO: make this from comment to example 'example@gmail.com'
+    # TODO: try and make it a placeholder, intsead of under the input type.
+
+    if request.args(0) == 'login':
+        db.auth_user.email.comment = 'Enter your email address'
+        db.auth_user.password.comment = 'Enter your Password'
+
+
+
     return dict(login=auth.login(), register=auth.register())
 
+
+def register():
+    return dict(register=auth.register())
 
 @cache.action()
 def download():
