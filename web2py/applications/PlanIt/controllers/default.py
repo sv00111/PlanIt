@@ -20,11 +20,11 @@ def index():
                 s=s,
                 mylist=[1, 2, 3, 5, 6, 9])
 
-
-
 def forgotPass():
    return dict(reset = auth.request_reset_password())
 
+def home():
+    return dict()
 
 def user():
     """

@@ -194,3 +194,36 @@ div.nav-link {
 div {
   display: block;
 }
+
+/* Styling for home.html **********/
+#plan-list-container {
+  box-shadow: 2px 0 4px -2px #999;
+  height: 100%;
+}
+
+#plan-list-container ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  width: 360px;
+}
+
+#plan-list-container ul li {
+  padding: 15px;
+}
+
+#plan-list-container ul li:hover {
+  background-color: #FCFCFC;
+  border: 1px solid #5b90f6;
+}
+
+.main-container {
+  margin: 0;
+  padding: 60px 0 60px 0;
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
