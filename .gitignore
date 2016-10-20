@@ -34,3 +34,8 @@ web2py/applications/PlanIt/databases/storage.sqlite
 web2py/applications/planit/languages/de.py
 
 web2py/parameters_8000.py
+databases/
+errors/
+modules/
+sessions/
+uploads/
