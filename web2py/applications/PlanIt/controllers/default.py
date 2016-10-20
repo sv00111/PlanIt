@@ -19,6 +19,9 @@ def index():
                 s=s,
                 mylist=[1, 2, 3, 5, 6, 9])
 
+def home():
+    return dict()
+
 def page():
     return dict()
 
