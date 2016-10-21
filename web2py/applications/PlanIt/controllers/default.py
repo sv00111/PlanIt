@@ -57,7 +57,7 @@ def user():
 
 
 def register():
-    return dict(register=auth.register(), form = auth())
+    return dict(register=auth.register(), login=auth.login())
 
 @cache.action()
 def download():

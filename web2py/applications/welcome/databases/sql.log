@@ -75,3 +75,14 @@ CREATE TABLE auth_user(
     reset_password_key CHAR(512),
     registration_id CHAR(512)
 );
+timestamp: 2016-10-21T15:08:10.448914
+CREATE TABLE auth_user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(128),
+    last_name CHAR(128),
+    email CHAR(512),
+    password CHAR(512),
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512)
+);
