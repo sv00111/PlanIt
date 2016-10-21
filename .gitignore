@@ -39,3 +39,5 @@ errors/
 modules/
 sessions/
 uploads/
+
+web2py/httpserver.pid

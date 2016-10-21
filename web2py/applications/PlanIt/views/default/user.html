@@ -1,41 +1,94 @@
 {{extend 'layout.html'}}
 
+
+
+{{block top-nav}} <!-- Default Navbar, can be overridden in extended file -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <a href="{{=URL('default', 'index')}}">
+        <div class="navbar logo-container pull-left">
+            <span class="navbar logo">
+                Plan-It
+            </span>
+        </div>
+    </a>
+
+    <!-- Override this in extended file with the navigation buttons specific to the page -->
+
+    {{block nav-buttons}}
+        <a href="{{=URL('default', 'index')}}">
+            <div class="navbar pull-left nav-link">
+                <span class="navbar nav-link-text">
+                    Home
+                </span>
+            </div>
+        </a>
+        <a href="{{=URL('default', 'index')}}">
+            <div class="navbar pull-left nav-link">
+                <span class="navbar nav-link-text">
+                    Example
+                </span>
+            </div>
+        </a>
+    {{if auth.user_id:}}
+        <div class="navbar pull-right nav-link">
+                <span class="navbar nav-link-text dropdown">
+                {{=auth.user.first_name}}
+                    <i class="fa fa-angle-down"></i>
+                    <div class="dropdown-content">
+                        <a href="{{=URL('default','user',args=['logout'])}}">Logout</a>
+                    </div>
+                </span>
+        </div>
+    {{else:}}
+        <a href="{{=URL('default', 'register')}}">
+            <div class="navbar pull-right nav-link">
+                <span class="navbar nav-link-text">
+                    Sign-Up
+                </span>
+            </div>
+        </a>
+    {{pass}}
+    {{end}}
+</nav>
+{{end}}
+
+
 <div class="text-center" style="padding:50px 0">
     <!-- Main Form -->
-	<div class="login-form-1">
-		<form id="login-form" class="text-left">
-			<div class="center login-form-main-message">
-                 Please Sign in with your Plan-It Account.
+    <div class="login-form-1">
+        <form id="login-form" class="text-left">
+            <div class="center login-form-main-message" style = "padding-left: 15px;">
+                Please Sign in with your Plan-It Account.
             </div>
-			<div class="main-login-form">
-				{{=login}}
-			</div>
-			<div class="etc-login-form">
-                <div class = "row">
-				    <a class = "register">Dont have an account? </a>
-                    <a class="register" href="{{=URL('default', 'register')}}">Sign up here!</a>
-                </div>
-                <div>
-                    <a class="forgot" href="{{=URL('default', 'forgotPass')}}">Forgot Password?</a>
-                </div>
+            <div class="main-login-form">
+            {{=login}}
+            </div>
+        </form>
 
-			</div>
-		</form>
-	</div>
-	<!-- end:Main Form -->
+    </div>
+
+    <!--TODO: through bootstrap spacing make the register stuff go to the middle-->
+     <div class="register">
+         <span>Don't have an account? </span>
+         <a class = "sign-up" href="{{=URL('default', 'register')}}">Sign up here!</a>
+     </div>
+     <div>
+        <a class="forgot" href="{{=URL('default', 'forgotPass')}}">Forgot Password?</a>
+     </div>
+    <!-- end:Main Form -->
 </div>
 
-     <!--   <div id="web2py_user_form" class="col-lg-6">
+<!--   <div id="web2py_user_form" class="col-lg-6">
         {{
-       """ if request.args(0)=='login':
-            if not 'register' in auth.settings.actions_disabled:
-                form.add_button(T('Sign Up'),URL(args='register', vars={'_next': request.vars._next} if request.vars._next else None),_class='btn btn-default')
-            pass
-            if not 'request_reset_password' in auth.settings.actions_disabled:
-                form.add_button(T('Lost Password'),URL(args='request_reset_password'),_class='btn btn-default')
-            pass
-        pass
-        =form"""
-        }}-->
-        </div>
+""" if request.args(0)=='login':
+     if not 'register' in auth.settings.actions_disabled:
+         form.add_button(T('Sign Up'),URL(args='register', vars={'_next': request.vars._next} if request.vars._next else None),_class='btn btn-default')
+     pass
+     if not 'request_reset_password' in auth.settings.actions_disabled:
+         form.add_button(T('Lost Password'),URL(args='request_reset_password'),_class='btn btn-default')
+     pass
+ pass
+ =form"""
+}}-->
+</div>
 

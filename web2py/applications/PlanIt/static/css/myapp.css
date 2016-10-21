@@ -49,10 +49,10 @@ a.forgot{
     padding-left: 20px;
 }
 
-#auth_user_email, #auth_user_password{
+#auth_user_email, #auth_user_password, #auth_user_first_name, #auth_user_last_name, #auth_user_password_two{
    	height: 45px;
 	border: 1px solid #ddd;
-	font-size: 12px;
+	font-size: 14px;
 	-webkit-transition: all 0.1s linear;
 	-moz-transition: all 0.1s linear;
     padding-left: 10px;
@@ -60,9 +60,38 @@ a.forgot{
     display:inline-block;
 }
 
-#auth_user_email__label, #auth_user_password__label{
+
+.sign-up, .forgot{
+  text-decoration: underline;
+  color: #00CD00;
+}
+
+
+.register{
+  padding-top: 20px;
+}
+
+.register, .forgot{
+  text-align: center;
+  display: block;
+  clear: both;
+  font-size: 15px;
+  padding-left: 35px;
+}
+
+
+#auth_user_email__label, #auth_user_password__label, #auth_user_first_name__label,
+#auth_user_last_name__label, #auth_user_password_two__label{
     text-align: right;
     font-size: 15px;
+}
+
+#reset_password{
+  text-align: center;
+  position: relative;
+  margin: auto;
+  width: 50%;
+  padding-top: 60px;
 }
 
 .login-form-main-message{
@@ -72,7 +101,8 @@ a.forgot{
 }
 
 input[type=submit]{
-    width: 100%;
+  width: 100%;
+  background-color: #5b90f6;
 }
 /*=== 4. Main Form ===*/
 .login-form-1 {
@@ -83,6 +113,7 @@ input[type=submit]{
 .main-login-form {
   position: relative;
 }
+
 .login-form-1 .form-control {
   border: 0;
   box-shadow: 0 0 0;
@@ -184,6 +215,8 @@ div.nav-link {
 .footer {
   background-color: #5b90f6;
   color: white;
+  left :0;
+  right:0;
 }
 
 .footer a {

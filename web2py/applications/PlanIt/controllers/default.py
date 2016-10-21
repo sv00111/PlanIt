@@ -53,11 +53,11 @@ def user():
 
 
 
-    return dict(login=auth.login(), register=auth.register())
+    return dict(form = auth(), login=auth.login(), register=auth.register())
 
 
 def register():
-    return dict(register=auth.register())
+    return dict(register=auth.register(), form = auth())
 
 @cache.action()
 def download():
