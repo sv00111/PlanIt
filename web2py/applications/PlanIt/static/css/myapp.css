@@ -1,6 +1,139 @@
-/* line 1, ../sass/_main.scss */
-.colorful {
-  color: #bb8833;
+/*------------------------------------------------------------------
+[Master Stylesheet]
+
+Project    	: Aether
+Version		: 1.0
+Last change	: 2015/03/27
+-------------------------------------------------------------------*/
+/*------------------------------------------------------------------
+[Table of contents]
+
+1. General Structure
+2. Anchor Link
+3. Text Outside the Box
+4. Main Form
+5. Login Button
+6. Form Invalid
+7. Form - Main Message
+8. Custom Checkbox & Radio
+9. Misc
+-------------------------------------------------------------------*/
+/*=== 1. General Structure ===*/
+html,
+body {
+  background: white;
+  padding: 10px;
+  font-family: 'Roboto';
+  padding-top: 40px;
+}
+/*=== 2. Anchor Link ===*/
+a {
+  color: #111111;
+}
+a:hover {
+  color: #333333;
+}
+
+#auth_user_remember_me__label{
+    display: block;
+    position: relative;
+    font-size: 15px;
+    width: 100%;
+    padding-left: 20px;
+}
+
+a.forgot{
+    width:100%;
+    text-align: center;
+    font-size: 15px;
+    padding-left: 20px;
+}
+
+/*#auth_user_email, #auth_user_password, #auth_user_first_name, #auth_user_last_name, #auth_user_password_two{*/
+   	/*height: 45px;*/
+	/*border: 1px solid #ddd;*/
+	/*font-size: 14px;*/
+	/*-webkit-transition: all 0.1s linear;*/
+	/*-moz-transition: all 0.1s linear;*/
+    /*padding-left: 10px;*/
+    /*padding-right: 10px;*/
+    /*display:inline-block;*/
+/*}*/
+
+
+.sign-up, .forgot{
+  text-decoration: underline;
+  color: #00CD00;
+}
+
+
+.register{
+  padding-top: 20px;
+}
+
+.register, .forgot{
+  text-align: center;
+  display: block;
+  clear: both;
+  font-size: 15px;
+  padding-left: 35px;
+}
+
+
+#auth_user_email__label, #auth_user_password__label, #auth_user_first_name__label,
+#auth_user_last_name__label, #auth_user_password_two__label{
+    text-align: right;
+    font-size: 15px;
+}
+
+#reset_password{
+    margin: auto;
+    position: relative;
+}
+
+.login-form-main-message{
+    position: relative;
+    width: 100%;
+    font-size: 27px;
+    padding-bottom: 20px;
+}
+.error_wrapper{
+    text-align: left;
+}
+.form-group{
+    margin-bottom: 0;
+}
+
+input[type=submit]{
+  width: 100%;
+  background-color: #5b90f6;
+}
+/*=== 4. Main Form ===*/
+.login-form-1 {
+    margin:auto;
+  max-width: 500px;
+  border-radius: 5px;
+}
+.main-login-form {
+  position: relative;
+}
+
+/*.login-form-1 .form-control {*/
+  /*border: 0;*/
+  /*box-shadow: 0 0 0;*/
+  /*border-radius: 0;*/
+  /*background: transparent;*/
+  /*color: #555555;*/
+  /*padding: 7px 0;*/
+  /*font-weight: bold;*/
+  /*height:auto;*/
+/*}*/
+
+.login-group {
+  background: #ffffff;
+  color: #999999;
+  border-radius: 8px;
+  padding: 10px 20px;
 }
 
 .navbar-default{
@@ -86,6 +219,8 @@ div.nav-link {
 .footer {
   background-color: #5b90f6;
   color: white;
+  left :0;
+  right:0;
 }
 
 .footer a {

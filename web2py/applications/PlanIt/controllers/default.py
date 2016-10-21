@@ -10,6 +10,7 @@
 
 import random
 
+@auth.requires_login()
 def index():
     # Generate a random number betw 1 and 6.
     n = random.randint(1, 6)
@@ -19,10 +20,10 @@ def index():
                 s=s,
                 mylist=[1, 2, 3, 5, 6, 9])
 
-def home():
-    return dict()
+def forgotPass():
+   return dict(reset = auth.request_reset_password())
 
-def page():
+def home():
     return dict()
 
 def user():
@@ -41,8 +42,22 @@ def user():
     to decorate functions that need access control
     also notice there is http://..../[app]/appadmin/manage/auth to allow administrator to manage users
     """
-    return dict(form=auth())
+    # return dict(form = auth())
 
+    # TODO: make this from comment to example 'example@gmail.com'
+    # TODO: try and make it a placeholder, intsead of under the input type.
+
+    if request.args(0) == 'login':
+        db.auth_user.email.comment = 'Enter your email address'
+        db.auth_user.password.comment = 'Enter your Password'
+
+
+
+    return dict(form = auth(), login=auth.login(), register=auth.register())
+
+
+def register():
+    return dict(register=auth.register(), login=auth.login())
 
 @cache.action()
 def download():
