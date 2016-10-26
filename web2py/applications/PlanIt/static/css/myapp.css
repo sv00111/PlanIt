@@ -264,3 +264,26 @@ div {
   bottom: 0;
   right: 0;
 }
+
+/* Styling for partial views*/
+.block {
+  clear: both;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+#middle {
+  width: 50%;
+  display: inline-block;
+}
+
+#rest {
+  width: auto;
+  display: inline-block;
+}
