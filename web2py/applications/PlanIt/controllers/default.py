@@ -59,6 +59,22 @@ def user():
 def register():
     return dict(register=auth.register(), login=auth.login())
 
+def newPlan():
+    form = SQLFORM.factory(
+        Field('name', label='Plan Name'),
+        Field('startDate', label='Start'),
+        Field('endDate', label='End'),
+        Field('location', label='Location')
+    )
+    if form.process().accepted:
+        db.createdPlans.insert(planName = form.vars.name,
+                       startDate = form.vars.startTime,
+                       endDate = form.vars.endTime,
+                       planLocation = form.vars.location)
+        session.flash = T('Plan created.')
+        redirect(URL('default', 'index'))
+    return dict(form=form)
+
 @cache.action()
 def download():
     """

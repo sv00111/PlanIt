@@ -7,6 +7,13 @@
 # There is an implicit 'id integer autoincrement' field
 # Consult manual for more options, validators, etc.
 
+db.define_table('createdPlans',
+                Field('planName'),
+                Field('startDate'),
+                Field('endDate'),
+                Field('planLocation'),
+
+                )
 
 
 
