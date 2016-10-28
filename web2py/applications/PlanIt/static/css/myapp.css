@@ -287,3 +287,44 @@ div {
   width: auto;
   display: inline-block;
 }
+
+.card {
+    box-shadow: 0 2px 4px -2px #999;
+    height: 100px;
+    width: 100%;
+}
+
+
+.card__image, .card__price {
+    /*display:inline-block;*/
+    width: 80px;
+    /*position: ;*/
+    position: relative;
+    float: left;
+    top: -100px;
+    z-index: -1;
+    height: 80px;
+    padding-top:0;
+    padding-left: 10px;
+    margin: auto;
+    /*align-content: stretch;*/
+    /*border-radius: 1px 1px 0 0;*/
+}
+
+.card__price{
+    padding-bottom: 5px;
+}
+
+.card__title, .card__neighborhood, .card__rating {
+    text-align: center;
+}
+
+div.item {
+    vertical-align: top;
+    display: inline-block;
+    text-align: center;
+    width: 120px;
+}
+.caption {
+    display: block;
+}

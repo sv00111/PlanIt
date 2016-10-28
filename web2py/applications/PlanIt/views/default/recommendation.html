@@ -1,0 +1,55 @@
+{{extend 'layout.html'}}
+
+{{block header}}
+
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+
+<script>
+    var tracks_url = "{{=URL('api', 'get_tracks')}}";
+    var recommendation_url = "{{=URL('api', 'get_recommendation')}}";
+</script>
+{{end}}
+
+
+
+<div class="main_content">
+
+    <div id="vue-div" class="display:none">
+        <div class="button_bar">
+            <button class="btn btn-danger btn-sm" v-on:click="add_track()" v-bind:class="{'disabled': !logged_in}">{{=icon_add}}Add track</button>
+        </div>
+
+
+
+                <div v-for = "rec in recommendation">
+
+                    <!-- Cards-->
+                        <div class="card" >
+
+
+                            <h2 class="card__title">${rec.name}</h2>
+                            <p class="card__neighborhood">${rec.neighborhood}</p>
+
+                            <p class="card__rating">${rec.rating}</p>
+
+                            <div class="item">
+                                <img src="../static/images/background.jpg" class="card__image">
+                                <span class="caption card__price">Price: ${rec.price}</span>
+                            </div>
+
+
+                        </div>
+
+
+
+                </div>
+
+            <div v-if="has_more" class="show_more"><button class="btn btn-default" v-on:click="get_more_rec()">Load more</button></div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<script src="{{=URL('static', 'js/default_index.js')}}"></script>
