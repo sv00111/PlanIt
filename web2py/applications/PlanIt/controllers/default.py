@@ -59,6 +59,18 @@ def user():
 def register():
     return dict(register=auth.register(), login=auth.login())
 
+def recommendation():
+    """
+    example action using the internationalization operator T and flash
+    rendered by views/default/index.html or views/generic.html
+
+    if you need a simple wiki simply replace the two lines below with:
+    return auth.wiki()
+    """
+
+    response.flash = T("Hello World")
+    return dict(message=T('Welcome to web2py!'))
+
 @cache.action()
 def download():
     """

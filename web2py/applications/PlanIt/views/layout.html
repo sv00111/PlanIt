@@ -31,6 +31,9 @@
 </head>
 
 <body>
+{{block header}}
+    {{end}}
+
     {{block top-nav}} <!-- Default Navbar, can be overridden in extended file -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <a href="{{=URL('default', 'index')}}">
