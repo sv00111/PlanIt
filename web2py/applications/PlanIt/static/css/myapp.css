@@ -267,6 +267,24 @@ div.home-container {
   overflow-y: auto;
 }
 
+/*Scrollbar styling*/
+.scrollbar::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+.scrollbar::-webkit-scrollbar
+{
+	width: 5px;
+	background-color: #F5F5F5;
+}
+
+.scrollbar::-webkit-scrollbar-thumb
+{
+	background-color: #00cd00;
+}
+
 .card {
     box-shadow: 0 2px 4px -2px #999;
     height: 100px;
