@@ -1,16 +1,9 @@
-{{extend 'layout.html'}}
-
-{{block header}}
-
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 
 <script>
     var tracks_url = "{{=URL('api', 'get_tracks')}}";
     var recommendation_url = "{{=URL('api', 'get_recommendation')}}";
 </script>
-{{end}}
-
-
 
 <div class="main_content">
 

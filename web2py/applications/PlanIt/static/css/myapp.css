@@ -1,31 +1,11 @@
-/*------------------------------------------------------------------
-[Master Stylesheet]
-
-Project    	: Aether
-Version		: 1.0
-Last change	: 2015/03/27
--------------------------------------------------------------------*/
-/*------------------------------------------------------------------
-[Table of contents]
-
-1. General Structure
-2. Anchor Link
-3. Text Outside the Box
-4. Main Form
-5. Login Button
-6. Form Invalid
-7. Form - Main Message
-8. Custom Checkbox & Radio
-9. Misc
--------------------------------------------------------------------*/
 /*=== 1. General Structure ===*/
-html,
-body {
+html, body {
   background: white;
   padding: 10px;
   font-family: 'Roboto';
   padding-top: 40px;
 }
+
 /*=== 2. Anchor Link ===*/
 a {
   color: #111111;
@@ -33,6 +13,9 @@ a {
 a:hover {
   color: #333333;
 }
+
+
+/* Login Page Styling **************************/
 
 #auth_user_remember_me__label{
     display: block;
@@ -136,6 +119,8 @@ input[type=submit]{
   padding: 10px 20px;
 }
 
+/* Navbar Styling **********************************/
+
 .navbar-default{
   display: inline-block;
   background-color: white;
@@ -234,39 +219,7 @@ div {
   display: block;
 }
 
-/* Styling for home.html **********/
-div.home-container {
-  display: block;
-  height: 100%;
-  width: 100%;
-  background-color: #d3d3d3;
-  padding: 5px;
-}
-
-#suggestion-container {
-  background-color: white;
-  box-shadow: 2px 2px 4px -2px #999;
-  height: 100%;
-  width: 19%;
-  margin-right: 0.5%;
-  margin-left: 0.5%;
-  overflow-y: auto;
-}
-
-#suggestion-container ul {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-}
-
-#suggestion-container ul li {
-  padding: 15px;
-}
-
-#suggestion-container ul li:hover {
-  background-color: #FCFCFC;
-  border: 1px solid #5b90f6;
-}
+/** Default Page Styling *************************/
 
 .main-container {
   margin: 0;
@@ -279,17 +232,21 @@ div.home-container {
   right: 0;
 }
 
-/* Styling for partial views*/
-.block {
-  clear: both;
+/* Styling for home.html ******************************/
+div.home-container {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background-color: #d3d3d3;
 }
 
-.left {
-  float: left;
-}
-
-.right {
-  float: right;
+#suggestion-container {
+  display: inline-block;
+  background-color: white;
+  box-shadow: 2px 2px 4px -2px #999;
+  height: 100%;
+  width: 20%;
+  overflow-y: auto;
 }
 
 #calendar-container {
@@ -297,9 +254,7 @@ div.home-container {
   background-color: white;
   box-shadow: 2px 2px 4px -2px #999;
   height: 100%;
-  width: 39%;
-  margin-right: 0.5%;
-  margin-left: 0.5%;
+  width: 40%;
   overflow-y: auto;
 }
 
@@ -308,28 +263,8 @@ div.home-container {
   background-color: white;
   box-shadow: 2px 2px 4px -2px #999;
   height: 100%;
-  width: 39%;
-  margin-right: 0.5%;
-  margin-left: 0.5%;
+  width: 40%;
   overflow-y: auto;
-}
-
-/*Scrollbar styling*/
-.scrollbar::-webkit-scrollbar-track
-{
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	background-color: #F5F5F5;
-}
-
-.scrollbar::-webkit-scrollbar
-{
-	width: 5px;
-	background-color: #F5F5F5;
-}
-
-.scrollbar::-webkit-scrollbar-thumb
-{
-	background-color: #00cd00;
 }
 
 .card {
@@ -340,7 +275,7 @@ div.home-container {
 
 
 .card__image, .card__price {
-    /*display:inline-block;*/
+    display:inline-block;
     width: 80px;
     /*position: ;*/
     position: relative;

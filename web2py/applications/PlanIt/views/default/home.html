@@ -55,20 +55,18 @@
     <div class="home-container">
         <div id="suggestion-container" class="pull-left scrollbar">
 
-            <ul>
-                <!-- for each suggestion returned by the API call -->
-            </ul>
+            {{include 'default/recommendation.html'}}
 
         </div>
         <div id="calendar-container" class="pull-left scrollbar">
             <ul>
             {{for stop in [1, 2, 3]:}}
-                <li class=""></li>
+                <li class="">Stop {{=stop}}</li>
             {{pass}}
             </ul>
         </div>
 
-        <div id="map-container" class = "pull-right scrollbar">
+        <div id="map-container" class = "pull-left scrollbar">
             <h2>Column for map</h2>
         </div>
     </div>
