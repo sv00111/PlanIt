@@ -267,6 +267,41 @@ div.home-container {
   overflow-y: auto;
 }
 
+.sugg-card {
+  height: 100%;
+  border: 1px #FFFFFF solid;
+  width: 100%;
+  float: left;
+  margin-top: 0;
+  padding: 0;
+  box-shadow: 1px 1px 8px #d8d8d8;
+  background-color: #FFFFFF;
+}
+
+.sugg-card .imgClass-thumbnail {
+  width: 80px;
+  height: 80px;
+  padding-top: 4px;
+  padding-left: 4px;
+}
+
+.sugg-card .sugg-card-body {
+  text-align: center;
+  margin-top: 10px;
+  margin-left: 5px;
+}
+
+.sugg-card-footer {
+  display: block;
+  padding-bottom: 4px;
+  padding-left: 4px;
+}
+
+.sugg-card-footer span.rating {
+  display: inline-block;
+  margin-left: 40%;
+}
+
 /*Scrollbar styling*/
 .scrollbar::-webkit-scrollbar-track
 {
@@ -283,45 +318,4 @@ div.home-container {
 .scrollbar::-webkit-scrollbar-thumb
 {
 	background-color: #00cd00;
-}
-
-.card {
-    box-shadow: 0 2px 4px -2px #999;
-    height: 100px;
-    width: 100%;
-}
-
-
-.card__image, .card__price {
-    display:inline-block;
-    width: 80px;
-    /*position: ;*/
-    position: relative;
-    float: left;
-    top: -100px;
-    z-index: -1;
-    height: 80px;
-    padding-top:0;
-    padding-left: 10px;
-    margin: auto;
-    /*align-content: stretch;*/
-    /*border-radius: 1px 1px 0 0;*/
-}
-
-.card__price{
-    padding-bottom: 5px;
-}
-
-.card__title, .card__neighborhood, .card__rating {
-    text-align: center;
-}
-
-div.item {
-    vertical-align: top;
-    display: inline-block;
-    text-align: center;
-    width: 120px;
-}
-.caption {
-    display: block;
 }
