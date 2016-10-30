@@ -23,6 +23,7 @@ def index():
 def forgotPass():
    return dict(reset = auth.request_reset_password())
 
+@auth.requires_login()
 def home():
     return dict()
 
