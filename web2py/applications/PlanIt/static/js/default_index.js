@@ -58,7 +58,6 @@ var app = function() {
             self.vue.has_more = data.has_more;
             self.extend(self.vue.recommendation, data.recommendation);
         });
-        self.vue.show_reviewers = false;
     };
 
     self.vue = new Vue({
