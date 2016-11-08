@@ -23,6 +23,7 @@ def index():
 def forgotPass():
    return dict(reset = auth.request_reset_password())
 
+@auth.requires_login()
 def home():
     return dict()
 
@@ -74,6 +75,18 @@ def newPlan():
         session.flash = T('Plan created.')
         redirect(URL('default', 'index'))
     return dict(form=form)
+
+def recommendation():
+    """
+    example action using the internationalization operator T and flash
+    rendered by views/default/index.html or views/generic.html
+
+    if you need a simple wiki simply replace the two lines below with:
+    return auth.wiki()
+    """
+
+    response.flash = T("Hello World")
+    return dict(message=T('Welcome to web2py!'))
 
 @cache.action()
 def download():

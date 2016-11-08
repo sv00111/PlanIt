@@ -1,19 +1,87 @@
 {{extend 'layout.html'}}
 
-<div id="plan-list-container" class="pull-left">
+{{block header}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
 
-    <ul>
-        <!-- for each plan in the user's db -->
-        <li>
-            <h3 id="plan-title">Example Plan</h3>
-            <p>Example information.</p>
-        </li>
-    </ul>
+<script>
+    var tracks_url = "{{=URL('api', 'get_tracks')}}";
+    var recommendation_url = "{{=URL('api', 'get_recommendation')}}";
+</script>
+{{end}}
 
-</div>
-<div id="middle">
-            <h3>Column for calendar</h3>
-</div>
-<div id="rest">
-        <h2>Column for map</h2>
-</div>
+{{if auth.user_id:}}
+
+    {{block top-nav}} <!-- Overwrite nav bar -->
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <a href="{{=URL('default', 'index')}}">
+                <div class="navbar logo-container pull-left">
+                    <span class="navbar logo">
+                        Plan-It
+                    </span>
+                </div>
+            </a>
+
+            {{block nav-buttons}} <!-- Overwrite nav buttons -->
+                <a href="{{=URL('default', 'home')}}">
+                    <div class="navbar pull-left nav-link">
+                        <span class="navbar nav-link-text">
+                            Home
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Dropdown menu for Plan selection -->
+                <div class="navbar pull-left nav-link">
+                    <span class="navbar nav-link-text dropdown">
+                    My Plans
+                        <i class="fa fa-angle-down"></i>
+                        <div class="dropdown-content">
+                            <!-- This is where you would iterate over the plans retrieved
+                                from the database and create a link for each one -->
+                            {{for plan in [1, 2, 3]:}}
+                            <!-- When clicked the link should NOT reload the page but
+                                instead populate the appropriate containers with the
+                                selected plan's information -->
+                            <a href="">Example Plan {{=plan}}</a>
+                            {{pass}}
+                        </div>
+                    </span>
+                </div>
+
+                <div class="navbar pull-right nav-link">
+                    <span class="navbar nav-link-text dropdown">
+                    {{=auth.user.first_name}}
+                        <i class="fa fa-angle-down"></i>
+                        <div class="dropdown-content">
+                            <a href="{{=URL('default','user',args=['logout'])}}">Logout</a>
+                        </div>
+                    </span>
+                </div>
+            {{end}}
+        </nav>
+    {{end}}
+
+    <div class="home-container">
+        <div id="suggestion-container" class="pull-left scrollbar">
+
+            {{include 'default/recommendation.html'}}
+
+        </div>
+        <div id="calendar-container" class="pull-left scrollbar">
+            <ul>
+            {{for stop in [1, 2, 3]:}}
+                <li class="">Stop {{=stop}}</li>
+            {{pass}}
+            </ul>
+        </div>
+
+        <div id="map-container" class = "pull-left scrollbar">
+            <h2>Column for map</h2>
+        </div>
+    </div>
+
+{{else:}}
+
+    {{=redirect(URL('default', 'user', args=['login']))}}
+
+{{pass}}
