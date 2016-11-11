@@ -14,6 +14,7 @@ var app = function() {
     };
 
     function get_tracks_url(start_idx, end_idx) {
+
         console.log(start_idx)
         console.log(end_idx)
         var pp = {
@@ -65,7 +66,6 @@ var app = function() {
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
         data: {
-            tracks: [],
             recommendation: [],
             tracks:[],
             logged_in: false,

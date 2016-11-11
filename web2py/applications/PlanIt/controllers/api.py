@@ -3,6 +3,8 @@ import random
 def recommendation():
     pass
 
+import urllib
+
 # Mocks implementation.
 def get_tracks():
     start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
@@ -30,7 +32,14 @@ def get_tracks():
         has_more=has_more,
     ))
 
+def test():
+    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters"
+    f = urllib.urlopen(url)
+    s = f.read()
+    return s
 
+
+import json
 def get_recommendation():
     start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
     end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0

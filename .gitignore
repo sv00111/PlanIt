@@ -51,3 +51,5 @@ sessions/
 uploads/
 
 web2py/httpserver.pid
+
+*.w2p

@@ -106,3 +106,6 @@ def call():
     """
     return service()
 
+
+def place():
+    return dict()
