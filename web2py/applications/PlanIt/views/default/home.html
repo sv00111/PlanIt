@@ -70,15 +70,10 @@
 
         </div>
         <div id="calendar-container" class="pull-left scrollbar">
-            <ul>
-            {{for stop in [1, 2, 3]:}}
-                <li class="">Stop {{=stop}}</li>
-            {{pass}}
-            </ul>
+            {{include 'default/plans.html'}}
         </div>
 
         <div id="map-container" class = "pull-left scrollbar">
-            <h2>Column for map</h2>
             <title>Simple Map</title>
             <meta name="viewport" content="initial-scale=1.0">
             <meta charset="utf-8">

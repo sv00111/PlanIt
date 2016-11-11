@@ -1,0 +1,46 @@
+
+<link rel="stylesheet" href="{{=URL('static','css/plans.css')}}"/>
+
+<div id="vue-plans"> <!-- main -->
+
+    <div id="plan-header"> <!-- plan-header -->
+        <span>Header</span>
+    </div>
+
+    <div id="plan-title"> <!-- plan-title -->
+        <span>Title</span>
+    </div>
+
+    <div id="stop-list" class="scrollbar"> <!-- stop-list scrollbar; -->
+
+        <div id="stop-outer"> <!-- stop-outer; v-for="stop in stops"; margin-top/bottom: 10px; -->
+
+            <div id="stop-time"> <!-- stop-time; display:inline-block; float: left; -->
+                <div class="float-middle">
+                    <a href=""> <!-- Make this clickable and editable in-line -->
+                        <span>Start Time</span>
+                    </a>
+                    <span> - </span>
+                    <a href=""> <!-- Make this clickable and editable in-line -->
+                        <span>End Time</span>
+                    </a>
+                </div>
+            </div>
+
+            <div id="stop-inner"> <!-- stop-inner; display: inline-block; float: left; margin-left: 5px; -->
+                <div class="mask float-middle" style="display: inline-block; margin-left: 10px;">
+                    <img class="imgClass-thumbnail" src="https://s-media-cache-ak0.pinimg.com/564x/ca/87/8e/ca878e49d9cad00d97f83fdaf8cc8562.jpg">
+                </div>
+
+                <div class="stop-content">
+                    <span class="stop-label">Stop Label</span>
+                    <span class="place-name">Place Name</span>
+                    <p>Some City, CA</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

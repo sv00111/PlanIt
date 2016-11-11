@@ -1,0 +1,96 @@
+#plan-header, #plan-title {
+    display: table;
+    height: 40px;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#plan-header span, #plan-title span {
+    display: table-cell;
+    text-align: left;
+    vertical-align: middle;
+}
+
+#stop-list {
+    background-color: lightgrey;
+    height: 100%;
+    overflow-y: auto;
+}
+
+#stop-outer {
+    margin-bottom: 10px;
+    height: 200px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#stop-time, #stop-inner {
+    display: inline-block;
+    float: left;
+    height: calc(100%);
+    background-color: white;
+}
+
+#stop-time {
+    display: inline-block;
+    width: 70px;
+}
+
+.float-middle {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#stop-time span{
+    display: block;
+    text-align: center;
+}
+
+#stop-time a:hover {
+    text-decoration: none;
+}
+
+#stop-inner {
+    box-shadow: 2px 2px 4px -2px #999;
+    margin-left: 5px;
+    width: calc(100% - 75px);
+}
+
+.mask {
+    height: 160px;
+    width: 100px;
+    overflow-x: hidden;
+    align-content: center;
+}
+
+#stop-inner img {
+    height: 100%;
+    width: auto;
+}
+
+#stop-inner .stop-content {
+    display: inline-block;
+    position: absolute;
+    padding: 10px;
+}
+
+#stop-inner .stop-content span, #stop-inner .stop-content p {
+    display: block;
+    margin-left: 10px;
+}
+
+#stop-inner .stop-content .stop-label{
+    font-size: 20px;
+}
+
+#stop-inner .stop-content .place-name{
+    font-size: 14px;
+}
+
+#stop-inner .stop-content p{
+    font-size: 11px;
+}

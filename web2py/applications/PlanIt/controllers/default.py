@@ -27,6 +27,10 @@ def forgotPass():
 def home():
     return dict()
 
+@auth.requires_login()
+def plans():
+    return dict()
+
 def user():
     """
     exposes:
