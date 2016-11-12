@@ -54,3 +54,42 @@ def get_recommendation():
         logged_in=logged_in,
         has_more=has_more,
     ))
+
+
+def add_stop():
+    stop_id = db.planit_stop.insert(
+        label = request.vars.label,
+        start_time = request.vars.start_time,
+        end_time = request.vars.end_time,
+        cust_place = request.vars.cust_place,
+        cust_address = request.vars.cust_address,
+    )
+    stop = db.planit_stop(stop_id)
+    return response.json(dict(stop=stop))
+
+
+def get_stops():
+    start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
+    end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0
+    stops = []
+    has_more = False
+    rows = db().select(db.planit_stop.ALL, limitby=(start_idx, end_idx + 1))
+    for i, r in enumerate(rows):
+        if i < end_idx - start_idx:
+            s = dict(
+                label = r.label,
+                start_time = r.start_time,
+                end_time = r.end_time,
+                cust_place = r.cust_place,
+                cust_address = r.cust_address,
+                created_by = r.created_by,
+                created_on = r.created_on
+            )
+            stops.append(s)
+        else:
+            has_more = True
+    logged_in = auth.user_id is not None
+    return response.json(dict(
+        stops=stops,
+        logged_in=logged_in,
+    ))

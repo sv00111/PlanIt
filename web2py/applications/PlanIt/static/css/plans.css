@@ -3,7 +3,6 @@
     height: 40px;
     width: 100%;
     padding-left: 20px;
-    padding-right: 20px;
 }
 
 #plan-header span, #plan-title span {
@@ -12,13 +11,17 @@
     vertical-align: middle;
 }
 
+input.form-control, #submit_record__row {
+    width: calc(100% - 10px);
+}
+
 #stop-list {
     background-color: lightgrey;
     height: 100%;
     overflow-y: auto;
 }
 
-#stop-outer {
+.stop-outer {
     margin-bottom: 10px;
     height: 200px;
     padding-left: 10px;
@@ -27,14 +30,14 @@
     padding-bottom: 5px;
 }
 
-#stop-time, #stop-inner {
+.stop-time, .stop-inner {
     display: inline-block;
     float: left;
-    height: calc(100%);
+    height: 100%;
     background-color: white;
 }
 
-#stop-time {
+.stop-time {
     display: inline-block;
     width: 70px;
 }
@@ -45,52 +48,59 @@
     transform: translateY(-50%);
 }
 
-#stop-time span{
+.stop-time span{
     display: block;
     text-align: center;
 }
 
-#stop-time a:hover {
+.stop-time a:hover {
     text-decoration: none;
 }
 
-#stop-inner {
+.stop-inner {
     box-shadow: 2px 2px 4px -2px #999;
     margin-left: 5px;
     width: calc(100% - 75px);
+    padding: 5px;
 }
 
 .mask {
-    height: 160px;
-    width: 100px;
+    height: 100%;
+    width: 25%;
     overflow-x: hidden;
     align-content: center;
+    display: inline-block;
+    float: left;
 }
 
-#stop-inner img {
+.stop-inner img {
     height: 100%;
     width: auto;
 }
 
-#stop-inner .stop-content {
+.stop-inner .stop-content {
     display: inline-block;
-    position: absolute;
-    padding: 10px;
+    height: 100%;
+    float: left;
 }
 
-#stop-inner .stop-content span, #stop-inner .stop-content p {
+.stop-inner .stop-content span, .stop-inner .stop-content p {
     display: block;
     margin-left: 10px;
 }
 
-#stop-inner .stop-content .stop-label{
+.stop-inner .stop-content .stop-label{
     font-size: 20px;
 }
 
-#stop-inner .stop-content .place-name{
+.stop-inner .stop-content .place-name{
     font-size: 14px;
 }
 
-#stop-inner .stop-content p{
+.stop-inner .stop-content p{
     font-size: 11px;
+}
+
+#add-stop-div {
+    display: table-row;
 }

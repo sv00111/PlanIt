@@ -1,41 +1,89 @@
-
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
 <link rel="stylesheet" href="{{=URL('static','css/plans.css')}}"/>
 
-<div id="vue-plans"> <!-- main -->
+<script>
+    var add_stop_url = "{{=URL('api', 'add_stop', user_signature=True)}}";
+    var get_stops_url = "{{=URL('api', 'get_stops')}}";
+</script>
+
+<div id="vue-plans" style="display:none"> <!-- main -->
 
     <div id="plan-header"> <!-- plan-header -->
-        <span>Header</span>
+        <!-- Tabs for open plans go here -->
+        <button class="btn btn-success pull-right" v-on:click="add_stop_button()" v-bind:class="{'disabled': !logged_in}">
+            <i class="fa fa-plus"></i>
+        </button>
+        <div v-if="is_adding_stop" id="add-stop-div">
+            <form action="#" v-on:submit.prevent="add_stop" class="" enctype="multipart/form-data" method="post">
+                <div class="form-group" id="no_table_label__row">
+                    <div>
+                        <input class="form-control string" v-model="form_stop_label" placeholder="Summary" type="text" />
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group" id="no_table_start__row">
+                    <div>
+                        <input class="form-control string" v-model="form_stop_start" placeholder="Start Time (hh:mm)" type="time" />
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group" id="no_table_end__row">
+                    <div>
+                        <input class="form-control string" v-model="form_stop_end" placeholder="End Time (hh:mm)" type="time" />
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group" id="no_table_place__row">
+                    <div>
+                        <input class="form-control string" v-model="form_stop_place" placeholder="Name of the place" type="text" />
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group" id="no_table_address__row">
+                    <div>
+                        <input class="form-control string" v-model="form_stop_address" placeholder="Address" type="text" />
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group" id="submit_record__row">
+                    <div>
+                        <input class="btn btn-primary" id="add_stop_submit" type="submit" value="Submit" />
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div id="plan-title"> <!-- plan-title -->
+        <!-- currently open plan -->
         <span>Title</span>
     </div>
 
     <div id="stop-list" class="scrollbar"> <!-- stop-list scrollbar; -->
 
-        <div id="stop-outer"> <!-- stop-outer; v-for="stop in stops"; margin-top/bottom: 10px; -->
+        <div class="stop-outer" v-for="stop in stops"> <!-- stop-outer; v-for="stop in stops"; margin-top/bottom: 10px; -->
 
-            <div id="stop-time"> <!-- stop-time; display:inline-block; float: left; -->
+            <div class="stop-time"> <!-- stop-time; display:inline-block; float: left; -->
                 <div class="float-middle">
                     <a href=""> <!-- Make this clickable and editable in-line -->
-                        <span>Start Time</span>
+                        <span>${stop.start_time}</span>
                     </a>
                     <span> - </span>
                     <a href=""> <!-- Make this clickable and editable in-line -->
-                        <span>End Time</span>
+                        <span>${stop.end_time}</span>
                     </a>
                 </div>
             </div>
 
-            <div id="stop-inner"> <!-- stop-inner; display: inline-block; float: left; margin-left: 5px; -->
-                <div class="mask float-middle" style="display: inline-block; margin-left: 10px;">
+            <div class="stop-inner"> <!-- stop-inner; display: inline-block; float: left; margin-left: 5px; -->
+                <div class="mask">
                     <img class="imgClass-thumbnail" src="https://s-media-cache-ak0.pinimg.com/564x/ca/87/8e/ca878e49d9cad00d97f83fdaf8cc8562.jpg">
                 </div>
 
                 <div class="stop-content">
-                    <span class="stop-label">Stop Label</span>
-                    <span class="place-name">Place Name</span>
-                    <p>Some City, CA</p>
+                    <span class="stop-label">${stop.label}</span>
+                    <span class="place-name">${stop.cust_place}</span>
+                    <p>${stop.cust_address}</p>
                 </div>
             </div>
 
@@ -44,3 +92,5 @@
     </div>
 
 </div>
+
+<script src="{{=URL('static', 'js/plans.js')}}"></script>
