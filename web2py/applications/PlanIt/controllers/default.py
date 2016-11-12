@@ -9,6 +9,11 @@
 # -------------------------------------------------------------------------
 
 import random
+import json
+import time
+import urllib
+import urllib2
+
 
 @auth.requires_login()
 def index():
@@ -108,4 +113,18 @@ def call():
 
 
 def place():
+    url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Sydney&key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
+    response = str(urllib2.urlopen(url).read())
+    result = json.loads(response.replace('\\n', ''))
+    #these should be the main attributes we use when we call the api
+    #we need to create objects for these and store them within the vue array
+    print result['next_page_token']
+    for i in result['results']:
+        print(i['name'])
+        print(i['rating'])
+        print(i['formatted_address'])
+        #print(i['price_level'])
+        print(i['place_id'])
+        print(i['icon'])
+        print(i['geometry']['location'])
     return dict()
