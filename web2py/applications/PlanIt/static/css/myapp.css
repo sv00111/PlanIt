@@ -139,7 +139,9 @@ span.navbar {
 div.nav-link {
   display: table;
   text-align: center;
-  width: 100px;
+  width: 110px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .nav-link-text {
@@ -173,7 +175,7 @@ div.nav-link {
   display: block;
 }
 
-.dropdown-content a {
+.dropdown-content a, .dropdown-content span {
   position: relative;
   color: black;
   padding: 12px 16px;
@@ -181,7 +183,7 @@ div.nav-link {
   display: block;
 }
 
-.dropdown-content a:hover {background-color: #f1f1f1}
+.dropdown-content a:hover, .dropdown-content span:hover {background-color: #f1f1f1}
 
 .navbar {
   display: inline-block;

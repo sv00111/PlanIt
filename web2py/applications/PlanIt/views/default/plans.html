@@ -1,35 +1,49 @@
-<script src="{{=URL('static', 'js/vue.js')}}"></script>
 <link rel="stylesheet" href="{{=URL('static','css/plans.css')}}"/>
-
-<script>
-    var add_stop_url = "{{=URL('api', 'add_stop', user_signature=True)}}";
-    var get_stops_url = "{{=URL('api', 'get_stops')}}";
-</script>
-
-<div id="vue-plans" style="display:none"> <!-- main -->
+<div id="vue-plans" style="display:none; height: 100%;"> <!-- main -->
 
     <div id="plan-header"> <!-- plan-header -->
+        <H2>{{=plan.label}}</H2>
         <!-- Tabs for open plans go here -->
-        <button class="btn btn-success pull-right" v-on:click="add_stop_button()" v-bind:class="{'disabled': !logged_in}">
+
+        <button v-if="!is_adding_stop" class="btn btn-success pull-right" v-on:click="add_stop_button()" v-bind:class="{'disabled': !logged_in}">
             <i class="fa fa-plus"></i>
         </button>
-        <div v-if="is_adding_stop" id="add-stop-div">
+        <button v-if="is_adding_stop" class="btn btn-success pull-right" v-on:click="add_stop_button()" v-bind:class="{'disabled': !logged_in}">
+            <i class="fa fa-minus"></i>
+        </button>
+
+        <div class="dropdown pull-right" style="padding-right: 10px; vertical-align: middle">
+            <span>My Plans</span>
+            <i class="fa fa-angle-down"></i>
+            <div class="dropdown-content">
+                <div v-for="plan in plans">
+                    <a href="" v-on:click.prevent="get_plan(plan._idx)">
+                        ${plan.label}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div v-if="is_adding_stop" id="add-stop-div">
             <form action="#" v-on:submit.prevent="add_stop" class="" enctype="multipart/form-data" method="post">
                 <div class="form-group" id="no_table_label__row">
                     <div>
-                        <input class="form-control string" v-model="form_stop_label" placeholder="Summary" type="text" />
+                        <input class="form-control string" v-model="form_stop_label" required="required" placeholder="Summary" type="text" />
                         <span class="help-block"></span>
                     </div>
                 </div>
                 <div class="form-group" id="no_table_start__row">
+                    <span> Start Time </span>
                     <div>
-                        <input class="form-control string" v-model="form_stop_start" placeholder="Start Time (hh:mm)" type="time" />
+                        <input class="form-control string" v-model="form_stop_start" required="required" type="time" />
                         <span class="help-block"></span>
                     </div>
                 </div>
                 <div class="form-group" id="no_table_end__row">
+                    <span> End Time </span>
                     <div>
-                        <input class="form-control string" v-model="form_stop_end" placeholder="End Time (hh:mm)" type="time" />
+                        <input class="form-control string" v-model="form_stop_end" required="required" type="time" />
                         <span class="help-block"></span>
                     </div>
                 </div>
@@ -51,15 +65,13 @@
                     </div>
                 </div>
             </form>
-        </div>
-    </div>
-
-    <div id="plan-title"> <!-- plan-title -->
-        <!-- currently open plan -->
-        <span>Title</span>
     </div>
 
     <div id="stop-list" class="scrollbar"> <!-- stop-list scrollbar; -->
+
+        <div v-if="stops.length <= 0" style="width: 100%; margin-top: 20px; text-align: center;">
+            This plan doesn't have any stops yet!
+        </div>
 
         <div class="stop-outer" v-for="stop in stops"> <!-- stop-outer; v-for="stop in stops"; margin-top/bottom: 10px; -->
 
@@ -84,6 +96,9 @@
                     <span class="stop-label">${stop.label}</span>
                     <span class="place-name">${stop.cust_place}</span>
                     <p>${stop.cust_address}</p>
+                </div>
+                <div class="pull-right del_stop_button">
+                    <i v-on:click="delete_stop(stop._idx)" class="fa fa-close"></i>
                 </div>
             </div>
 

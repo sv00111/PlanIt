@@ -1,6 +1,7 @@
 {{extend 'layout.html'}}
 
-{{block header}}
+{{block head}}
+{{super}}
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w&callback=initMap"
   type="text/javascript"></script>
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
@@ -8,6 +9,13 @@
 <script>
     var tracks_url = "{{=URL('api', 'get_tracks')}}";
     var recommendation_url = "{{=URL('api', 'get_recommendation')}}";
+</script>
+
+<script>
+    var add_stop_url = "{{=URL('api', 'add_stop', user_signature=True)}}";
+    var get_stops_url = "{{=URL('api', 'get_stops')}}";
+    var del_stop_url = "{{=URL('api', 'del_stop')}}";
+    var get_plan_url = "{{=URL('api', 'select_plan')}}";
 </script>
 {{end}}
 
@@ -40,15 +48,24 @@
                         <div class="dropdown-content">
                             <!-- This is where you would iterate over the plans retrieved
                                 from the database and create a link for each one -->
-                            {{for plan in [1, 2, 3]:}}
+                            {{plans = db().select(db.planit_plan.ALL)}}
+                            {{for plan in plans:}}
                             <!-- When clicked the link should NOT reload the page but
                                 instead populate the appropriate containers with the
                                 selected plan's information -->
-                            <a href="">Example Plan {{=plan}}</a>
+
                             {{pass}}
                         </div>
                     </span>
                 </div>
+
+                <a href="{{=URL('default', 'newPlan')}}">
+                    <div class="navbar pull-left nav-link">
+                        <span class="navbar nav-link-text">
+                           New Plan  <i class="fa fa-plus fa-1"></i>
+                        </span>
+                    </div>
+                </a>
 
                 <div class="navbar pull-right nav-link">
                     <span class="navbar nav-link-text dropdown">
@@ -99,6 +116,7 @@
                       zoom: 8
                     });
                   }
+                  initMap();
                 </script>
         </div>
     </div>

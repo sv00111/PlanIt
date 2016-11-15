@@ -56,6 +56,21 @@ var planapp = function() {
         );
     };
 
+    function get_plan_from_api(plan_id) {
+        var p = {
+            plan_id: plan_id
+        };
+        return get_plan_url + "?" + $.param(p);
+    }
+
+    self.get_plan = function(plan_id) {
+        p_id = self.vue.plans[plan_id].id;
+        $.getJSON(get_plan_from_api(p_id), function(data) {
+            self.vue.plan = data.plan;
+            self.vue.logged_in = data.logged_in;
+        })
+    };
+
     function get_stops_from_api(start_idx, end_idx) {
         var pp = {
             start_idx: start_idx,
@@ -70,7 +85,20 @@ var planapp = function() {
             self.vue.logged_in = data.logged_in;
             self.vue.stops.sort(sort_by('start_time', false, null));
             enumerate(self.vue.stops);
+            enumerate(self.vue.plans);
         })
+    };
+
+    self.delete_stop = function(stop_idx) {
+        if (confirm("Delete this stop from your plan?")) {
+            $.post(del_stop_url,
+                { stop_id: self.vue.stops[stop_idx].id },
+                function () {
+                    self.vue.stops.splice(stop_idx, 1);
+                    enumerate(self.vue.stops);
+                }
+            )
+        }
     };
 
     self.vue = new Vue({
@@ -81,6 +109,7 @@ var planapp = function() {
             is_adding_stop: false,
             logged_in: true,
             plans: [],
+            current_plan: null,
             stops: [],
             label: null,
             date: null,

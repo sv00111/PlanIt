@@ -55,30 +55,33 @@ def user():
     if request.args(0) == 'login':
         db.auth_user.email.comment = 'Enter your email address'
         db.auth_user.password.comment = 'Enter your Password'
-
-
-
     return dict(form = auth(), login=auth.login(), register=auth.register())
 
 
 def register():
     return dict(register=auth.register(), login=auth.login())
 
+
 def newPlan():
     form = SQLFORM.factory(
-        Field('name', label='Plan Name'),
-        Field('startDate', label='Start'),
-        Field('endDate', label='End'),
-        Field('location', label='Location')
+        Field('label', length=256, default="New Plan"),
+        Field('start_date', 'date', default=datetime.date.today()),
+        Field('start_time', requires=[IS_TIME()]),
+        Field('end_time', requires=[IS_TIME()]),
+        Field('start_location')
     )
     if form.process().accepted:
-        db.createdPlans.insert(planName = form.vars.name,
-                       startDate = form.vars.startTime,
-                       endDate = form.vars.endTime,
-                       planLocation = form.vars.location)
+        db.planit_plan.insert(
+            label = form.vars.label,
+            start_date = form.vars.start_date,
+            start_time = form.vars.start_time,
+            end_time = form.vars.end_time,
+            start_location = form.vars.start_location
+        )
         session.flash = T('Plan created.')
-        redirect(URL('default', 'index'))
+        redirect(URL('default', 'home'))
     return dict(form=form)
+
 
 def recommendation():
     """
@@ -91,6 +94,7 @@ def recommendation():
 
     response.flash = T("Hello World")
     return dict(message=T('Welcome to web2py!'))
+
 
 @cache.action()
 def download():
