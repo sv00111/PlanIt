@@ -63,7 +63,7 @@ var app = function() {
 
     self.searchFn = function(searchRec){
         console.log(searchRec);
-    }
+    };
 
     self.vue = new Vue({
         el: "#vue-div",

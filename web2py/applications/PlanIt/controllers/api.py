@@ -44,24 +44,24 @@ def test():
 
 import json
 def get_recommendations():
-    # fields = None
-    # url = ''
-    # print "this"
-    # if fields is None:
-    #     print "LOL"
-    #     #query using nearby search, only params we need to passs here are longitude and latitude
-    #     url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
-    # else:
-    #     print "this"
-    #     #query using keywords, we'll need to create a textbox where users can input words
-    #     query = 'food'
-    #     url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query='+ query +'&key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
-    #     print "reaches this"
-    # print url
-    # #processes json request
-    # response = urllib.urlopen(url).read()
-    # result = json.loads(response.replace('\\n', ''))
-    # print result
+    fields = None
+    url = ''
+    print "this"
+    if fields is None:
+        print "LOL"
+        #query using nearby search, only params we need to passs here are longitude and latitude
+        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
+    else:
+        print "this"
+        #query using keywords, we'll need to create a textbox where users can input words
+        query = 'food'
+        url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query='+ query +'&key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
+        print "reaches this"
+    print url
+    #processes json request
+    resultStuff = urllib.urlopen(url).read()
+    result = (resultStuff.replace('\\n', ''))
+    print result
     #result['results'] returns us an array of each location with their data. we want to pass this into the view
     # #inside of view we can use a for loop to create div elements for side bar
     #
@@ -84,15 +84,16 @@ def get_recommendations():
         logged_in = True
     else:
         logged_in = False
+
     return response.json(dict(
         recommendation=recommendation,
         logged_in=logged_in,
         has_more=has_more,
     ))
 
-def get_more_info():
-    #read in place id from button click
-    place_id = ''
-    query_url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid='
-    + place_id + '+&key =AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
-    return()
+# def get_more_info():
+#     #read in place id from button click
+#     place_id = ''
+#     query_url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid='
+#     + place_id + '+&key =AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
+#     return()
