@@ -385,3 +385,34 @@ li:nth-child(odd) {
   width: 100%;
   margin: 5px 0 0 0;
 }
+
+
+.wrapper {
+    border:1px solid #000;
+    display:inline-block;
+    width: 100%;
+}
+
+input, .goButton {
+    background-color:white;
+    border:0;
+}
+
+.goButton{
+    width: 22%;
+}
+
+.goButton:hover, .goButton:focus{
+    color: black;
+    border: 0;
+    border-color: white;
+    -webkit-box-shadow:none;
+    box-shadow: none;
+
+}
+
+.searchBar{
+    width: 73%;
+    padding-left: 10px;
+    margin-left: 5px;
+}

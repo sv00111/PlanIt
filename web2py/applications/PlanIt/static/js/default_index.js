@@ -61,6 +61,10 @@ var app = function() {
         });
     };
 
+    self.searchFn = function(searchRec){
+        console.log(searchRec);
+    }
+
     self.vue = new Vue({
         el: "#vue-div",
         delimiters: ['${', '}'],
@@ -69,10 +73,12 @@ var app = function() {
             recommendation: [],
             tracks:[],
             logged_in: false,
-            has_more: false
+            has_more: false,
+            searchRec:null
         },
         methods: {
             get_more_rec: self.get_more_rec,
+            searchFn: self.searchFn
         }
 
     });

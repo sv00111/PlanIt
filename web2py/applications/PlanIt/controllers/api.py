@@ -44,21 +44,27 @@ def test():
 
 import json
 def get_recommendations():
-    fields = []
-    url = ''
-    if fields is None:
-        #query using nearby search, only params we need to passs here are longitude and latitude
-        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
-    else:
-        #query using keywords, we'll need to create a textbox where users can input words
-        query = 'some search query'
-        url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query='+ query +'&key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
-    #processes json request
-    response = str(urllib2.urlopen(url).read())
-    result = json.loads(response.replace('\\n', ''))
+    # fields = None
+    # url = ''
+    # print "this"
+    # if fields is None:
+    #     print "LOL"
+    #     #query using nearby search, only params we need to passs here are longitude and latitude
+    #     url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
+    # else:
+    #     print "this"
+    #     #query using keywords, we'll need to create a textbox where users can input words
+    #     query = 'food'
+    #     url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query='+ query +'&key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
+    #     print "reaches this"
+    # print url
+    # #processes json request
+    # response = urllib.urlopen(url).read()
+    # result = json.loads(response.replace('\\n', ''))
+    # print result
     #result['results'] returns us an array of each location with their data. we want to pass this into the view
-    #inside of view we can use a for loop to create div elements for side bar
-
+    # #inside of view we can use a for loop to create div elements for side bar
+    #
 
     #stuff down here will need to be changed to work with vue or whatever javascript framework we use
     start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
