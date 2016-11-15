@@ -34,7 +34,7 @@ var app = function() {
     self.get_recommendations = function () {
         $.getJSON(get_tracks_url(0, 20), function (data) {
             self.vue.tracks = data.results;
-            self.vue.has_more = data.pagetoken;
+            self.vue.has_more = data.pagetoken != null;
             self.vue.logged_in = data.logged_in;
             enumerate(self.vue.tracks);
         })

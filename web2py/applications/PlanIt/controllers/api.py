@@ -44,7 +44,11 @@ def test():
 
 import json
 def get_recommendations():
+    start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
+    end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0
+    logged_in = auth.user_id is not None
     fields = []
+    recommendation = []
     url = ''
     if fields is None:
         #query using nearby search, only params we need to passs here are longitude and latitude
@@ -58,7 +62,7 @@ def get_recommendations():
     result = json.loads(response.replace('\\n', ''))
     #result['results'] returns us an array of each location with their data. we want to pass this into the view
     #inside of view we can use a for loop to create div elements for side bar
-
+    for i in result:
 
     #stuff down here will need to be changed to work with vue or whatever javascript framework we use
     start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
