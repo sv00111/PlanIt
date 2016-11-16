@@ -1,4 +1,5 @@
 {{extend 'layout.html'}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
 <script>
     var recommendations_url = "{{=URL('api', 'get_recommendations')}}";
     var info_url = "{{=URL('api', 'get_more_info')}}";
@@ -9,7 +10,7 @@
 <div id="right-panel suggestion-container">
   <h2>Results</h2>
     <div id="vue-div" class="display:none">
-          <ul id="places" v-for="place in places">
+          <ul v-for="place in places">
               <li>
                   <p>
                       ${place.name}

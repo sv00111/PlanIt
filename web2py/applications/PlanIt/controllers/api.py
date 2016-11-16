@@ -3,6 +3,7 @@ import json
 import time
 import urllib
 import urllib2
+api_key = 'AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
 
 def recommendation():
     pass
@@ -41,43 +42,79 @@ def test():
     s = f.read()
     return s
 
+def get_place_icons(places):
+    # photos = [];
+    # for i in places:
+    #     place_id = i['photos'].photo_reference
+    #     print(place_id)
+    url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=' + places + '&key=' + api_key
+    return url
+
 
 import json
 def get_recommendations():
-    start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
-    end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0
-    logged_in = auth.user_id is not None
-    fields = []
-    recommendation = []
+    fields = None
+    photos = []
     url = ''
+    print "this"
     if fields is None:
+        print "LOL"
         #query using nearby search, only params we need to passs here are longitude and latitude
-        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
+        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=' + api_key
     else:
+        print "this"
         #query using keywords, we'll need to create a textbox where users can input words
-        query = 'some search query'
-        url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query='+ query +'&key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
+        query = 'food'
+        url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query='+ query +'&key=' + api_key
+        print "reaches this"
+    print url
     #processes json request
-    response = str(urllib2.urlopen(url).read())
-    result = json.loads(response.replace('\\n', ''))
+    qresult = urllib.urlopen(url).read()
+    result = json.loads(qresult.replace('\\n', ''))
+
     #result['results'] returns us an array of each location with their data. we want to pass this into the view
     #inside of view we can use a for loop to create div elements for side bar
-    for i in result:
+
+
 
     #stuff down here will need to be changed to work with vue or whatever javascript framework we use
     start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
     end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0
     # We just generate a lot of of data.
     recommendation = []
-    for i in range(start_idx, end_idx):
+    for i in range(start_idx, end_idx-1):
+        places = None
+        print result['results'][i]
+        print
+        print i
+        print
+        if not result['results'][i]:
+            break
+
+        if 'photos' in result['results'][i]:
+            place_id = result['results'][i]['photos'][0]['photo_reference']
+            print (place_id)
+            places = get_place_icons(place_id)
+            photos.append(place_id)
+        else:
+            places = "http://www.w3schools.com/css/trolltunga.jpg"
+            photos.append(place_id)
+
         t = dict(
             name = random.choice(['Philz', 'Taco Bell', 'Subway', 'Thai', 'Chinese', 'Japanese']),
             neighborhood = random.choice(['SoMa', 'Mission', 'Financial', 'Civic Center', 'Downtown', 'Evergreen']),
             price = random.randint(1, 4),
             rating = random.randint(1, 5),
+            photos = places
         )
         recommendation.append(t)
-    has_more = True
+
+    #print(result['page_token'])
+    if 'next_page_token' in result:
+        has_more = True
+    else:
+        has_more = False
+    #has_more = (result['next_page_token'] is not None)
     if auth.user:
         logged_in = True
     else:
@@ -92,5 +129,5 @@ def get_more_info():
     #read in place id from button click
     place_id = ''
     query_url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid='
-    + place_id + '+&key =AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
+    + place_id + '+&key =' + api_key
     return()

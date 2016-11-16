@@ -13,34 +13,29 @@ var app = function() {
         }
     };
 
-    function get_tracks_url(start_idx, end_idx) {
+    // Enumerates an array.
+    var enumerate = function(v) {
+        var k=0;
+        return v.map(function(e) {e._idx = k++;});
+    };
 
+     function get_recommendations_url(start_idx, end_idx) {
         console.log(start_idx)
         console.log(end_idx)
         var pp = {
             start_idx: start_idx,
             end_idx: end_idx
         };
-        return tracks_url + "?" + $.param(pp);
+        return recommendations_url + "?" + $.param(pp);
     }
 
-
-     function get_recommendation_url(start_idx, end_idx) {
-        console.log(start_idx)
-        console.log(end_idx)
-        var pp = {
-            start_idx: start_idx,
-            end_idx: end_idx
-        };
-        return recommendation_url + "?" + $.param(pp);
-    }
-
-
-    self.get_tracks = function () {
-        $.getJSON(get_recommendation_url(0, 20), function (data) {
+    //Begin by modifying these methods to be vue methods for our app
+    self.get_recommendations = function () {
+        $.getJSON(get_recommendations_url(0, 20), function (data) {
             self.vue.recommendation = data.recommendation;
-            self.vue.has_more = data.has_more;
+            self.vue.has_more = data.has_more,
             self.vue.logged_in = data.logged_in;
+            enumerate(self.vue.places);
         })
     };
 
@@ -61,23 +56,30 @@ var app = function() {
         });
     };
 
+    self.searchFn = function(searchRec){
+        console.log(searchRec);
+    }
+
     self.vue = new Vue({
         el: "#vue-div",
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
         data: {
             recommendation: [],
-            tracks:[],
             logged_in: false,
-            has_more: false
+            has_more: false,
+            searchRec:null
         },
         methods: {
             get_more_rec: self.get_more_rec,
+            get_recommendations: self.get_recommendations,
+            searchFn: self.searchFn
         }
 
     });
 
-    self.get_tracks();
+    self.get_recommendations();
+    console.log(self.vue.recommendation);
     $("#vue-div").show();
 
 

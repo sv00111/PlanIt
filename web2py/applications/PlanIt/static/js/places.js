@@ -22,7 +22,9 @@ var app = function() {
         return v.map(function(e) {e._idx = k++;});
     };
 
-    function get_tracks_url(start_idx, end_idx) {
+     function get_recommendations_url(start_idx, end_idx) {
+        console.log(start_idx)
+        console.log(end_idx)
         var pp = {
             start_idx: start_idx,
             end_idx: end_idx
@@ -32,11 +34,11 @@ var app = function() {
 
     //Begin by modifying these methods to be vue methods for our app
     self.get_recommendations = function () {
-        $.getJSON(get_tracks_url(0, 20), function (data) {
-            self.vue.tracks = data.results;
+        $.getJSON(get_recommendations_url(0, 20), function (data) {
+            self.vue.places = data.recommendation;
             self.vue.has_more = data.pagetoken != null;
             self.vue.logged_in = data.logged_in;
-            enumerate(self.vue.tracks);
+            enumerate(self.vue.places);
         })
     };
 
@@ -49,53 +51,54 @@ var app = function() {
         });
     };
 
-    self.add_track_button = function () {
-        // The button to add a track has been pressed.
-        self.vue.is_adding_track = !self.vue.is_adding_track;
-    };
+    //convert this to add location
+    // self.add_track_button = function () {
+    //     // The button to add a track has been pressed.
+    //     self.vue.is_adding_track = !self.vue.is_adding_track;
+    // };
 
-    self.add_track = function () {
-        // The submit button to add a track has been added.
-        $.post(add_track_url,
-            {
-                artist: self.vue.form_artist,
-                title: self.vue.form_track,
-                album: self.vue.form_album,
-                duration: self.vue.form_duration
-            },
-            function (data) {
-                $.web2py.enableElement($("#add_track_submit"));
-                self.vue.tracks.unshift(data.track);
-                enumerate(self.vue.tracks);
-            });
-    };
+    // self.add_track = function () {
+    //     // The submit button to add a track has been added.
+    //     $.post(add_track_url,
+    //         {
+    //             artist: self.vue.form_artist,
+    //             title: self.vue.form_track,
+    //             album: self.vue.form_album,
+    //             duration: self.vue.form_duration
+    //         },
+    //         function (data) {
+    //             $.web2py.enableElement($("#add_track_submit"));
+    //             self.vue.tracks.unshift(data.track);
+    //             enumerate(self.vue.tracks);
+    //         });
+    // };
 
 
-    self.delete_track = function(track_idx) {
-        $.post(del_track_url,
-            { track_id: self.vue.tracks[track_idx].id },
-            function () {
-                self.vue.tracks.splice(track_idx, 1);
-                enumerate(self.vue.tracks);
-            }
-        )
-    };
-
-    self.select_track = function(track_idx) {
-        var track = self.vue.tracks[track_idx];
-        self.vue.selected_idx = track_idx;
-        self.vue.selected_id = track.id;
-        self.vue.selected_url = track.track_url;
-        // Shows the uploader if we don't have a track url.
-        if (self.vue.selected_url) {
-            $("#uploader_div").hide();
-        } else {
-            // Also sets properly the attribute of the upload form.
-            self.upload_url = upload_url + "?" + $.param({track_id: track.id});
-            self.delete_file_url = delete_file_url + "?" + $.param({track_id: track.id});
-            $("#uploader_div").show();
-        }
-    };
+    // self.delete_track = function(track_idx) {
+    //     $.post(del_track_url,
+    //         { track_id: self.vue.tracks[track_idx].id },
+    //         function () {
+    //             self.vue.tracks.splice(track_idx, 1);
+    //             enumerate(self.vue.tracks);
+    //         }
+    //     )
+    // };
+    //
+    // self.select_track = function(track_idx) {
+    //     var track = self.vue.tracks[track_idx];
+    //     self.vue.selected_idx = track_idx;
+    //     self.vue.selected_id = track.id;
+    //     self.vue.selected_url = track.track_url;
+    //     // Shows the uploader if we don't have a track url.
+    //     if (self.vue.selected_url) {
+    //         $("#uploader_div").hide();
+    //     } else {
+    //         // Also sets properly the attribute of the upload form.
+    //         self.upload_url = upload_url + "?" + $.param({track_id: track.id});
+    //         self.delete_file_url = delete_file_url + "?" + $.param({track_id: track.id});
+    //         $("#uploader_div").show();
+    //     }
+    // };
 
     self.vue = new Vue({
         el: "#vue-div",
@@ -112,16 +115,17 @@ var app = function() {
         },
         methods: {
             get_more_info: self.get_more_info,
-            get_recommendations: self.get_recommendations,
-            add_track_button: self.add_track_button,
-            add_track: self.add_track,
-            delete_track: self.delete_track,
-            select_track: self.select_track
+            get_recommendations: self.get_recommendations
+            // add_track_button: self.add_track_button,
+            // add_track: self.add_track,
+            // delete_track: self.delete_track,
+            // select_track: self.select_track
         }
 
     });
 
     self.get_recommendations();
+    console.log(self.vue.places);
     $("#vue-div").show();
 
 
@@ -226,26 +230,26 @@ function createMarkers(results) {
             currentRating = "No rating found";
         }
 
-        placesList.innerHTML +=
-            '<div class="sugg-card" id = "cardId">' +
-            '<div class="pull-left">' +
-            '<a href="#">' +
-            '<img class="imgClass-thumbnail" src="http://3.bp.blogspot.com/-IbEOTNtCMyU/TfCAdHaAxEI/AAAAAAAAA8U/EATib38SSAM/s320/joe-mcelderry.jpg">' +
-            '</a>' +
-            '</div>' +
-            '<div class="sugg-card-body">' +
-            '<h2>' + place.name + '</h2>' +
-            '<p>' + place.vicinity + '</p>' +
-            '</div>' +
-            '<div class="sugg-card-footer">' +
-            '<span style="display: inline-block; float: left;">' +
-            'Price:' + currentPrice +
-            '</span>' +
-            '<span class="rating">' +
-            'Rating: ' + currentRating +
-            '</span>' +
-            '</div>' +
-            '</div>';
+        // placesList.innerHTML +=
+        //     '<div class="sugg-card" id = "cardId">' +
+        //     '<div class="pull-left">' +
+        //     '<a href="#">' +
+        //     '<img class="imgClass-thumbnail" src="http://3.bp.blogspot.com/-IbEOTNtCMyU/TfCAdHaAxEI/AAAAAAAAA8U/EATib38SSAM/s320/joe-mcelderry.jpg">' +
+        //     '</a>' +
+        //     '</div>' +
+        //     '<div class="sugg-card-body">' +
+        //     '<h2>' + place.name + '</h2>' +
+        //     '<p>' + place.vicinity + '</p>' +
+        //     '</div>' +
+        //     '<div class="sugg-card-footer">' +
+        //     '<span style="display: inline-block; float: left;">' +
+        //     'Price:' + currentPrice +
+        //     '</span>' +
+        //     '<span class="rating">' +
+        //     'Rating: ' + currentRating +
+        //     '</span>' +
+        //     '</div>' +
+        //     '</div>';
 
         // var temp = place.name;
         // var divClick  = document.getElementById('cardId');
