@@ -50,28 +50,44 @@ def get_place_icons(places):
     url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=' + places + '&key=' + api_key
     return url
 
+def get_reviews(place):
+    review = []
+    url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + place + '&key=' + api_key
+    results = json.loads(urllib.urlopen(url).read())
+    return results['reviews']
 
+#trying to add if conditions
+#if has been loaded before, just append results, else return completely new array
 import json
 def get_recommendations():
-    fields = None
-    photos = []
+    query = None #request.vars.search_params
+    next_page = request.vars.next_page
     url = ''
     print "this"
-    if fields is None:
-        print "LOL"
+    #if query is None:
+     #   url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key
+    if next_page is not '' and query is not '':
+        url = 'https://maps.googleapis.com/maps/api/place/textsearch/xml?query=' + request.vars.search_params + '&key=' + api_key + \
+        '&pagetoken=' + next_page
+    elif next_page is not '' and query is '':
+        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key + \
+        '&pagetoken=' + next_page
+    elif query is None:
+        print "No Search Params Found"
         #query using nearby search, only params we need to passs here are longitude and latitude
-        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=' + api_key
+        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key
     else:
-        print "this"
+        print "Found Search Params"
         #query using keywords, we'll need to create a textbox where users can input words
-        query = 'food'
+        #query = 'food'
         url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query='+ query +'&key=' + api_key
         print "reaches this"
     print url
     #processes json request
-    qresult = urllib.urlopen(url).read()
-    result = json.loads(qresult.replace('\\n', ''))
-
+    resultStuff = json.loads(urllib.urlopen(url).read())
+    # result = (resultStuff.replace('\\n', ''))
+    print (resultStuff["results"])
+    # print result
     #result['results'] returns us an array of each location with their data. we want to pass this into the view
     #inside of view we can use a for loop to create div elements for side bar
 
@@ -82,52 +98,73 @@ def get_recommendations():
     end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0
     # We just generate a lot of of data.
     recommendation = []
-    for i in range(start_idx, end_idx-1):
-        places = None
-        print result['results'][i]
-        print
-        print i
-        print
-        if not result['results'][i]:
-            break
+    for i in range(start_idx, end_idx):
+        # if not resultStuff['results'][i]:
+        #     break;
+        priceT = None
+        if "price_level" not in resultStuff['results'][i]:
+            priceT = 0
+            print priceT
+        else:
+            priceT = resultStuff['results'][i]["price_level"]
+            print priceT
 
-        if 'photos' in result['results'][i]:
-            place_id = result['results'][i]['photos'][0]['photo_reference']
+        ratingT = None
+        if "rating" not in resultStuff['results'][i]:
+            ratingT = 0
+            print ratingT
+        else:
+            ratingT = resultStuff['results'][i]["rating"]
+            print ratingT
+
+
+
+        if 'photos' in resultStuff['results'][i]:
+            place_id = resultStuff['results'][i]['photos'][0]['photo_reference']
             print (place_id)
             places = get_place_icons(place_id)
-            photos.append(place_id)
+            # photos.append(place_id)
         else:
             places = "http://www.w3schools.com/css/trolltunga.jpg"
-            photos.append(place_id)
+            # photos.append(place_id)
+
 
         t = dict(
-            name = random.choice(['Philz', 'Taco Bell', 'Subway', 'Thai', 'Chinese', 'Japanese']),
-            neighborhood = random.choice(['SoMa', 'Mission', 'Financial', 'Civic Center', 'Downtown', 'Evergreen']),
-            price = random.randint(1, 4),
-            rating = random.randint(1, 5),
-            photos = places
+            name = resultStuff['results'][i]["name"],
+            # random.choice(['Philz', 'Taco Bell', 'Subway', 'Thai', 'Chinese', 'Japanese']),
+            neighborhood = resultStuff['results'][i]["vicinity"],
+            # random.choice(['SoMa', 'Mission', 'Financial', 'Civic Center', 'Downtown', 'Evergreen']),
+            price = priceT,
+            # random.randint(1, 4),
+            rating = ratingT,
+            image = places,
         )
         recommendation.append(t)
 
-    #print(result['page_token'])
-    if 'next_page_token' in result:
+    more_results_page =''
+    if 'next_page_token' in resultStuff:
+        print(resultStuff['next_page_token'])
+        more_results_page = resultStuff['next_page_token']
         has_more = True
     else:
+        more_results_page = None
         has_more = False
     #has_more = (result['next_page_token'] is not None)
     if auth.user:
         logged_in = True
     else:
         logged_in = False
+
     return response.json(dict(
         recommendation=recommendation,
         logged_in=logged_in,
         has_more=has_more,
+        next_page = more_results_page
     ))
 
 def get_more_info():
     #read in place id from button click
     place_id = ''
-    query_url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid='
-    + place_id + '+&key =' + api_key
+    query_url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + place_id + '+&key =' + api_key
     return()
+
