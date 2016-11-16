@@ -1,12 +1,12 @@
-{{#extend 'layout.html'}}
+{{extend 'layout.html'}}
 
-<!--script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
 
 <script>
-//    var tracks_url = "{{=URL('api', 'get_tracks')}}";
-    //var recommendation_url = "{{=URL('api', 'get_recommendation')}}";
-//    var places_api_url = "{{=URL('api', 'test')}}}}";
-</script-->
+    var tracks_url = "{{=URL('api', 'get_tracks')}}";
+    var recommendation_url = "{{=URL('api', 'get_recommendations')}}";
+    var places_api_url = "{{=URL('api', 'test')}}}}";
+</script>
 
     <div id="vue-div" class="display:none">
 
@@ -26,7 +26,7 @@
             <div class="sugg-card">
                 <div class="pull-left">
                     <a href="#">
-                        <img class="imgClass-thumbnail" src="http://3.bp.blogspot.com/-IbEOTNtCMyU/TfCAdHaAxEI/AAAAAAAAA8U/EATib38SSAM/s320/joe-mcelderry.jpg">
+                        <img class="imgClass-thumbnail" v-bind:src="rec.image">
                     </a>
                 </div>
                 <div class="sugg-card-body">
@@ -46,4 +46,4 @@
         <div v-if="has_more" class="show_more"><button class="btn btn-default" v-on:click="get_more_rec()">Load more</button></div>
     </div>
 
-<!--script src="{{=URL('static', 'js/default_index.js')}}"></script-->
+<script src="{{=URL('static', 'js/default_index.js')}}"></script>
