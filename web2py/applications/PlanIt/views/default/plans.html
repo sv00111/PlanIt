@@ -2,7 +2,7 @@
 <div id="vue-plans" style="display:none; height: 100%;"> <!-- main -->
 
     <div id="plan-header"> <!-- plan-header -->
-        <H2>{{=plan.label}}</H2>
+        <H2>${current_plan.label}</H2>
         <!-- Tabs for open plans go here -->
 
         <button v-if="!is_adding_stop" class="btn btn-success pull-right" v-on:click="add_stop_button()" v-bind:class="{'disabled': !logged_in}">
@@ -11,18 +11,6 @@
         <button v-if="is_adding_stop" class="btn btn-success pull-right" v-on:click="add_stop_button()" v-bind:class="{'disabled': !logged_in}">
             <i class="fa fa-minus"></i>
         </button>
-
-        <div class="dropdown pull-right" style="padding-right: 10px; vertical-align: middle">
-            <span>My Plans</span>
-            <i class="fa fa-angle-down"></i>
-            <div class="dropdown-content">
-                <div v-for="plan in plans">
-                    <a href="" v-on:click.prevent="get_plan(plan._idx)">
-                        ${plan.label}
-                    </a>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div v-if="is_adding_stop" id="add-stop-div">

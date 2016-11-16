@@ -63,8 +63,13 @@ def add_stop():
         end_time = request.vars.end_time,
         cust_place = request.vars.cust_place,
         cust_address = request.vars.cust_address,
+        parent = request.vars.parent
     )
+    plan = db(db.planit_plan.id == request.vars.parent).select().first()
+    plan = plan.update_record(stops=plan.stops+[stop_id] if plan.stops is not None else [stop_id])
     stop = db.planit_stop(stop_id)
+    print plan
+    print stop
     return response.json(dict(stop=stop))
 
 
@@ -74,13 +79,9 @@ def del_stop():
 
 
 def get_stops():
-    start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
-    end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0
     stops = []
-    has_more = False
-    rows = db().select(db.planit_stop.ALL, limitby=(start_idx, end_idx + 1))
+    rows = db(db.planit_stop.parent == int(request.vars.id)).select(db.planit_stop.ALL)
     for i, r in enumerate(rows):
-        if i < end_idx - start_idx:
             s = dict(
                 id = r.id,
                 label = r.label,
@@ -92,8 +93,6 @@ def get_stops():
                 created_on = r.created_on
             )
             stops.append(s)
-        else:
-            has_more = True
     logged_in = auth.user_id is not None
     return response.json(dict(
         stops=stops,
@@ -102,7 +101,10 @@ def get_stops():
 
 
 def select_plan():
-    s = db(db.planit_plan.id == request.args).select().first()
+    pid = int(request.vars.plan_id) if request.vars.plan_id is not None else 0
+    print "the plan id is " + pid.__str__()
+    s = db(db.planit_plan.id == pid).select(db.planit_plan.ALL).first()
+    print s
     selection = dict(
         id = s.id,
         label = s.label,
@@ -116,5 +118,6 @@ def select_plan():
         created_by = s.created_by,
         created_on = s.created_on
     )
+    print selection
     logged_in = auth.user_id is not None
     return response.json(dict(plan=selection, logged_in=logged_in))

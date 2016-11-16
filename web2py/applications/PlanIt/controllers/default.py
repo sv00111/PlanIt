@@ -25,7 +25,8 @@ def forgotPass():
 
 @auth.requires_login()
 def home():
-    return dict()
+    p_id = request.args(0) if request.args(0) not in (None, 0, "") else "-1"
+    return dict(p_id=p_id)
 
 @auth.requires_login()
 def plans():

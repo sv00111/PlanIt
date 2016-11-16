@@ -16,6 +16,7 @@
     var get_stops_url = "{{=URL('api', 'get_stops')}}";
     var del_stop_url = "{{=URL('api', 'del_stop')}}";
     var get_plan_url = "{{=URL('api', 'select_plan')}}";
+    var pid = parseInt("{{=p_id}}");
 </script>
 {{end}}
 
@@ -48,12 +49,14 @@
                         <div class="dropdown-content">
                             <!-- This is where you would iterate over the plans retrieved
                                 from the database and create a link for each one -->
-                            {{plans = db().select(db.planit_plan.ALL)}}
+                            {{plans = db().select(db.planit_plan.label, db.planit_plan.id)}}
                             {{for plan in plans:}}
                             <!-- When clicked the link should NOT reload the page but
                                 instead populate the appropriate containers with the
                                 selected plan's information -->
-
+                            <a href="{{=URL('default', 'home', args=[plan.id])}}">
+                                {{=plan.label}}
+                            </a>
                             {{pass}}
                         </div>
                     </span>

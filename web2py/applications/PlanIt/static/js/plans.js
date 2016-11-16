@@ -44,7 +44,8 @@ var planapp = function() {
                 start_time: self.vue.form_stop_start,
                 end_time: self.vue.form_stop_end,
                 cust_place: self.vue.form_stop_place,
-                cust_address: self.vue.form_stop_address
+                cust_address: self.vue.form_stop_address,
+                parent: self.vue.current_plan.id
             },
             function(data) {
                 $.web2py.enableElement($("#add_stop_submit"));
@@ -63,29 +64,40 @@ var planapp = function() {
         return get_plan_url + "?" + $.param(p);
     }
 
-    self.get_plan = function(plan_id) {
-        p_id = self.vue.plans[plan_id].id;
-        $.getJSON(get_plan_from_api(p_id), function(data) {
-            self.vue.plan = data.plan;
-            self.vue.logged_in = data.logged_in;
-        })
+    self.get_plan = function() {
+        self.vue.plan_id = pid;
+        console.log("plan id: " + self.vue.plan_id + " (" + typeof(self.vue.plan_id) + ")");
+        if(self.vue.plan_id != -1) {
+            $.getJSON(get_plan_from_api(self.vue.plan_id), function(data) {
+                self.vue.current_plan = data.plan;
+                self.vue.logged_in = data.logged_in;
+                console.log("data plan: " + data.plan);
+            });
+            console.log("current_plan: " + self.vue.current_plan)
+        } else {
+            var p = {
+                label: "No Plan Selected",
+                id: -1,
+                stops: null
+            };
+            self.vue.current_plan = p;
+            self.vue.logged_in = false;
+        }
     };
 
-    function get_stops_from_api(start_idx, end_idx) {
+    function get_stops_from_api(id) {
         var pp = {
-            start_idx: start_idx,
-            end_idx: end_idx
+            id: id
         };
         return get_stops_url + "?" + $.param(pp);
     }
 
     self.get_stops = function() {
-        $.getJSON(get_stops_from_api(0, 10), function(data) {
+        $.getJSON(get_stops_from_api(self.vue.plan_id), function(data) {
             self.vue.stops = data.stops;
             self.vue.logged_in = data.logged_in;
             self.vue.stops.sort(sort_by('start_time', false, null));
             enumerate(self.vue.stops);
-            enumerate(self.vue.plans);
         })
     };
 
@@ -108,8 +120,8 @@ var planapp = function() {
         data: {
             is_adding_stop: false,
             logged_in: true,
-            plans: [],
-            current_plan: null,
+            plan_id: null,
+            current_plan: {},
             stops: [],
             label: null,
             date: null,
@@ -127,9 +139,11 @@ var planapp = function() {
             add_stop_button: self.add_stop_button,
             add_stop: self.add_stop,
             delete_stop: self.delete_stop,
+            get_plan: self.get_plan,
         }
     });
 
+    self.get_plan();
     self.get_stops();
     $("#vue-plans").show();
 
