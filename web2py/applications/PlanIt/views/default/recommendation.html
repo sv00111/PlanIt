@@ -13,11 +13,28 @@
 
         <!--implement search bar here -->
 
+        <!--div class="wrapper">
         <div class="wrapper">
             <input class = "searchBar" v-model="searchRec" type="text" />
-            <button class = "goButton" v-on:click="searchFn(searchRec)">Search</button>
+            <button class = "goButton" v-on:click="searchFn(searchRec, locationRec)">Search</button>
+        </div>
+            <input class = "searchBar" v-model="locationRec" type="text" />
+            </div-->
+        <div class = "Wrapper">
+            <div class="wrapper">
+                <input placeholder="Search" class = "searchBar" v-model="searchRec" type="text" />
+            </div>
+            <div class="wrapper">
+                <input placeholder="Location" class = "searchBar" v-model="locationRec" type="text" />
+            </div>
+
+            <input class="btn btn-primary" v-on:click="searchFn(searchRec, locationRec)" type="submit" value="Search">
         </div>
 
+        <!--div class="wrapper">
+            <input class = "searchBar" v-model="locationRec" type="text" />
+            <button class = "goButton" style="display:none;" v-on:click="searchFn(searchRec)">Search</button>
+        </div-->
 
         <!--div class="button_bar">
             <button class="btn btn-danger btn-sm" v-on:click="add_track()" v-bind:class="{'disabled': !logged_in}">{{=icon_add}}Add track</button>

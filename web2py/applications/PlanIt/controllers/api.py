@@ -5,12 +5,15 @@ import urllib
 import urllib2
 api_key = 'AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
 
+
 def recommendation():
     pass
 
 
 # Mocks implementation.
 def get_tracks():
+
+
     start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
     end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0
     # We just generate a lot of of data.
@@ -60,28 +63,39 @@ def get_reviews(place):
 #if has been loaded before, just append results, else return completely new array
 import json
 def get_recommendations():
+
+    searchRec = request.vars.searchRec
+    print "LOL1" + searchRec
+    locationRec = request.vars.locationRec
+    print "LOL2" + locationRec
+    if searchRec is None or searchRec is "":
+        print "searchEmpty"
+    if locationRec is None or locationRec is "":
+        print "locationEmpty"
+
     query = None #request.vars.search_params
     next_page = request.vars.next_page
     url = ''
     print "this"
     #if query is None:
      #   url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key
-    if next_page is not '' and query is not '':
-        url = 'https://maps.googleapis.com/maps/api/place/textsearch/xml?query=' + request.vars.search_params + '&key=' + api_key + \
-        '&pagetoken=' + next_page
-    elif next_page is not '' and query is '':
-        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key + \
-        '&pagetoken=' + next_page
-    elif query is None:
-        print "No Search Params Found"
-        #query using nearby search, only params we need to passs here are longitude and latitude
-        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key
-    else:
-        print "Found Search Params"
-        #query using keywords, we'll need to create a textbox where users can input words
-        #query = 'food'
-        url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query='+ query +'&key=' + api_key
-        print "reaches this"
+    if searchRec is not '':
+        print "in next"
+        # url = 'https://maps.googleapis.com/maps/api/place/textsearch/xml?query=' + searchRec + '&key=' + api_key
+        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&keyword=' + searchRec + '&key=' + api_key
+    elif searchRec is '':
+        print "in query"
+        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&keyword=restaurant&key=' + api_key
+    # elif query is None:
+    #     print "No Search Params Found"
+    #     #query using nearby search, only params we need to passs here are longitude and latitude
+    #     url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key
+    # else:
+    #     print "Found Search Params"
+    #     #query using keywords, we'll need to create a textbox where users can input words
+    #     #query = 'food'
+    #     url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query='+ query +'&key=' + api_key
+    #     print "reaches this"
     print url
     #processes json request
     resultStuff = json.loads(urllib.urlopen(url).read())
@@ -98,7 +112,8 @@ def get_recommendations():
     end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0
     # We just generate a lot of of data.
     recommendation = []
-    for i in range(start_idx, end_idx):
+    print "this is length {0}".format(len(resultStuff["results"]))
+    for i in range(0, 1):
         # if not resultStuff['results'][i]:
         #     break;
         priceT = None

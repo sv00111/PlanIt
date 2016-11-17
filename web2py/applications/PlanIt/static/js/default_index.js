@@ -22,9 +22,13 @@ var app = function() {
      function get_recommendations_url(start_idx, end_idx) {
         console.log(start_idx)
         console.log(end_idx)
+        console.log(self.vue.searchRec)
+        console.log(self.vue.locationRec)
         var pp = {
             start_idx: start_idx,
-            end_idx: end_idx
+            end_idx: end_idx,
+            searchRec: self.vue.searchRec.replace(" ", "+"),
+            locationRec: self.vue.locationRec.replace(" ", "+")
         };
         return recommendations_url + "?" + $.param(pp);
     }
@@ -66,12 +70,16 @@ var app = function() {
         });
     };
 
-    self.searchFn = function(searchRec){
+    self.searchFn = function(searchRec, locationRec){
+        console.log(searchRec);
         //create a query with
         query_input = searchRec.replace(" ", "+");
+
         //url = 'https://maps.googleapis.com/maps/api/place/textsearch/xml?query=' + query_input + '&key=' + api_key;
         //find way to run query
         console.log(query_input);
+        console.log(locationRec);
+        self.get_recommendations();
     };
 //lat and lng will need to be queried from the users first input location.
     self.vue = new Vue({
@@ -82,11 +90,12 @@ var app = function() {
             recommendation: [],
             logged_in: false,
             has_more: false,
-            searchRec:null,
+            searchRec:'',
             next_page: '',
             search_params:'',
             lat: 0,
-            lng: 0
+            lng: 0,
+            locationRec: ''
         },
         methods: {
             get_more_rec: self.get_more_rec,
