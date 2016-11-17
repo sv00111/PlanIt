@@ -60,18 +60,21 @@ def get_reviews(place):
 #if has been loaded before, just append results, else return completely new array
 import json
 def get_recommendations():
-    query = None #request.vars.search_params
+    query = '' #request.vars.search_params
     next_page = request.vars.next_page
+    recommendation = []
     url = ''
     print "this"
     #if query is None:
      #   url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key
     if next_page is not '' and query is not '':
-        url = 'https://maps.googleapis.com/maps/api/place/textsearch/xml?query=' + request.vars.search_params + '&key=' + api_key + \
+        url = 'https://maps.googleapis.com/maps/api/place/textsearch/xml?query=' + query + '&key=' + api_key + \
         '&pagetoken=' + next_page
+        recommendation = request.vars.recommendation
     elif next_page is not '' and query is '':
         url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key + \
         '&pagetoken=' + next_page
+        recommendation = request.vars.recommendation
     elif query is None:
         print "No Search Params Found"
         #query using nearby search, only params we need to passs here are longitude and latitude
@@ -97,10 +100,11 @@ def get_recommendations():
     start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
     end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0
     # We just generate a lot of of data.
-    recommendation = []
+    #recommendation = []
     for i in range(start_idx, end_idx):
         # if not resultStuff['results'][i]:
         #     break;
+        more_info = get_more_info(resultStuff['results'][i]["placed_id"])
         priceT = None
         if "price_level" not in resultStuff['results'][i]:
             priceT = 0
@@ -162,7 +166,7 @@ def get_recommendations():
         next_page = more_results_page
     ))
 
-def get_more_info():
+def get_more_info(place_id):
     #read in place id from button click
     place_id = ''
     query_url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + place_id + '+&key =' + api_key
