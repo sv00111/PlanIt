@@ -19,27 +19,29 @@ var app = function() {
         return v.map(function(e) {e._idx = k++;});
     };
 
-     function get_recommendations_url(start_idx, end_idx) {
-        console.log(start_idx)
-        console.log(end_idx)
+     function get_recommendations_url() {
+        // console.log(start_idx)
+        // console.log(end_idx)
         console.log(self.vue.searchRec)
         console.log(self.vue.locationRec)
         var pp = {
-            start_idx: start_idx,
-            end_idx: end_idx,
+            // start_idx: start_idx,
+            // end_idx: end_idx,
             searchRec: self.vue.searchRec.replace(" ", "+"),
-            locationRec: self.vue.locationRec.replace(" ", "+")
+            locationRec: self.vue.locationRec.replace(" ", "+"),
+            next_page: self.vue.next_page
         };
         return recommendations_url + "?" + $.param(pp);
     }
 
     //Begin by modifying these methods to be vue methods for our app
     self.get_recommendations = function () {
-        $.getJSON(get_recommendations_url(0, 20), function (data) {
+        $.getJSON(get_recommendations_url(), function (data) {
             self.vue.recommendation = data.recommendation,
             self.vue.has_more = data.has_more,
             self.vue.logged_in = data.logged_in;
             self.vue.next_page = data.next_page;
+            self.vue.locationRec = data.location;
             enumerate(self.vue.recommendation);
         })
     };
@@ -55,27 +57,34 @@ var app = function() {
 
     //this function should be using the newly declared self.vue.next_page variable to run the query
      self.get_more_rec = function () {
-         $.post(get_recommendations,
-             {
-                 next_page: self.vue.next_page
-             },
-             function(data) {
-                 self.vue.recommendation = data.recommendation
-             }
-
-         )
-        $.getJSON(get_recommendation_url(num_tracks, num_tracks + 50), function (data) {
-            self.vue.has_more = data.has_more;
+          $.getJSON(get_recommendations_url(), function (data) {
             self.extend(self.vue.recommendation, data.recommendation);
-        });
+            self.vue.has_more = data.has_more,
+            self.vue.logged_in = data.logged_in;
+            self.vue.next_page = data.next_page;
+            self.vue.locationRec = data.location;
+            // enumerate(self.vue.recommendation);
+        })
+        //  $.post(recommendations_url,
+        //      {
+        //          next_page: self.vue.next_page
+        //      },
+        //      function(data) {
+        //          self.vue.recommendation = data.recommendation
+        //      }
+        //
+        //  )
+        // $.getJSON(get_recommendation_url(), function (data) {
+        //     self.vue.has_more = data.has_more;
+        //     self.extend(self.vue.recommendation, data.recommendation);
+        // });
     };
 
     self.searchFn = function(searchRec, locationRec){
         console.log(searchRec);
         //create a query with
-        query_input = searchRec.replace(" ", "+");
+        var query_input = searchRec.replace(" ", "+");
 
-        //url = 'https://maps.googleapis.com/maps/api/place/textsearch/xml?query=' + query_input + '&key=' + api_key;
         //find way to run query
         console.log(query_input);
         console.log(locationRec);

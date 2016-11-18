@@ -8,7 +8,8 @@
 
 <script>
     var tracks_url = "{{=URL('api', 'get_tracks')}}";
-    var recommendation_url = "{{=URL('api', 'get_recommendations')}}";
+    //var recommendation_url = "{{=URL('api', 'get_recommendations')}}";
+    var recommendations_url = "{{=URL('api', 'get_recommendations')}}";
 </script>
 {{end}}
 
@@ -93,7 +94,7 @@
                 <div v-if="has_more" class="show_more"><button class="btn btn-default" v-on:click="get_more_rec()">Load more</button></div>
             </div-->
 
-            <!--{{include "default/recommendation.html"}}->
+            {{include "default/recommendation.html"}}
 
             <!--till here-->
 
