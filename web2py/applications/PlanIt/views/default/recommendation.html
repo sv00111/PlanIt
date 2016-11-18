@@ -32,10 +32,12 @@
         </div>
 
 
+        <!--makes sure that there is a location added before a search is done-->
+        <div v-if="locationRec == ''">
+            Please enter a location
+        </div>
+
         <div v-for = "rec in recommendation">
-            <div v-if="locationRec == ">
-                    Please add a location to start a search query
-            </div>
 
             <div class="sugg-card">
                 <div class="pull-left">
