@@ -5,12 +5,15 @@ import urllib
 import urllib2
 api_key = 'AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
 
+
 def recommendation():
     pass
 
 
 # Mocks implementation.
 def get_tracks():
+
+
     start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
     end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0
     # We just generate a lot of of data.
@@ -50,41 +53,66 @@ def get_place_icons(places):
     url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=' + places + '&key=' + api_key
     return url
 
-def get_reviews(place):
-    review = []
-    url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + place + '&key=' + api_key
-    results = json.loads(urllib.urlopen(url).read())
-    return results['reviews']
-
 #trying to add if conditions
 #if has been loaded before, just append results, else return completely new array
 import json
 def get_recommendations():
     query = '' #request.vars.search_params
+
+    searchRec = request.vars.searchRec
+    print "LOL1" + searchRec
+    locationRec = request.vars.locationRec
+    print "LOL2" + locationRec
+    if searchRec is None or searchRec is "":
+        print "searchEmpty"
+    if locationRec is None or locationRec is "":
+        print "locationEmpty"
+
+    query = None #request.vars.search_params
     next_page = request.vars.next_page
     recommendation = []
     url = ''
-    print "this"
+    #print "this"
     #if query is None:
      #   url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key
-    if next_page is not '' and query is not '':
-        url = 'https://maps.googleapis.com/maps/api/place/textsearch/xml?query=' + query + '&key=' + api_key + \
-        '&pagetoken=' + next_page
-        recommendation = request.vars.recommendation
-    elif next_page is not '' and query is '':
-        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key + \
-        '&pagetoken=' + next_page
-        recommendation = request.vars.recommendation
-    elif query is None:
-        print "No Search Params Found"
-        #query using nearby search, only params we need to passs here are longitude and latitude
-        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key
-    else:
-        print "Found Search Params"
-        #query using keywords, we'll need to create a textbox where users can input words
-        #query = 'food'
-        url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query='+ query +'&key=' + api_key
-        print "reaches this"
+
+    # if next_page is not '' and query is not '':
+    #     url = 'https://maps.googleapis.com/maps/api/place/textsearch/xml?query=' + query + '&key=' + api_key + \
+    #     '&pagetoken=' + next_page
+    #     recommendation = request.vars.recommendation
+    # elif next_page is not '' and query is '':
+    #     url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key + \
+    #     '&pagetoken=' + next_page
+    #     recommendation = request.vars.recommendation
+    # elif query is None:
+    #     print "No Search Params Found"
+    #     #query using nearby search, only params we need to passs here are longitude and latitude
+    #     url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key
+    # else:
+    #     print "Found Search Params"
+    #     #query using keywords, we'll need to create a textbox where users can input words
+    #     #query = 'food'
+    #     url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query='+ query +'&key=' + api_key
+    #     print "reaches this"
+
+    if searchRec is not '':
+        print "in next"
+        # url = 'https://maps.googleapis.com/maps/api/place/textsearch/xml?query=' + searchRec + '&key=' + api_key
+        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&keyword=' + searchRec + '&key=' + api_key
+    elif searchRec is '':
+        print "in query"
+        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&keyword=restaurant&key=' + api_key
+    # elif query is None:
+    #     print "No Search Params Found"
+    #     #query using nearby search, only params we need to passs here are longitude and latitude
+    #     url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key
+    # else:
+    #     print "Found Search Params"
+    #     #query using keywords, we'll need to create a textbox where users can input words
+    #     #query = 'food'
+    #     url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query='+ query +'&key=' + api_key
+    #     print "reaches this"
+
     print url
     #processes json request
     resultStuff = json.loads(urllib.urlopen(url).read())
@@ -100,39 +128,51 @@ def get_recommendations():
     start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
     end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0
     # We just generate a lot of of data.
-    #recommendation = []
-    for i in range(start_idx, end_idx):
+    recommendation = []
+    print "this is length {0}".format(len(resultStuff["results"]))
+    for i in range(0, 1):
         # if not resultStuff['results'][i]:
         #     break;
-        more_info = get_more_info(resultStuff['results'][i]["placed_id"])
+        print("id is " + resultStuff['results'][i]["place_id"])
+        more_info = get_more_info(resultStuff['results'][i]["place_id"])
         priceT = None
         if "price_level" not in resultStuff['results'][i]:
             priceT = 0
-            print priceT
+            #print priceT
         else:
             priceT = resultStuff['results'][i]["price_level"]
-            print priceT
+            #print priceT
 
         ratingT = None
         if "rating" not in resultStuff['results'][i]:
             ratingT = 0
-            print ratingT
+            #print ratingT
         else:
             ratingT = resultStuff['results'][i]["rating"]
-            print ratingT
+            #print ratingT
 
 
 
         if 'photos' in resultStuff['results'][i]:
             place_id = resultStuff['results'][i]['photos'][0]['photo_reference']
-            print (place_id)
+            #print (place_id)
             places = get_place_icons(place_id)
             # photos.append(place_id)
         else:
             places = "http://www.w3schools.com/css/trolltunga.jpg"
             # photos.append(place_id)
 
+        addr = more_info['result']['formatted_address']
+        #print('addr is ' + addr)
+        phone_number = more_info['result']['formatted_phone_number']
+        #print(phone_number)
+        lat = more_info['result']['geometry']['location']['lat']
+        #print (lat)
+        lng = more_info['result']['geometry']['location']['lng']
+        #print(lng)
 
+        hours = more_info['result']['opening_hours']['weekday_text']
+        print(hours)
         t = dict(
             name = resultStuff['results'][i]["name"],
             # random.choice(['Philz', 'Taco Bell', 'Subway', 'Thai', 'Chinese', 'Japanese']),
@@ -142,6 +182,11 @@ def get_recommendations():
             # random.randint(1, 4),
             rating = ratingT,
             image = places,
+            address = addr,
+            phone_number = phone_number,
+            lat = lat,
+            lng = lng,
+            place_id = place_id
         )
         recommendation.append(t)
 
@@ -168,7 +213,15 @@ def get_recommendations():
 
 def get_more_info(place_id):
     #read in place id from button click
-    place_id = ''
-    query_url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + place_id + '+&key =' + api_key
-    return()
+    query_url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + place_id + '&key=' + api_key
+    results = json.loads(urllib.urlopen(query_url).read())
+    print("results are")
+    print (results)
+    return(results)
 
+def get_reviews(place):
+    review = []
+    url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + place + '&key=' + api_key
+    results = json.loads(urllib.urlopen(url).read())
+    print(results)
+    return results['result']['reviews']
