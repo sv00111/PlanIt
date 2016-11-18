@@ -155,18 +155,33 @@ def get_recommendations():
             # TODO: Replace default image with PlanIt Logo
             places = "http://www.w3schools.com/css/trolltunga.jpg"
             # photos.append(place_id)
+        if 'formatted_address' not in more_info['result']:
+            addr = ''
+        else:
+            addr = more_info['result']['formatted_address']
+            #print('addr is ' + addr)
 
-        addr = more_info['result']['formatted_address']
-        #print('addr is ' + addr)
-        phone_number = more_info['result']['formatted_phone_number']
-        #print(phone_number)
-        lat = more_info['result']['geometry']['location']['lat']
-        #print (lat)
-        lng = more_info['result']['geometry']['location']['lng']
-        #print(lng)
+        if 'formatted_phone_number' not in more_info['result']:
+            print('phone number not found')
+            phone_number = ''
+        else:
+            phone_number = more_info['result']['formatted_phone_number']
+            # print(phone_number)
 
-        hours = more_info['result']['opening_hours']['weekday_text']
-        print(hours)
+        if 'geometry' not in more_info['result']:
+            lat = 0
+            lng = 0
+        else:
+            lat = more_info['result']['geometry']['location']['lat']
+            # print (lat)
+            lng = more_info['result']['geometry']['location']['lng']
+            # print(lng)
+
+        if 'opening' not in more_info['result']:
+            hours = []
+        else:
+            hours = []#more_info['result']['opening_hours']['weekday_text']
+            print(hours)
         t = dict(
             name = resultStuff['results'][i]["name"],
             # random.choice(['Philz', 'Taco Bell', 'Subway', 'Thai', 'Chinese', 'Japanese']),
@@ -179,8 +194,7 @@ def get_recommendations():
             address = addr,
             phone_number = phone_number,
             lat = lat,
-            lng = lng,
-            place_id = place_id
+            lng = lng
         )
         recommendation.append(t)
 

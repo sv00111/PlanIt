@@ -1,13 +1,13 @@
-{{#extend 'layout.html'}}
+{{extend 'layout.html'}}
 
-<!--script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
 
-<-script>
+<script>
     var info_url = "{{=URL('api', 'get_more_info')}}";
     var recommendations_url = "{{=URL('api', 'get_recommendations')}}";
     var places_api_url = "{{=URL('api', 'test')}}}}";
     var get_place_icon_url = "{{=URL('api', 'get_place_icons')}}";
-</script-->
+</script>
 
     <div id="vue-div" class="display:none">
 
@@ -62,4 +62,4 @@
         <div v-if="has_more" class="show_more"><button class="btn btn-default" v-on:click="get_more_rec()">Load more</button></div>
     </div>
 
-<!--script src="{{=URL('static', 'js/default_index.js')}}"></script-->
+<script src="{{=URL('static', 'js/default_index.js')}}"></script>
