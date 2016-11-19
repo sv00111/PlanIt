@@ -184,11 +184,8 @@ def get_recommendations():
             print(hours)
         t = dict(
             name = resultStuff['results'][i]["name"],
-            # random.choice(['Philz', 'Taco Bell', 'Subway', 'Thai', 'Chinese', 'Japanese']),
             neighborhood = resultStuff['results'][i]["vicinity"],
-            # random.choice(['SoMa', 'Mission', 'Financial', 'Civic Center', 'Downtown', 'Evergreen']),
             price = priceT,
-            # random.randint(1, 4),
             rating = ratingT,
             image = places,
             address = addr,
