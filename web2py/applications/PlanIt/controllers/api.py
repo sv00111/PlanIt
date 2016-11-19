@@ -53,6 +53,7 @@ def get_place_icons(places):
 import json
 
 def get_recommendations():
+    ID_counter = int(request.vars.lengthOfArr)
     if auth.user:
         logged_in = True
     else:
@@ -73,7 +74,7 @@ def get_recommendations():
         ))
     else:
         url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
-        print "da url location is: {0}".format(url)
+        # print "da url location is: {0}".format(url)
         resultLocation = json.loads(urllib.urlopen(url).read())
         lat = resultLocation['results'][0]['geometry']['location']['lat']
         long = resultLocation['results'][0]['geometry']['location']['lng']
@@ -83,45 +84,26 @@ def get_recommendations():
 
     token = request.vars.next_page
     if token is not '':
+        print "the damn thing has a token??"
         next_page_query ='&pagetoken='+token
     else:
+        print "the damn thing has no token"
         next_page_query = ''
-    #=================================================
-    #For loading more pages query
-    #if query is None:
-     #   url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key
 
-    # if next_page is not '' and query is not '':
-    #     url = 'https://maps.googleapis.com/maps/api/place/textsearch/xml?query=' + query + '&key=' + api_key + \
-    #     '&pagetoken=' + next_page
-    #     recommendation = request.vars.recommendation
-    # elif next_page is not '' and query is '':
-    #     url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key + \
-    #     '&pagetoken=' + next_page
-    #     recommendation = request.vars.recommendation
-    # elif query is None:
-    #     print "No Search Params Found"
-    #     #query using nearby search, only params we need to passs here are longitude and latitude
-    #     url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key=' + api_key
-    # else:
-    #     print "Found Search Params"
-    #     #query using keywords, we'll need to create a textbox where users can input words
-    #     #query = 'food'
-    #     url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query='+ query +'&key=' + api_key
-    #     print "reaches this"
     url = ''
 
     if searchRec is not '':
         print "in next"
         url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + repr(lat) + ',' + repr(
-            long) + '&radius=500&keyword=' + searchRec + '&key=' + api_key + next_page_query
+            long) + '&radius=1000&keyword=' + searchRec + '&key=' + api_key + next_page_query
     elif searchRec is '':
         print "in query"
         url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + repr(lat) + ',' + repr(
-            long) + '&radius=500&keyword=restaurant&key=' + api_key + next_page_query
+            long) + '&radius=1000&type=point_of_interest&key=' + api_key + next_page_query
 
+    print "da url location is: {0}".format(url)
 
-    #print url
+    # print url
 
     resultStuff = json.loads(urllib.urlopen(url).read())
 
@@ -132,7 +114,6 @@ def get_recommendations():
     print "this is length {0}".format(lengthOfQuery)
     for i in range(0, lengthOfQuery):
         more_info = get_more_info(resultStuff['results'][i]["place_id"])
-        print
         if "price_level" not in resultStuff['results'][i]:
             priceT = 0
             #print priceT
@@ -191,9 +172,11 @@ def get_recommendations():
             address = addr,
             phone_number = phone_number,
             lat = lat,
-            lng = lng
+            lng = lng,
+            id = ID_counter
         )
         recommendation.append(t)
+        ID_counter = ID_counter + 1
 
     if 'next_page_token' in resultStuff:
         print(resultStuff['next_page_token'])
@@ -215,7 +198,7 @@ def get_more_info(place_id):
     #read in place id from button click
     query_url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + place_id + '&key=' + api_key
     results = json.loads(urllib.urlopen(query_url).read())
-    print("results are")
-    print (results)
+    # print("results are")
+    # print (results)
     return(results)
 
