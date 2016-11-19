@@ -53,6 +53,7 @@ def get_place_icons(places):
 import json
 
 def get_recommendations():
+    ID_counter = int(request.vars.lengthOfArr)
     if auth.user:
         logged_in = True
     else:
@@ -174,9 +175,11 @@ def get_recommendations():
             address = addr,
             phone_number = phone_number,
             lat = lat,
-            lng = lng
+            lng = lng,
+            id = ID_counter
         )
         recommendation.append(t)
+        ID_counter = ID_counter + 1
 
     if 'next_page_token' in resultStuff:
         print(resultStuff['next_page_token'])

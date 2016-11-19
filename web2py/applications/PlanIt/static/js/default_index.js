@@ -29,7 +29,8 @@ var app = function() {
             // end_idx: end_idx,
             searchRec: self.vue.searchRec.replace(" ", "+"),
             locationRec: self.vue.locationRec.replace(" ", "+"),
-            next_page: ''
+            next_page: '',
+            lengthOfArr: 0
         };
         return recommendations_url + "?" + $.param(pp);
     }
@@ -45,7 +46,8 @@ var app = function() {
             // end_idx: end_idx,
             searchRec: self.vue.searchRec.replace(" ", "+"),
             locationRec: self.vue.locationRec.replace(" ", "+"),
-            next_page: self.vue.next_page
+            next_page: self.vue.next_page,
+            lengthOfArr: self.vue.recommendation.length
         };
         return recommendations_url + "?" + $.param(pp);
     }
@@ -70,6 +72,15 @@ var app = function() {
     //     });
     //     self.vue.show_reviewers = false;
     // };
+
+
+     self.changeEditPostId = function(post_id, post_name){
+        // self.vue.is_edit_post = !self.vue.is_edit_post;
+        self.vue.editPostId = post_id;
+        alert(post_name);
+    };
+
+
 
     //this function should be using the newly declared self.vue.next_page variable to run the query
      self.get_more_rec = function () {
@@ -102,7 +113,9 @@ var app = function() {
         var query_input = searchRec.replace(" ", "+");
         self.vue.next_page = '';
         self.vue.has_more = false;
-
+        self.vue.recommendation = [];
+        self.vue.lat= 0;
+        self.vue.lng= 0;
         //find way to run query
         // console.log(query_input);
         // console.log(locationRec);
@@ -114,6 +127,8 @@ var app = function() {
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
         data: {
+            editPostId:null,
+            is_edit_post: false,
             recommendation: [],
             logged_in: false,
             has_more: false,
@@ -127,7 +142,8 @@ var app = function() {
         methods: {
             get_more_rec: self.get_more_rec,
             get_recommendations: self.get_recommendations,
-            searchFn: self.searchFn
+            searchFn: self.searchFn,
+            changeEditPostId: self.changeEditPostId
         }
 
     });
