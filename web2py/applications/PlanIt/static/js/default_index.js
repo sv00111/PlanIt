@@ -66,11 +66,12 @@ var app = function () {
         })
     };
 
-    self.changeEditPostId = function (post_id, post_name, rec) {
+    self.changeEditPostId = function (post_id, post_name, lats, lngs, rec) {
         // self.vue.is_edit_post = !self.vue.is_edit_post;
         self.vue.editPostId = post_id;
         alert(post_name);
         console.log(rec);
+        initMapss(lats, lngs);
     };
 
 
@@ -96,6 +97,7 @@ var app = function () {
         self.vue.lng = 0;
         self.get_recommendations();
     };
+
 //lat and lng will need to be queried from the users first input location.
     self.vue = new Vue({
         el: "#vue-div",
