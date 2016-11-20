@@ -110,7 +110,11 @@
         <div id="map-container" class = "pull-left scrollbar">
             <h2>Column for map</h2>
             <title>Simple Map</title>
-            <meta name="viewport" content="initial-scale=1.0">
+
+            <div id = "map">
+
+            </div>
+            <!--meta name="viewport" content="initial-scale=1.0">
             <meta charset="utf-8">
             <style>
               /* Always set the map height explicitly to define the size of the div
@@ -136,7 +140,7 @@
                   }
                 </script>
                 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w&callback=initMap"
-                async defer></script>
+                async defer></script!-->
         </div>
     </div>
 
@@ -148,4 +152,7 @@
 
 
 <script src="{{=URL('static', 'js/default_index.js')}}"></script>
-
+<script src="{{=URL('static', 'js/places.js')}}"></script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w&callback=initMap">
+</script>

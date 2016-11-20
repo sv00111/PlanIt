@@ -322,9 +322,9 @@ div.home-container {
     background-color: #00cd00;
 }
 
-#map {
-    height: 60%;
-}
+/*#map {*/
+    /*height: 60%;*/
+/*}*/
 
 html, body {
     height: 100%;
@@ -444,4 +444,9 @@ input {
     height: 100%;
     top: 0;
     left: 0;
+}
+
+#map {
+        height: 400px;
+        width: 100%;
 }
