@@ -14,6 +14,7 @@ function initMap() {
 }
 
 function initMapss(lats, lngs) {
+    marker.setMap(null);
     var position = {lat: lats, lng: lngs};
     // var element = document.getElementById("map");
     // element.HTML = "";
