@@ -10,6 +10,7 @@ api_key = 'AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
 def recommendation():
     pass
 
+
 # Mocks implementation.
 # def get_tracks():
 #     start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
@@ -48,9 +49,11 @@ def get_place_icons(places):
     url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=' + places + '&key=' + api_key
     return url
 
+
 # trying to add if conditions
 # if has been loaded before, just append results, else return completely new array
 import json
+
 
 def get_recommendations():
     ID_counter = int(request.vars.lengthOfArr)
@@ -70,7 +73,7 @@ def get_recommendations():
             logged_in=logged_in,
             has_more=False,
             next_page='',
-            location = ''
+            location=''
         ))
     else:
         url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
@@ -85,7 +88,7 @@ def get_recommendations():
     token = request.vars.next_page
     if token is not '':
         print "the damn thing has a token??"
-        next_page_query ='&pagetoken='+token
+        next_page_query = '&pagetoken=' + token
     else:
         print "the damn thing has no token"
         next_page_query = ''
@@ -94,6 +97,9 @@ def get_recommendations():
 
     if searchRec is not '':
         print "in next"
+        # TODO: see what happenes when you make url from nearby to radarsearch.
+        # TODO: also see what happenes when you make url from nearby to textsearch.
+
         url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + repr(lat) + ',' + repr(
             long) + '&radius=1000&keyword=' + searchRec + '&key=' + api_key + next_page_query
     elif searchRec is '':
@@ -112,25 +118,26 @@ def get_recommendations():
     recommendation = []
     lengthOfQuery = len(resultStuff["results"])
     print "this is length {0}".format(lengthOfQuery)
-    for i in range(0, lengthOfQuery):
+    # for i in range(0, lengthOfQuery):
+    for i in range(0, 2):
         more_info = get_more_info(resultStuff['results'][i]["place_id"])
         if "price_level" not in resultStuff['results'][i]:
             priceT = 0
-            #print priceT
+            # print priceT
         else:
             priceT = resultStuff['results'][i]["price_level"]
-            #print priceT
+            # print priceT
 
         if "rating" not in resultStuff['results'][i]:
             ratingT = 0
-            #print ratingT
+            # print ratingT
         else:
             ratingT = resultStuff['results'][i]["rating"]
-            #print ratingT
+            # print ratingT
 
         if 'photos' in resultStuff['results'][i]:
             place_id = resultStuff['results'][i]['photos'][0]['photo_reference']
-            #print (place_id)
+            # print (place_id)
             places = get_place_icons(place_id)
         else:
             # TODO: Replace default image with PlanIt Logo
@@ -140,7 +147,7 @@ def get_recommendations():
             addr = ''
         else:
             addr = more_info['result']['formatted_address']
-            #print('addr is ' + addr)
+            # print('addr is ' + addr)
 
         if 'formatted_phone_number' not in more_info['result']:
             print('phone number not found')
@@ -158,25 +165,29 @@ def get_recommendations():
             lng = more_info['result']['geometry']['location']['lng']
             # print(lng)
 
-        if 'opening' not in more_info['result']:
+        if 'opening_hours' not in more_info['result']:
             hours = []
         else:
-            hours = []#more_info['result']['opening_hours']['weekday_text']
+            hours = more_info['result']['opening_hours']['weekday_text']
             print(hours)
         t = dict(
-            name = resultStuff['results'][i]["name"],
-            neighborhood = resultStuff['results'][i]["vicinity"],
-            price = priceT,
-            rating = ratingT,
-            image = places,
-            address = addr,
-            phone_number = phone_number,
-            lat = lat,
-            lng = lng,
-            id = ID_counter
+            name=resultStuff['results'][i]["name"],
+            # random.choice(['Philz', 'Taco Bell', 'Subway', 'Thai', 'Chinese', 'Japanese']),
+            neighborhood=resultStuff['results'][i]["vicinity"],
+            # random.choice(['SoMa', 'Mission', 'Financial', 'Civic Center', 'Downtown', 'Evergreen']),
+            price=priceT,
+            # random.randint(1, 4),
+            rating=ratingT,
+            image=places,
+            address=addr,
+            phone_number=phone_number,
+            lat=lat,
+            lng=lng,
+            id=ID_counter
         )
         recommendation.append(t)
         ID_counter = ID_counter + 1
+
 
     if 'next_page_token' in resultStuff:
         print(resultStuff['next_page_token'])
@@ -191,14 +202,14 @@ def get_recommendations():
         logged_in=logged_in,
         has_more=has_more,
         next_page=more_results_page,
-        location =location
+        location=location
     ))
 
+
 def get_more_info(place_id):
-    #read in place id from button click
+    # read in place id from button click
     query_url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + place_id + '&key=' + api_key
     results = json.loads(urllib.urlopen(query_url).read())
     # print("results are")
     # print (results)
-    return(results)
-
+    return (results)

@@ -1,110 +1,74 @@
-{{extend 'layout.html'}}
 
-<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<!--script src="{{=URL('static', 'js/vue.js')}}"></script>
 
 <script>
     var info_url = "{{=URL('api', 'get_more_info')}}";
     var recommendations_url = "{{=URL('api', 'get_recommendations')}}";
     var places_api_url = "{{=URL('api', 'test')}}}}";
     var get_place_icon_url = "{{=URL('api', 'get_place_icons')}}";
-</script>
+</script-->
 
-    <div id="vue-div" class="display:none">
-        <script>
-            var locations = recommendation;
-            console.log(locations)
-        </script>
-        <!--implement search bar here -->
+<div id="vue-div" class="display:none">
 
-        <!--div class="wrapper">
+    <div class="Wrapper">
         <div class="wrapper">
-            <input class = "searchBar" v-model="searchRec" type="text" />
-            <button class = "goButton" v-on:click="searchFn(searchRec, locationRec)">Search</button>
+            <input placeholder="Keyword" class="searchBar" v-model="searchRec"
+                   v-on:keyup.enter="searchFn(searchRec, locationRec)" type="text"/>
         </div>
-            <input class = "searchBar" v-model="locationRec" type="text" />
-            </div-->
-        <div class = "Wrapper">
-            <div class="wrapper">
-                <input placeholder="Keyword" class = "searchBar" v-model="searchRec" v-on:keyup.enter="searchFn(searchRec, locationRec)" type="text" />
-            </div>
-            <div class="wrapper">
-                <input placeholder="Location" class = "searchBar" v-model="locationRec" v-on:keyup.enter="searchFn(searchRec, locationRec)" type="text" />
-            </div>
-
-            <input class="btn btn-primary" v-on:click="searchFn(searchRec, locationRec)" type="submit" value="Search">
+        <div class="wrapper">
+            <input placeholder="Location" class="searchBar" v-model="locationRec"
+                   v-on:keyup.enter="searchFn(searchRec, locationRec)" type="text"/>
         </div>
 
+        <input class="btn btn-primary" v-on:click="searchFn(searchRec, locationRec)" type="submit" value="Search">
+    </div>
 
-        <!--makes sure that there is a location added before a search is done-->
-        <div v-if="locationRec == ''">
-            Please enter a location
-        </div>
+    <!--makes sure that there is a location added before a search is done-->
+    <div v-if="locationRec == ''">
+        Please enter a location
+    </div>
 
-        <div v-for = "rec in recommendation">
+    <div v-for="rec in recommendation">
 
-            <div class="sugg-card">
-                <div class="row text-right">
-                    <div class="row post-content" style="text-align: center; padding-bottom: 2%; font-size: 150%">
-                         <div class="row editDelButton">
-                            <i class="fa fa-pencil" id = "editIcon" v-on:click="changeEditPostId(rec.id, rec.name)"></i>
-                        </div>
+        <div class="sugg-card">
+            <div class="row text-right">
+                <div class="row post-content" style="text-align: center; padding-bottom: 2%; font-size: 150%">
+                    <div class="row editDelButton">
+                        <i class="fa fa-pencil" id="editIcon" v-on:click="changeEditPostId(rec.id, rec.name, rec)"></i>
                     </div>
+                </div>
 
-                    <!--div v-if = "is_edit_post && rec.id == editPostId" class="post-content" style="text-align: center; padding-bottom: 2%; font-size: 150%">
+                <!--div v-if = "is_edit_post && rec.id == editPostId" class="post-content" style="text-align: center; padding-bottom: 2%; font-size: 150%">
 
-                    </div-->
-                </div>
-                <div class="pull-left">
-                    <a href="#">
-                        <img class="imgClass-thumbnail" v-bind:src="rec.image">
-                    </a>
-                </div>
-                <div class="sugg-card-body">
-                    <h2>${rec.name}</h2>
-                    <p>${rec.neighborhood}</p>
-                </div>
-                <div class="sugg-card-footer">
+                </div-->
+            </div>
+            <div class="pull-left">
+                <a href="#">
+                    <img class="imgClass-thumbnail" v-bind:src="rec.image">
+                </a>
+            </div>
+            <div class="sugg-card-body">
+                <h2>${rec.name}</h2>
+                <p>${rec.neighborhood}</p>
+            </div>
+            <div class="sugg-card-footer">
                     <span style="display: inline-block; float: left;">
                         Price: ${rec.price}
                     </span>
-                    <span class="rating">
+                <span class="rating">
                         Rating: ${rec.rating}
                     </span>
-                </div>
             </div>
         </div>
-        <div v-if="has_more" class="show_more"><button class="btn btn-default" v-on:click="get_more_rec()">Load more</button></div>
     </div>
-        <div id="map-container" class = "pull-left scrollbar">
-            <h2>Column for map</h2>
-            <title>Simple Map</title>
-            <meta name="viewport" content="initial-scale=1.0">
-            <meta charset="utf-8">
-            <style>
-              /* Always set the map height explicitly to define the size of the div
-               * element that contains the map. */
-              #map {
-                height: 100%;
-              }
-              /* Optional: Makes the sample page fill the window. */
-              html, body {
-                height: 100%;
-                margin: 0;
-                padding: 0;
-              }
-            </style>
-            <div id="map"></div>
-                <script>
-                  var map;
-                  function initMap() {
-                    map = new google.maps.Map(document.getElementById('map'), {
-                      center: {lat: -34.397, lng: 150.644},
-                      zoom: 8
-                    });
-                  }
-                </script>
-                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w&callback=initMap"
-                async defer></script>
-        </div>
 
-<script src="{{=URL('static', 'js/default_index.js')}}"></script>
+    <div id = "overlayDiv" v-if="loading == 1">
+        <img id="loading" url="../../static/images/default.gif">
+    </div>
+
+    <div v-if="has_more" class="show_more">
+        <button class="btn btn-default" v-on:click="get_more_rec()">Load more</button>
+    </div>
+</div>
+
+<!--script src="{{=URL('static', 'js/default_index.js')}}"></script-->
