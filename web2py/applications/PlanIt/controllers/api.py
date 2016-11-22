@@ -1,36 +1,5 @@
 import random
 
-def recommendation():
-    pass
-
-# Mocks implementation.
-def get_tracks():
-    start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
-    end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0
-    # We just generate a lot of of data.
-    tracks = []
-    for i in range(start_idx, end_idx):
-        t = dict(
-            artist = random.choice(['IU', 'Ailee', 'T-ara', 'Mamamoo']),
-            album = random.choice(['Modern times', 'Melting', 'Absolute']),
-            title = random.choice(['Falling U', 'TTL', 'Piano Man']),
-            duration = random.uniform(3 * 60, 4 * 60),
-            rating = random.randint(1, 5),
-            num_plays = random.randint(0, 100),
-        )
-        tracks.append(t)
-    has_more = True
-    if auth.user:
-        logged_in = True
-    else:
-        logged_in = False
-    return response.json(dict(
-        tracks=tracks,
-        logged_in=logged_in,
-        has_more=has_more,
-    ))
-
-
 def get_recommendation():
     start_idx = int(request.vars.start_idx) if request.vars.start_idx is not None else 0
     end_idx = int(request.vars.end_idx) if request.vars.end_idx is not None else 0
@@ -75,6 +44,7 @@ def add_stop():
 
 def del_stop():
     db(db.planit_stop.id == request.vars.stop_id).delete()
+    # TODO: need to also delete the stop from its plan's list of stop references
     return "stop deleted"
 
 
@@ -102,9 +72,7 @@ def get_stops():
 
 def select_plan():
     pid = int(request.vars.plan_id) if request.vars.plan_id is not None else 0
-    print "the plan id is " + pid.__str__()
     s = db(db.planit_plan.id == pid).select(db.planit_plan.ALL).first()
-    print s
     selection = dict(
         id = s.id,
         label = s.label,

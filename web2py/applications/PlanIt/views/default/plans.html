@@ -1,10 +1,8 @@
 <link rel="stylesheet" href="{{=URL('static','css/plans.css')}}"/>
-<div id="vue-plans" style="display:none; height: 100%;"> <!-- main -->
+<!-- Start Vue --> <div id="vue-plans" style="display:none; height: 100%;">
 
-    <div id="plan-header"> <!-- plan-header -->
+    <div id="plan-header">
         <H2>${current_plan.label}</H2>
-        <!-- Tabs for open plans go here -->
-
         <button v-if="!is_adding_stop" class="btn btn-success pull-right" v-on:click="add_stop_button()" v-bind:class="{'disabled': !logged_in}">
             <i class="fa fa-plus"></i>
         </button>
@@ -94,6 +92,6 @@
 
     </div>
 
-</div>
+<!-- End Vue --> </div>
 
 <script src="{{=URL('static', 'js/plans.js')}}"></script>

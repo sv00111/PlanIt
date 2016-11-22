@@ -1,20 +1,34 @@
 /**
  * Created by Jordan Zalaha on 11/11/2016.
+ *
+ * Script for managing plan objects and their stops through Vue.
  */
 
 var planapp = function() {
 
     var self = {};
-
     Vue.config.silent = false; // show all warnings
 
-    // Enumerates an array.
+    /**
+     * Enumerates an array.
+     *
+     * @param v : the array to be enumerated
+     * @returns the array remapped with each element having a key _idx equal to it's index in the array
+     */
     var enumerate = function(v) {
         var k=0;
         return v.map(function(e) {e._idx = k++;});
     };
 
-    // borrowed from http://stackoverflow.com/questions/979256/sorting-an-array-of-javascript-objects
+    /**
+     * Sorts a list of dictionaries by {@param field}
+     * borrowed from http://stackoverflow.com/questions/979256/sorting-an-array-of-javascript-objects
+     *
+     * @param field : the field by which to sort the list
+     * @param reverse : if true, ascending. descending otherwise
+     * @param primer : (optional) function used to prime the data before sorting
+     * @returns {Function} : to be passed into sort()
+     */
     var sort_by = function(field, reverse, primer){
 
        var key = primer ?
@@ -28,6 +42,10 @@ var planapp = function() {
          }
     };
 
+    /**
+     * Handles the event when the "add stop" button is pressed
+     * Resets form inputs and flips is_adding_stop boolean
+     */
     self.add_stop_button = function() {
         self.vue.is_adding_stop = !self.vue.is_adding_stop;
         self.vue.form_stop_label = "";
@@ -37,6 +55,13 @@ var planapp = function() {
         self.vue.form_stop_address = "";
     };
 
+    /**
+     * Post to add_stop_url
+     *
+     * add_stop_url = URL('api', 'add_stop')
+     *      url declared in home.html
+     *      function implemented in api.py
+     */
     self.add_stop = function() {
         $.post(add_stop_url,
             {
@@ -47,16 +72,26 @@ var planapp = function() {
                 cust_address: self.vue.form_stop_address,
                 parent: self.vue.current_plan.id
             },
-            function(data) {
+            function(data) {                                                // data is echoed back from db after insert
                 $.web2py.enableElement($("#add_stop_submit"));
-                self.add_stop_button();
-                self.vue.stops.unshift(data.stop);
-                self.vue.stops.sort(sort_by('start_time', false, null));
+                self.add_stop_button();                                     // close the form
+                self.vue.stops.unshift(data.stop);                          // add stop to vue list object
+                self.vue.stops.sort(sort_by('start_time', false, null));    // sort by start time
                 enumerate(self.vue.stops);
             }
         );
     };
 
+    /**
+     * Call to api to retrieve plan data from db
+     *
+     * get_plan_url = URL('api', 'get_plan')
+     *      url declared in home.html
+     *      function implemented in api.py
+     *
+     * @param plan_id : db id of plan to be retrieved
+     * @returns {@type String} "/{get_plan_url}?plan_id=plan_id"
+     */
     function get_plan_from_api(plan_id) {
         var p = {
             plan_id: plan_id
@@ -64,16 +99,20 @@ var planapp = function() {
         return get_plan_url + "?" + $.param(p);
     }
 
+    /**
+     * Populates vue object with selected plan's data retrieved from db via api using plan's id passed through home url
+     *
+     * {@var pid} declared in home.html, initialized through home() in default.py
+     *
+     * if {@var pid} is defined call {@function get_plan_from_api()} else use placeholder
+     */
     self.get_plan = function() {
         self.vue.plan_id = pid;
-        console.log("plan id: " + self.vue.plan_id + " (" + typeof(self.vue.plan_id) + ")");
         if(self.vue.plan_id != -1) {
             $.getJSON(get_plan_from_api(self.vue.plan_id), function(data) {
                 self.vue.current_plan = data.plan;
                 self.vue.logged_in = data.logged_in;
-                console.log("data plan: " + data.plan);
             });
-            console.log("current_plan: " + self.vue.current_plan)
         } else {
             var p = {
                 label: "No Plan Selected",
@@ -85,6 +124,16 @@ var planapp = function() {
         }
     };
 
+    /**
+     * Call to api to retrieve stop data from db
+     *
+     * get_stop_url = URL('api', 'get_stop')
+     *      url declared in home.html
+     *      function implemented in api.py
+     *
+     * @param id : db id of the plan whose stops we are retrieving
+     * @returns {@type String} "/{get_stop_url}?id=id"
+     */
     function get_stops_from_api(id) {
         var pp = {
             id: id
@@ -92,6 +141,10 @@ var planapp = function() {
         return get_stops_url + "?" + $.param(pp);
     }
 
+    /**
+     * Populates vue object with selected plan's stop data retrieved from db via api
+     *
+     */
     self.get_stops = function() {
         $.getJSON(get_stops_from_api(self.vue.plan_id), function(data) {
             self.vue.stops = data.stops;
@@ -101,6 +154,11 @@ var planapp = function() {
         })
     };
 
+    /**
+     * Deletes stop object from database
+     *
+     * @param stop_idx : stop's index in self.vue.stops
+     */
     self.delete_stop = function(stop_idx) {
         if (confirm("Delete this stop from your plan?")) {
             $.post(del_stop_url,
@@ -113,6 +171,23 @@ var planapp = function() {
         }
     };
 
+    /**
+     * Plans vue object
+     *
+     * {@dict data}
+     *      {@boolean is_adding_stop} :
+     *          true if add_stop form is displayed, false otherwise
+     *      {@boolean logged_in} :
+     *          true if user is logged in with valid Plan-It account when making an api call, false otherwise
+     *      {@int plan_id} :
+     *          database id of currently selected/displayed plan
+     *      {@dict current_plan} :
+     *          plan object of currently selected/displayed plan as represented in models/tables.py planit_plan
+     *      {@list stops} :
+     *          the currently selected plan's list of {@dict stop} objects as represented in models/tables.py
+     *          planit_stop
+     *
+     */
     self.vue = new Vue({
         el: "#vue-plans",
         delimiters: ['${', '}'],
