@@ -48,10 +48,24 @@ function make_Markers(inputArray, start, end) {
     console.log("length is " + inputArray.length);
     for(var i = startIndex; i < inputArray.length; i++) {
         console.log("running " + i);
-        // marker.setMap(maps);
+        var contentString =  "<h3>" + inputArray[i].name +"</h3>"+
+                "<div id= 'infocontent'> " +
+            "<p><b>Address: </b>" + inputArray[i].address + "</p>" +
+            "<p><b>Phone number: </b>" + inputArray[i].phone_number + "</p>" +
+                "<b>Hours</b>" +
+            "<table>" + "<tr><th>" + inputArray[i].hours[0] + "</th></tr>" +
+            "<tr><th>" + inputArray[i].hours[1] + "</th></tr>" +
+            "<tr><th>" + inputArray[i].hours[2] + "</th></tr>" +
+            "<tr><th>" + inputArray[i].hours[3] + "</th></tr>" +
+            "<tr><th>" + inputArray[i].hours[4] + "</th></tr>" +
+            "<tr><th>" + inputArray[i].hours[5] + "</th></tr>" +
+            "<tr><th>" + inputArray[i].hours[6] + "</th></tr>" +
+            "</table>" +
+            "</div>"
+
 
         infowindows[i] = new google.maps.InfoWindow({
-            content: 'hi there'
+            content: contentString
         });
 
         var position = {lat: inputArray[i].lat, lng: inputArray[i].lng};

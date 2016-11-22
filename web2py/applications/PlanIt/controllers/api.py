@@ -182,7 +182,8 @@ def get_recommendations():
             phone_number=phone_number,
             lat=lat,
             lng=lng,
-            id=ID_counter
+            id=ID_counter,
+            hours=hours,
         )
         recommendation.append(t)
         ID_counter = ID_counter + 1
