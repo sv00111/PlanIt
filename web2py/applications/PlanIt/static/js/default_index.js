@@ -22,12 +22,8 @@ var app = function () {
     };
 
     function get_recommendations_url() {
-        // console.log(start_idx)
-        // console.log(end_idx)
-        searchRec= self.vue.searchRec.replace(/ /g,"+");
-        locationRec= self.vue.locationRec.replace(/ /g,"+");
-        console.log(searchRec);
-        console.log(locationRec);
+        searchRec = self.vue.searchRec.replace(/ /g, "+");
+        locationRec = self.vue.locationRec.replace(/ /g, "+");
         next_page = 'none';
         var pp = {
             searchRec: searchRec,
@@ -40,10 +36,6 @@ var app = function () {
 
     //url to run when loading more results
     function get_recommendations_url_more() {
-        // console.log(start_idx)
-        // console.log(end_idx)
-        console.log(self.vue.searchRec)
-        console.log(self.vue.locationRec)
         var pp = {
             searchRec: self.vue.searchRec.replace(" ", "+"),
             locationRec: self.vue.locationRec.replace(" ", "+"),
@@ -66,8 +58,6 @@ var app = function () {
             self.vue.next_page = data.next_page;
             self.vue.locationRec = data.location;
             enumerate(self.vue.recommendation);
-            console.log("recommendations");
-            console.log(data.recommendation);
             make_Markers(self.vue.recommendation);
         })
     };
@@ -75,8 +65,6 @@ var app = function () {
     self.changeEditPostId = function (post_id, post_name, lats, lngs, rec) {
         // self.vue.is_edit_post = !self.vue.is_edit_post;
         self.vue.editPostId = post_id;
-        alert(post_name);
-        console.log(rec);
         //initMapss(lats, lngs);
         markerMapsZoom(lats, lngs, post_id);
     };
@@ -127,7 +115,6 @@ var app = function () {
             locationRec: '',
             markers: [],
             infowindows: [],
-            start_idx: 0,
             loading: 0
         },
         methods: {
