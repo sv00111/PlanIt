@@ -54,43 +54,44 @@ var app = function () {
     }
 
 
-    function make_Markers(inputArray) {
-        var markers = self.vue.markers;
-        var infowindows = self.vue.infowindows;
-        console.log("length is " + inputArray.length);
-        for(var i = self.vue.start_idx; i < inputArray.length; i++) {
-            console.log("running " + i);
-            marker.setMap(maps);
-
-            infowindows[i] = new google.maps.InfoWindow({
-                content: 'hi there'
-            });
-
-            var position = {lat: inputArray[i].lat, lng: inputArray[i].lng};
-            markers[i] = new google.maps.Marker({
-                position: position,
-                map: maps,
-                title: inputArray[i].name
-            });
-
-            google.maps.event.addListener(markers[i], 'click', function(innerKey) {
-                return function() {
-                    infowindows[innerKey].open(map, markers[innerKey]);
-                }
-            }(i));
-            // markers[i].addListener('click', function() {
-            //      infowindows[i].open(map, markers[i]);
-            //  })
-            // google.maps.event.addListener(markers[i], 'click', function() {
-            //     infowindows[i].open(map.markers[i]);
-            // })
-            maps.setCenter(markers[i].getPosition());
-            maps.setZoom(15);
-        }
-        self.vue.markers = markers;
-        self.vue.infowindows = infowindows;
-        self.vue.start_idx = inputArray.length;
-}
+//     function make_Markers(inputArray) {
+//         var markers = self.vue.markers;
+//         var infowindows = self.vue.infowindows;
+//         console.log("idx is " + self.vue.start_idx);
+//         console.log("length is " + inputArray.length);
+//         for(var i = self.vue.start_idx; i < inputArray.length; i++) {
+//             console.log("running " + i);
+//             marker.setMap(maps);
+//
+//             infowindows[i] = new google.maps.InfoWindow({
+//                 content: 'hi there'
+//             });
+//
+//             var position = {lat: inputArray[i].lat, lng: inputArray[i].lng};
+//             markers[i] = new google.maps.Marker({
+//                 position: position,
+//                 map: maps,
+//                 title: inputArray[i].name
+//             });
+//
+//             google.maps.event.addListener(markers[i], 'click', function(innerKey) {
+//                 return function() {
+//                     infowindows[innerKey].open(map, markers[innerKey]);
+//                 }
+//             }(i));
+//             // markers[i].addListener('click', function() {
+//             //      infowindows[i].open(map, markers[i]);
+//             //  })
+//             // google.maps.event.addListener(markers[i], 'click', function() {
+//             //     infowindows[i].open(map.markers[i]);
+//             // })
+//             maps.setCenter(markers[i].getPosition());
+//             maps.setZoom(15);
+//         }
+//         self.vue.markers = markers;
+//         self.vue.infowindows = infowindows;
+//         self.vue.start_idx = inputArray.length;
+// }
 
     //Begin by modifying these methods to be vue methods for our app
     self.get_recommendations = function () {
@@ -107,7 +108,7 @@ var app = function () {
             enumerate(self.vue.recommendation);
             console.log("recommendations");
             console.log(data.recommendation);
-            make_Markers(data.recommendation);
+            make_Markers(self.vue.recommendation);
         })
     };
 
@@ -130,7 +131,7 @@ var app = function () {
             self.vue.logged_in = data.logged_in;
             self.vue.next_page = data.next_page;
             self.vue.locationRec = data.location;
-            make_Markers(data.recommendation);
+            make_Markers(self.vue.recommendation);
             // enumerate(self.vue.recommendation);
         })
     };
