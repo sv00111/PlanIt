@@ -24,11 +24,14 @@ var app = function () {
     function get_recommendations_url() {
         // console.log(start_idx)
         // console.log(end_idx)
-        console.log(self.vue.searchRec)
-        console.log(self.vue.locationRec)
+        searchRec= self.vue.searchRec.replace(/ /g,"+");
+        locationRec= self.vue.locationRec.replace(/ /g,"+");
+        console.log(searchRec);
+        console.log(locationRec);
+        next_page = 'none';
         var pp = {
-            searchRec: self.vue.searchRec.replace(" ", "+"),
-            locationRec: self.vue.locationRec.replace(" ", "+"),
+            searchRec: searchRec,
+            locationRec: locationRec,
             next_page: '',
             lengthOfArr: 0
         };

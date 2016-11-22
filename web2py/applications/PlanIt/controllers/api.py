@@ -38,11 +38,11 @@ def recommendation():
 #         has_more=has_more,
 #     ))
 
-def test():
-    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters"
-    f = urllib.urlopen(url)
-    s = f.read()
-    return s
+# def test():
+#     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters"
+#     f = urllib.urlopen(url)
+#     s = f.read()
+#     return s
 
 
 def get_place_icons(places):
