@@ -1,0 +1,27 @@
+{{extend 'layout.html'}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script>
+    var recommendations_url = "{{=URL('api', 'get_recommendations')}}";
+    var info_url = "{{=URL('api', 'get_more_info')}}";
+</script>
+
+
+<div id="map" ></div>
+<div id="right-panel suggestion-container">
+  <h2>Results</h2>
+    <div id="vue-div" class="display:none">
+          <ul v-for="place in places">
+              <li>
+                  <p>
+                      ${place.name}
+                      <hr>
+                        ${place.place_id}
+                  </p>
+              </li>
+          </ul>
+          <button id="more">More results</button>
+    </div>
+</div>
+<!-- Replace the value of the key parameter with your own API key. -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w&libraries=places&callback=initMap" async defer></script>
+<script src="{{=URL('static', 'js/places.js')}}"></script>

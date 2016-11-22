@@ -1,13 +1,10 @@
 {{extend 'layout.html'}}
 
-{{block head}}
-{{super}}
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w&callback=initMap"
-  type="text/javascript"></script>
+{{block header}}
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 
 <script>
-    var recommendation_url = "{{=URL('api', 'get_recommendation')}}";
+    var recommendations_url = "{{=URL('api', 'get_recommendations')}}";
 </script>
 
 <script>
@@ -20,7 +17,6 @@
 {{end}}
 
 {{if auth.user_id:}}
-
     {{block top-nav}} <!-- Overwrite nav bar -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <a href="{{=URL('default', 'index')}}">
@@ -84,42 +80,15 @@
 
     <div class="home-container">
         <div id="suggestion-container" class="pull-left scrollbar">
-
-            {{include 'default/recommendation.html'}}
-
+            {{include "default/recommendation.html"}}
         </div>
         <div id="calendar-container" class="pull-left scrollbar">
             {{include 'default/plans.html'}}
         </div>
 
         <div id="map-container" class = "pull-left scrollbar">
-            <title>Simple Map</title>
-            <meta name="viewport" content="initial-scale=1.0">
-            <meta charset="utf-8">
-            <style>
-              /* Always set the map height explicitly to define the size of the div
-               * element that contains the map. */
-              #map {
-                height: 100%;
-              }
-              /* Optional: Makes the sample page fill the window. */
-              html, body {
-                height: 100%;
-                margin: 0;
-                padding: 0;
-              }
-            </style>
-            <div id="map"></div>
-                <script>
-                  var map;
-                  function initMap() {
-                    map = new google.maps.Map(document.getElementById('map'), {
-                      center: {lat: -34.397, lng: 150.644},
-                      zoom: 8
-                    });
-                  }
-                  initMap();
-                </script>
+            <div id = "map">
+            </div>
         </div>
     </div>
 
@@ -128,3 +97,10 @@
     {{=redirect(URL('default', 'user', args=['login']))}}
 
 {{pass}}
+
+
+<script src="{{=URL('static', 'js/default_index.js')}}"></script>
+<script src="{{=URL('static', 'js/places.js')}}"></script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w&callback=initMap">
+</script>
