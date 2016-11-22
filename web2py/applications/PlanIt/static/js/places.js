@@ -31,6 +31,20 @@ function initMapss(lats, lngs) {
     maps.setZoom(15);
 }
 
+function make_Markers(inputArray) {
+    for(var i = 0; i < inputArray.length; i++) {
+        console.log("running " + i);
+        marker.setMap(null);
+        var position = {lat: inputArray[i].lat, lng: inputArray[i].lng};
+        marker = new google.maps.Marker({
+            position: position,
+            map: maps
+        });
+        maps.setCenter(marker.getPosition());
+        maps.setZoom(15);
+    }
+}
+
 // // This example requires the Places library. Include the libraries=places
 // // parameter when you first load the API. For example:
 // // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
