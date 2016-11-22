@@ -99,7 +99,6 @@ def get_recommendations():
         print "in next"
         # TODO: see what happenes when you make url from nearby to radarsearch.
         # TODO: also see what happenes when you make url from nearby to textsearch.
-
         url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + repr(lat) + ',' + repr(
             long) + '&radius=1000&keyword=' + searchRec + '&key=' + api_key + next_page_query
     elif searchRec is '':

@@ -53,46 +53,6 @@ var app = function () {
         return recommendations_url + "?" + $.param(pp);
     }
 
-
-//     function make_Markers(inputArray) {
-//         var markers = self.vue.markers;
-//         var infowindows = self.vue.infowindows;
-//         console.log("idx is " + self.vue.start_idx);
-//         console.log("length is " + inputArray.length);
-//         for(var i = self.vue.start_idx; i < inputArray.length; i++) {
-//             console.log("running " + i);
-//             marker.setMap(maps);
-//
-//             infowindows[i] = new google.maps.InfoWindow({
-//                 content: 'hi there'
-//             });
-//
-//             var position = {lat: inputArray[i].lat, lng: inputArray[i].lng};
-//             markers[i] = new google.maps.Marker({
-//                 position: position,
-//                 map: maps,
-//                 title: inputArray[i].name
-//             });
-//
-//             google.maps.event.addListener(markers[i], 'click', function(innerKey) {
-//                 return function() {
-//                     infowindows[innerKey].open(map, markers[innerKey]);
-//                 }
-//             }(i));
-//             // markers[i].addListener('click', function() {
-//             //      infowindows[i].open(map, markers[i]);
-//             //  })
-//             // google.maps.event.addListener(markers[i], 'click', function() {
-//             //     infowindows[i].open(map.markers[i]);
-//             // })
-//             maps.setCenter(markers[i].getPosition());
-//             maps.setZoom(15);
-//         }
-//         self.vue.markers = markers;
-//         self.vue.infowindows = infowindows;
-//         self.vue.start_idx = inputArray.length;
-// }
-
     //Begin by modifying these methods to be vue methods for our app
     self.get_recommendations = function () {
         //start loading function here
@@ -118,6 +78,7 @@ var app = function () {
         alert(post_name);
         console.log(rec);
         //initMapss(lats, lngs);
+        markerMapsZoom(lats, lngs, post_id);
     };
 
 
@@ -164,10 +125,10 @@ var app = function () {
             lat: 0,
             lng: 0,
             locationRec: '',
-            loading: 0,
             markers: [],
             infowindows: [],
             start_idx: 0,
+            loading: 0
         },
         methods: {
             get_more_rec: self.get_more_rec,
