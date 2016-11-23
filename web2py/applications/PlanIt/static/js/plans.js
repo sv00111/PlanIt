@@ -55,6 +55,12 @@ var planapp = function() {
         self.vue.form_stop_address = "";
     };
 
+
+    //Shrey wrote this:
+    self.add_stop_from_location = function(lat, lng, name, address, place_id) {
+
+    };
+
     /**
      * Post to add_stop_url
      *

@@ -96,6 +96,10 @@ var app = function () {
         //makeMarkers();
     };
 
+    self.add = function(lat, lng, name, address, place_id){
+        planapp.add_stop_from_location(lat, lng, name, address, place_id);
+    };
+
 //lat and lng will need to be queried from the users first input location.
     self.vue = new Vue({
         el: "#vue-div",
@@ -121,7 +125,8 @@ var app = function () {
             get_more_rec: self.get_more_rec,
             get_recommendations: self.get_recommendations,
             searchFn: self.searchFn,
-            changeEditPostId: self.changeEditPostId
+            changeEditPostId: self.changeEditPostId,
+            add: self.add
         }
 
     });

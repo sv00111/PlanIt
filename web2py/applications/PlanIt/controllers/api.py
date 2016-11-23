@@ -69,7 +69,8 @@ def get_recommendations():
     lengthOfQuery = len(resultStuff["results"])
     # for i in range(0, lengthOfQuery):
     for i in range(0, 2):
-        more_info = get_more_info(resultStuff['results'][i]["place_id"])
+        place_id = resultStuff['results'][i]["place_id"]
+        more_info = get_more_info(place_id)
         if "price_level" not in resultStuff['results'][i]:
             priceT = 0
         else:
@@ -122,6 +123,7 @@ def get_recommendations():
             lng=lng,
             id=ID_counter,
             hours=hours,
+            place_id = place_id
         )
         recommendation.append(t)
         ID_counter = ID_counter + 1
