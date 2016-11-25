@@ -1,2 +1,6 @@
 {{extend 'layout.html'}}
         <div>{{=form}}</div>
+
+        <script src="{{=URL('static', 'js/autocomplete.js')}}"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCrzytQrfKI_aoLWOJeb-N7TNUUxGmn2g&libraries=places&callback=initAutocomplete"
+        async defer></script>
