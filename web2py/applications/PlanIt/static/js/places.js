@@ -1,6 +1,7 @@
 var maps;
 var marker;
 var markers = [];
+var infowindows = [];
 var startIndex = 0;
 
 function initMap() {
@@ -21,9 +22,16 @@ function markerMapsZoom(lats, lgns, p_id) {
     maps.setZoom(15);
     google.maps.event.trigger(markers[p_id], 'click');
 }
-function make_Markers(inputArray, start, end) {
-    // marker;
-    var infowindows = [];
+
+// Sets the map on all markers in the array.
+function setMapOnAll() {
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+}
+
+function make_Markers(inputArray) {
+    console.log(startIndex);
     console.log("length is " + inputArray.length);
     for (var i = startIndex; i < inputArray.length; i++) {
         console.log("running " + i);

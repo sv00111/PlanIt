@@ -52,14 +52,22 @@ var app = function () {
         $.getJSON(get_recommendations_url(), function (data) {
             //end loading function here
             self.vue.loading = 0;
-            self.vue.recommendation = data.recommendation;
-            self.vue.has_more = data.has_more;
-            self.vue.logged_in = data.logged_in;
-            self.vue.next_page = data.next_page;
-            self.vue.locationRec = data.location;
-            enumerate(self.vue.recommendation);
-            make_Markers(self.vue.recommendation);
-        })
+            var invalid = data.invalid;
+            if (!invalid) {
+                self.vue.recommendation = data.recommendation;
+                self.vue.has_more = data.has_more;
+                self.vue.logged_in = data.logged_in;
+                self.vue.next_page = data.next_page;
+                self.vue.locationRec = data.location;
+                self.vue.invalid = data.invalid;
+                enumerate(self.vue.recommendation);
+                make_Markers(self.vue.recommendation);
+            }else {
+                alert("Ya Dun Goofed, Search Again");
+            }
+
+        });
+
     };
 
     self.changeEditPostId = function (post_id, post_name, lats, lngs, rec) {
@@ -86,6 +94,7 @@ var app = function () {
     };
 
     self.searchFn = function (searchRec, locationRec) {
+        setMapOnAll();
         self.vue.next_page = '';
         self.vue.has_more = false;
         self.vue.recommendation = [];
@@ -115,7 +124,7 @@ var app = function () {
             locationRec: '',
             markers: [],
             infowindows: [],
-            loading: 0
+            loading: 0,
         },
         methods: {
             get_more_rec: self.get_more_rec,
@@ -126,7 +135,7 @@ var app = function () {
 
     });
 
-    self.get_recommendations();
+    //self.get_recommendations();
     $("#vue-div").show();
 
     return self;

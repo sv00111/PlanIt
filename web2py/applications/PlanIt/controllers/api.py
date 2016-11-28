@@ -35,10 +35,12 @@ def get_recommendations():
             logged_in=logged_in,
             has_more=False,
             next_page='',
-            location=''
+            location='',
+            invalid = False
         ))
     else:
         url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
+        print "DA URL LOCATION IS {0}".format(url)
         resultLocation = json.loads(urllib.urlopen(url).read())
         lat = resultLocation['results'][0]['geometry']['location']['lat']
         long = resultLocation['results'][0]['geometry']['location']['lng']
@@ -62,8 +64,22 @@ def get_recommendations():
     elif searchRec is '':
         url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + repr(lat) + ',' + repr(
             long) + '&radius=1000&type=point_of_interest&key=' + api_key + next_page_query
+    print("url is ")
+    print(url)
 
     resultStuff = json.loads(urllib.urlopen(url).read())
+
+    print len(resultStuff['results'])
+    if len(resultStuff['results']) is 0:
+        return response.json(dict(
+            recommendation=[],
+            logged_in=logged_in,
+            has_more=False,
+            next_page='',
+            location='',
+            invalid=True
+        ))
+
 
     recommendation = []
     lengthOfQuery = len(resultStuff["results"])
@@ -121,6 +137,7 @@ def get_recommendations():
             lat=lat,
             lng=lng,
             id=ID_counter,
+            invalid=False,
             hours=hours,
         )
         recommendation.append(t)
@@ -138,7 +155,8 @@ def get_recommendations():
         logged_in=logged_in,
         has_more=has_more,
         next_page=more_results_page,
-        location=location
+        location=location,
+        invalid = False
     ))
 
 def add_stop():
