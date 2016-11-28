@@ -58,7 +58,7 @@ var planapp = function() {
 
     //Shrey wrote this:
     self.add_stop_from_location = function(lat, lng, name, address, place_id) {
-
+        console.log("SHREY WROTE THIS");
     };
 
     /**
@@ -177,6 +177,16 @@ var planapp = function() {
         }
     };
 
+
+    self.getPlanID = function() {
+        console.log("THIS US HERE R")
+        if (self.vue.plan_id != null) {
+            return self.vue.plan_id;
+        }
+        else return null;
+    };
+
+
     /**
      * Plans vue object
      *
@@ -221,6 +231,7 @@ var planapp = function() {
             add_stop: self.add_stop,
             delete_stop: self.delete_stop,
             get_plan: self.get_plan,
+            add_stop_from_location: self.add_stop_from_location,
         }
     });
 

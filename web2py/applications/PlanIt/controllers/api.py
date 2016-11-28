@@ -18,24 +18,34 @@ def get_more_info(place_id):
     return (results)
 
 def get_recommendations():
-    ID_counter = int(request.vars.lengthOfArr)
     if auth.user:
         logged_in = True
     else:
         logged_in = False
-
-    searchRec = request.vars.searchRec
-    locationRec = request.vars.locationRec
-    if searchRec is None or searchRec is "":
-        print "searchEmpty"
-    if locationRec is None or locationRec is "":
-        print "locationEmpty"
+    if int(request.vars.plan_id) is -1:
         return response.json(dict(
             recommendation=[],
             logged_in=logged_in,
             has_more=False,
             next_page='',
-            location=''
+            location='',
+        ))
+    ID_counter = int(request.vars.lengthOfArr)
+    searchRec = request.vars.searchRec
+    locationRec = request.vars.locationRec
+    if searchRec is None or searchRec is "":
+        print "searchEmpty"
+    if locationRec is None or locationRec is "":
+        pid = int(request.vars.plan_id) #//not defined yet
+        locationRec = db(db.planit_plan.id == pid).select(db.planit_plan.ALL).first().start_location
+
+        print "locationRec is {0}".format(locationRec)
+        return response.json(dict(
+            recommendation=[],
+            logged_in=logged_in,
+            has_more=False,
+            next_page='',
+            location=locationRec,
         ))
     else:
         url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key

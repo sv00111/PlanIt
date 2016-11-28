@@ -25,7 +25,12 @@ var app = function () {
         searchRec = self.vue.searchRec.replace(/ /g, "+");
         locationRec = self.vue.locationRec.replace(/ /g, "+");
         next_page = 'none';
+
+        var pidd = PLANAPP.getPlanID();
+        if (pidd == null)
+            pidd = 0;
         var pp = {
+            plan_id: pidd,
             searchRec: searchRec,
             locationRec: locationRec,
             next_page: '',
@@ -36,7 +41,11 @@ var app = function () {
 
     //url to run when loading more results
     function get_recommendations_url_more() {
+        var pidd = PLANAPP.getPlanID();
+        if (pidd == null)
+            pidd = 0;
         var pp = {
+            plan_id: pidd,
             searchRec: self.vue.searchRec.replace(" ", "+"),
             locationRec: self.vue.locationRec.replace(" ", "+"),
             next_page: self.vue.next_page,
@@ -97,7 +106,7 @@ var app = function () {
     };
 
     self.add = function(lat, lng, name, address, place_id){
-        planapp.add_stop_from_location(lat, lng, name, address, place_id);
+        PLANAPP.add_stop_from_location(lat, lng, name, address, place_id);
     };
 
 //lat and lng will need to be queried from the users first input location.
