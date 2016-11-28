@@ -41,7 +41,7 @@
                 </div>
                 <div class="form-group" id="no_table_address__row">
                     <div>
-                        <input class="form-control string" v-model="form_stop_address" placeholder="Address" type="text" />
+                        <input class="form-control string" v-model="form_stop_address" id = "addressPlan" placeholder="Address (optional)" type="text" />
                         <span class="help-block"></span>
                     </div>
                 </div>
@@ -95,3 +95,7 @@
 <!-- End Vue --> </div>
 
 <script src="{{=URL('static', 'js/plans.js')}}"></script>
+<!--script src="{{=URL('static', 'js/autocomplete.js')}}"></script-->
+<!--script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w&callback=initMap">
+</script-->

@@ -18,18 +18,28 @@ def get_more_info(place_id):
     return (results)
 
 def get_recommendations():
-    ID_counter = int(request.vars.lengthOfArr)
     if auth.user:
         logged_in = True
     else:
         logged_in = False
-
+    if int(request.vars.plan_id) is -1:
+        return response.json(dict(
+            recommendation=[],
+            logged_in=logged_in,
+            has_more=False,
+            next_page='',
+            location='',
+        ))
+    ID_counter = int(request.vars.lengthOfArr)
     searchRec = request.vars.searchRec
     locationRec = request.vars.locationRec
     if searchRec is None or searchRec is "":
         print "searchEmpty"
     if locationRec is None or locationRec is "":
-        print "locationEmpty"
+        pid = int(request.vars.plan_id) #//not defined yet
+        locationRec = db(db.planit_plan.id == pid).select(db.planit_plan.ALL).first().start_location
+
+        print "locationRec is {0}".format(locationRec)
         return response.json(dict(
             recommendation=[],
             logged_in=logged_in,
@@ -47,6 +57,7 @@ def get_recommendations():
         location = resultLocation['results'][0]['formatted_address']
         print lat
         print long
+
 
     token = request.vars.next_page
     if token is not '':
@@ -85,7 +96,8 @@ def get_recommendations():
     lengthOfQuery = len(resultStuff["results"])
     # for i in range(0, lengthOfQuery):
     for i in range(0, 2):
-        more_info = get_more_info(resultStuff['results'][i]["place_id"])
+        place_id = resultStuff['results'][i]["place_id"]
+        more_info = get_more_info(place_id)
         if "price_level" not in resultStuff['results'][i]:
             priceT = 0
         else:
@@ -139,6 +151,7 @@ def get_recommendations():
             id=ID_counter,
             invalid=False,
             hours=hours,
+            place_id = place_id
         )
         recommendation.append(t)
         ID_counter = ID_counter + 1
