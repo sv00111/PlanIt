@@ -47,14 +47,14 @@ def get_recommendations():
             next_page='',
             location=locationRec,
         ))
-    else:
-        url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
-        resultLocation = json.loads(urllib.urlopen(url).read())
-        lat = resultLocation['results'][0]['geometry']['location']['lat']
-        long = resultLocation['results'][0]['geometry']['location']['lng']
-        location = resultLocation['results'][0]['formatted_address']
-        print lat
-        print long
+    
+    url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
+    resultLocation = json.loads(urllib.urlopen(url).read())
+    lat = resultLocation['results'][0]['geometry']['location']['lat']
+    long = resultLocation['results'][0]['geometry']['location']['lng']
+    location = resultLocation['results'][0]['formatted_address']
+    print lat
+    print long
 
     token = request.vars.next_page
     if token is not '':
