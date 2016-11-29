@@ -5,6 +5,13 @@ var infowindows = [];
 var startIndex = 0;
 
 function initMap() {
+    // initAutocompletePlan();
+    // if ( APP.locationRec == null ){
+    //     // setTimeout(initMap, 1000);
+    // }
+    // var san_mat = APP.locationRec;
+    // console.log(san_mat);
+    // console.log(APP.lat + " " + APP.lng);
     var san_mat = {lat: 37.566969, lng: -122.326455};
     maps = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
@@ -61,7 +68,7 @@ function make_Markers(inputArray) {
             position: position,
             title: inputArray[i].name,
             label: (i + 1).toString(),
-            map: maps,
+            map: maps
         });
 
         google.maps.event.addListener(markers[i], 'click', function (innerKey) {

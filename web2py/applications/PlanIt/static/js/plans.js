@@ -68,6 +68,8 @@ var planapp = function() {
      *      url declared in home.html
      *      function implemented in api.py
      */
+
+    //TODO: if address is put in, then fill backend with lat and lng using google maps api. else keep it empty.
     self.add_stop = function() {
         if(self.vue.form_stop_end < self.vue.form_stop_start) {
             $("#time_error_msg").show();
@@ -119,6 +121,7 @@ var planapp = function() {
      * if {@var pid} is defined call {@function get_plan_from_api()} else use placeholder
      */
     self.get_plan = function() {
+        // initAutocomplete();
         self.vue.plan_id = pid;
         if(self.vue.plan_id != -1) {
             $.getJSON(get_plan_from_api(self.vue.plan_id), function(data) {
