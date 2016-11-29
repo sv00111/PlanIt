@@ -69,6 +69,7 @@ input.form-control, #submit_record__row {
     height: 100%;
     width: 25%;
     overflow-x: hidden;
+    overflow-y: hidden;
     align-content: center;
     display: inline-block;
     float: left;
@@ -77,6 +78,7 @@ input.form-control, #submit_record__row {
 .stop-inner img {
     height: 100%;
     width: auto;
+    transform: translate(-22%, 0);
 }
 
 .stop-inner .stop-content {
