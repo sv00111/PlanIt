@@ -191,7 +191,11 @@ def add_stop():
         end_time = request.vars.end_time,
         cust_place = request.vars.cust_place,
         cust_address = request.vars.cust_address,
-        parent = request.vars.parent
+        parent = request.vars.parent,
+        cust_lat=request.vars.cust_lat,
+        cust_lon=request.vars.cust_lon,
+        thumbnail=request.vars.thumbnail,
+        place_id=request.vars.place_id
     )
     plan = db(db.planit_plan.id == request.vars.parent).select().first()
     plan = plan.update_record(stops=plan.stops+[stop_id] if plan.stops is not None else [stop_id])
@@ -219,7 +223,11 @@ def get_stops():
                 cust_place = r.cust_place,
                 cust_address = r.cust_address,
                 created_by = r.created_by,
-                created_on = r.created_on
+                created_on = r.created_on,
+                cust_lat = r.cust_lat,
+                cust_lon = r.cust_lon,
+                thumbnail = r.thumbnail,
+                place_id = r.place_id
             )
             stops.append(s)
     logged_in = auth.user_id is not None

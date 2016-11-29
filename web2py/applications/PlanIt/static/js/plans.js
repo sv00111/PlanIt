@@ -7,6 +7,10 @@
 var planapp = function() {
 
     var self = {};
+    var temp_lat = null;
+    var temp_lon = null;
+    var temp_place_id = null;
+    var temp_img_url = "http://studiord.com.au/wp-content/uploads/2016/06/placeholder-180x180.jpg";
     Vue.config.silent = false; // show all warnings
 
     /**
@@ -57,8 +61,15 @@ var planapp = function() {
 
 
     //Shrey wrote this:
-    self.add_stop_from_location = function(lat, lng, name, address, place_id) {
+    self.add_stop_from_location = function(lat, lng, name, address, place_id, placesUrl) {
         console.log("SHREY WROTE THIS");
+        self.vue.is_adding_stop = true;
+        self.vue.form_stop_address = address;
+        self.vue.form_stop_place = name;
+        temp_lat = lat;
+        temp_lon = lng;
+        temp_place_id = place_id;
+        temp_img_url = placesUrl;
     };
 
     /**
@@ -75,6 +86,7 @@ var planapp = function() {
             $("#time_error_msg").show();
             $.web2py.enableElement($("#add_stop_submit"));
         } else {
+
             $.post(add_stop_url,
                 {
                     label: self.vue.form_stop_label,
@@ -82,7 +94,11 @@ var planapp = function() {
                     end_time: self.vue.form_stop_end,
                     cust_place: self.vue.form_stop_place,
                     cust_address: self.vue.form_stop_address,
-                    parent: self.vue.current_plan.id
+                    parent: self.vue.current_plan.id,
+                    place_id: temp_place_id,
+                    cust_lat: temp_lat,
+                    cust_lon: temp_lon,
+                    thumbnail: temp_img_url
                 },
                 function (data) {                                                // data is echoed back from db after insert
                     $.web2py.enableElement($("#add_stop_submit"));
@@ -91,6 +107,10 @@ var planapp = function() {
                     self.vue.stops.sort(sort_by('start_time', false, null));    // sort by start time
                     enumerate(self.vue.stops);
                     $("#time_error_msg").hide();
+                    temp_lat = null;
+                    temp_lon = null;
+                    temp_place_id = null;
+                    temp_img_url = "http://studiord.com.au/wp-content/uploads/2016/06/placeholder-180x180.jpg";
                 }
             );
         }
