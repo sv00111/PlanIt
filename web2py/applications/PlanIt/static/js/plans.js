@@ -69,23 +69,29 @@ var planapp = function() {
      *      function implemented in api.py
      */
     self.add_stop = function() {
-        $.post(add_stop_url,
-            {
-                label: self.vue.form_stop_label,
-                start_time: self.vue.form_stop_start,
-                end_time: self.vue.form_stop_end,
-                cust_place: self.vue.form_stop_place,
-                cust_address: self.vue.form_stop_address,
-                parent: self.vue.current_plan.id
-            },
-            function(data) {                                                // data is echoed back from db after insert
-                $.web2py.enableElement($("#add_stop_submit"));
-                self.add_stop_button();                                     // close the form
-                self.vue.stops.unshift(data.stop);                          // add stop to vue list object
-                self.vue.stops.sort(sort_by('start_time', false, null));    // sort by start time
-                enumerate(self.vue.stops);
-            }
-        );
+        if(self.vue.form_stop_end < self.vue.form_stop_start) {
+            $("#time_error_msg").show();
+            $.web2py.enableElement($("#add_stop_submit"));
+        } else {
+            $.post(add_stop_url,
+                {
+                    label: self.vue.form_stop_label,
+                    start_time: self.vue.form_stop_start,
+                    end_time: self.vue.form_stop_end,
+                    cust_place: self.vue.form_stop_place,
+                    cust_address: self.vue.form_stop_address,
+                    parent: self.vue.current_plan.id
+                },
+                function (data) {                                                // data is echoed back from db after insert
+                    $.web2py.enableElement($("#add_stop_submit"));
+                    self.add_stop_button();                                     // close the form
+                    self.vue.stops.unshift(data.stop);                          // add stop to vue list object
+                    self.vue.stops.sort(sort_by('start_time', false, null));    // sort by start time
+                    enumerate(self.vue.stops);
+                    $("#time_error_msg").hide();
+                }
+            );
+        }
     };
 
     /**

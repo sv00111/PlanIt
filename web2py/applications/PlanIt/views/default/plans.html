@@ -30,6 +30,7 @@
                     <span> End Time </span>
                     <div>
                         <input class="form-control string" v-model="form_stop_end" required="required" type="time" />
+                        <span id="time_error_msg" style="color: red; display: none;">End time must be later than the start time.</span>
                         <span class="help-block"></span>
                     </div>
                 </div>

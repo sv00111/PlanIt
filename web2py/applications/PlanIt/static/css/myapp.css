@@ -260,9 +260,8 @@ div.home-container {
     display: inline-block;
     background-color: white;
     box-shadow: 2px 2px 4px -2px #999;
-    height: 100%;
+    height: calc(100% - 40px);
     width: 40%;
-    overflow-y: auto;
 }
 
 #map-container {
