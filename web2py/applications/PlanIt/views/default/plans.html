@@ -9,6 +9,12 @@
         <button v-if="is_adding_stop" class="btn btn-success pull-right" v-on:click="add_stop_button()" v-bind:class="{'disabled': !logged_in}">
             <i class="fa fa-minus"></i>
         </button>
+        <button class="btn btn-danger pull-right" v-on:click="delete_plan()" v-bind:class="{'disabled': !logged_in}">
+            <i class="fa fa-trash"></i>
+        </button>
+        <a class="btn btn-primary pull-right" onclick="">
+            Share!
+        </a>
     </div>
 
     <div v-if="is_adding_stop" id="add-stop-div">
@@ -83,6 +89,9 @@
                     <span class="stop-label">${stop.label}</span>
                     <span class="place-name">${stop.cust_place}</span>
                     <p>${stop.cust_address}</p>
+                    <div class="pull-right user_tag">
+                    <span class="user_tag_created_by" style="display:block;">Created By: ${stop.created_by}</span>
+                </div>
                 </div>
                 <div class="pull-right del_stop_button">
                     <i v-on:click="delete_stop(stop._idx)" class="fa fa-close"></i>

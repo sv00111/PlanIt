@@ -224,8 +224,6 @@ def select_plan():
         id = s.id,
         label = s.label,
         start_date = s.start_date,
-        start_time = s.start_time,
-        end_time = s.end_time,
         start_location = s.start_location,
         longitude = s.longitude,
         latitude = s.latitude,
@@ -236,3 +234,10 @@ def select_plan():
     print selection
     logged_in = auth.user_id is not None
     return response.json(dict(plan=selection, logged_in=logged_in))
+
+def del_plan():
+    pid = int(request.vars.plan_id)
+    db(db.planit_stop.parent == pid).delete()
+    db(db.planit_plan.id == pid).delete()
+    redirect(URL('default', 'home'))
+    return "ok"

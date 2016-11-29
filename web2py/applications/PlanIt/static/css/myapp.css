@@ -178,7 +178,7 @@ div.nav-link {
     display: block;
 }
 
-.dropdown-content a, .dropdown-content span {
+.dropdown-item, .dropdown-content span {
   position: relative;
   color: black;
   padding: 12px 16px;
@@ -186,7 +186,15 @@ div.nav-link {
   display: block;
 }
 
-.dropdown-content a:hover, .dropdown-content span:hover {background-color: #f1f1f1}
+.dropdown-item:hover, .dropdown-content span:hover {
+    background-color: #f1f1f1;
+    text-decoration: none;
+}
+
+#see_all_plans_link {
+    font-size: 15px;
+    display: block;
+}
 
 .navbar {
     display: inline-block;

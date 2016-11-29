@@ -192,6 +192,17 @@ var planapp = function() {
         else return null;
     };
 
+    self.delete_plan = function() {
+        if (confirm("Are you sure you want to delete this plan and all of its stops?")) {
+            $.post(del_plan_url,
+                { plan_id: self.vue.plan_id },
+                function () {
+                    window.location.replace(home_url);
+                }
+            )
+        }
+    };
+
 
     /**
      * Plans vue object
@@ -238,6 +249,7 @@ var planapp = function() {
             delete_stop: self.delete_stop,
             get_plan: self.get_plan,
             add_stop_from_location: self.add_stop_from_location,
+            delete_plan: self.delete_plan
         }
     });
 

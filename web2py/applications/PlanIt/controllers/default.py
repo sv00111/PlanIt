@@ -30,11 +30,25 @@ def forgotPass():
 
 @auth.requires_login()
 def home():
-    p_id = request.args(0) if request.args(0) not in (None, 0, "") else "-1"
+    p_id = request.args(0)
+    if p_id is None:
+        p_id = db(db.planit_plan.created_by == auth.user.email).select(db.planit_plan.id).last()
+        if p_id is None:
+            redirect(URL('default', 'newPlan'))
+        else:
+            p_id = p_id.id
     return dict(p_id=p_id)
 
 @auth.requires_login()
 def plans():
+    return dict()
+
+@auth.requires_login()
+def allplans():
+    plans = db(db.planit_plan).select(db.planit_plan.label, db.planit_plan.id, orderby=~db.planit_plan.id)
+    return dict(plans=plans)
+
+def share():
     return dict()
 
 def user():
@@ -72,16 +86,12 @@ def newPlan():
     form = SQLFORM.factory(
         Field('label', length=256, default="New Plan"),
         Field('start_date', 'date', default=datetime.date.today()),
-        Field('start_time', requires=[IS_TIME()]),
-        Field('end_time', requires=[IS_TIME()]),
         Field('start_location')
     )
     if form.process().accepted:
         db.planit_plan.insert(
             label = form.vars.label,
             start_date = form.vars.start_date,
-            start_time = form.vars.start_time,
-            end_time = form.vars.end_time,
             start_location = form.vars.start_location
         )
         session.flash = T('Plan created.')
