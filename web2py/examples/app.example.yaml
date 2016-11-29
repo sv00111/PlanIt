@@ -13,7 +13,7 @@ api_version: 1
 runtime: python27
 threadsafe: true    # true for WSGI & concurrent requests (Python 2.7 only)
 
-default_expiration: "24h"   # for static files
+default_expiration: "1m"   # for static files
 
 handlers:
 

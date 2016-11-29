@@ -33,31 +33,41 @@ def get_recommendations():
     ID_counter = int(request.vars.lengthOfArr)
     searchRec = request.vars.searchRec
     locationRec = request.vars.locationRec
+    # print "THE LOCATION IS "
     if searchRec is None or searchRec is "":
         print "searchEmpty"
     if locationRec is None or locationRec is "":
         pid = int(request.vars.plan_id) #//not defined yet
         locationRec = db(db.planit_plan.id == pid).select(db.planit_plan.ALL).first().start_location
-
         print "locationRec is {0}".format(locationRec)
         return response.json(dict(
             recommendation=[],
             logged_in=logged_in,
             has_more=False,
             next_page='',
-            location='',
+            location=locationRec,
             invalid = False
         ))
-    else:
-        url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
-        print "DA URL LOCATION IS {0}".format(url)
-        resultLocation = json.loads(urllib.urlopen(url).read())
-        lat = resultLocation['results'][0]['geometry']['location']['lat']
-        long = resultLocation['results'][0]['geometry']['location']['lng']
-        location = resultLocation['results'][0]['formatted_address']
-        print lat
-        print long
+# <<<<<<< Updated upstream
+#     else:
+#         url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
+#         print "DA URL LOCATION IS {0}".format(url)
+#         resultLocation = json.loads(urllib.urlopen(url).read())
+#         lat = resultLocation['results'][0]['geometry']['location']['lat']
+#         long = resultLocation['results'][0]['geometry']['location']['lng']
+#         location = resultLocation['results'][0]['formatted_address']
+#         print lat
+#         print long
+#
+# =======
 
+    url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
+    resultLocation = json.loads(urllib.urlopen(url).read())
+    lat = resultLocation['results'][0]['geometry']['location']['lat']
+    long = resultLocation['results'][0]['geometry']['location']['lng']
+    location = resultLocation['results'][0]['formatted_address']
+    print lat
+    print long
 
     token = request.vars.next_page
     if token is not '':
@@ -70,6 +80,7 @@ def get_recommendations():
     url = ''
 
     if searchRec is not '':
+        print "search  is {0}, and next paage query is {1}".format(searchRec, next_page_query)
         url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + repr(lat) + ',' + repr(
             long) + '&radius=1000&keyword=' + searchRec + '&key=' + api_key + next_page_query
     elif searchRec is '':
@@ -78,6 +89,7 @@ def get_recommendations():
     print("url is ")
     print(url)
 
+    print "THE URL IS {0}".format(url)
     resultStuff = json.loads(urllib.urlopen(url).read())
 
     print len(resultStuff['results'])

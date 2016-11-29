@@ -62,12 +62,12 @@ var app = function () {
             //end loading function here
             self.vue.loading = 0;
             var invalid = data.invalid;
+            self.vue.locationRec = data.location;
             if (!invalid) {
                 self.vue.recommendation = data.recommendation;
                 self.vue.has_more = data.has_more;
                 self.vue.logged_in = data.logged_in;
                 self.vue.next_page = data.next_page;
-                self.vue.locationRec = data.location;
                 self.vue.invalid = data.invalid;
                 enumerate(self.vue.recommendation);
                 make_Markers(self.vue.recommendation);
@@ -149,7 +149,7 @@ var app = function () {
 
     });
 
-    //self.get_recommendations();
+    self.get_recommendations();
     $("#vue-div").show();
 
     return self;
