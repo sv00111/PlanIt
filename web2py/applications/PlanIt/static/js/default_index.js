@@ -114,8 +114,8 @@ var app = function () {
         //makeMarkers();
     };
 
-    self.add = function(lat, lng, name, address, place_id){
-        PLANAPP.add_stop_from_location(lat, lng, name, address, place_id);
+    self.add = function(lat, lng, name, address, place_id, placesUrl){
+        PLANAPP.add_stop_from_location(lat, lng, name, address, place_id, placesUrl);
     };
 
 //lat and lng will need to be queried from the users first input location.
