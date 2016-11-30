@@ -19,6 +19,20 @@ body {
     -o-background-size: cover;
 }
 
+/*.content {*/
+    /*width: 400px;*/
+    /*padding: 20px;*/
+    /*overflow: hidden;*/
+/*}*/
+
+
+.contact img {
+    /*margin-right: 15px;*/
+    width:auto;
+    height: 300px;
+    /*float: right;*/
+}
+
 /* Customize the text color and shadow color and to optimize text legibility. */
 
 .tagline {

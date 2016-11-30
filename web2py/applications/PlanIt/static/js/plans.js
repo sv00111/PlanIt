@@ -63,6 +63,9 @@ var planapp = function () {
         self.vue.form_stop_end = "";
         self.vue.form_stop_place = "";
         self.vue.form_stop_address = "";
+
+        // as supplied by the browser's 'navigator.geolocation' object.
+
     };
 
 
@@ -92,7 +95,6 @@ var planapp = function () {
             $("#time_error_msg").show();
             $.web2py.enableElement($("#add_stop_submit"));
         } else {
-
             $.post(add_stop_url,
                 {
                     label: self.vue.form_stop_label,
@@ -273,7 +275,7 @@ var planapp = function () {
             form_stop_start: null,
             form_stop_end: null,
             form_stop_place: null,
-            form_stop_address: null,
+            form_stop_address: null
         },
         methods: {
             add_stop_button: self.add_stop_button,
