@@ -63,6 +63,8 @@ var app = function () {
             self.vue.loading = 0;
             var invalid = data.invalid;
             self.vue.locationRec = data.location;
+            self.vue.lat = data.lat;
+            self.vue.lng = data.lng;
             if (!invalid) {
                 self.vue.recommendation = data.recommendation;
                 self.vue.has_more = data.has_more;
@@ -74,9 +76,9 @@ var app = function () {
             }else {
                 alert("Ya Dun Goofed, Search Again");
             }
+            centerMap(data.location,data.lat, data.lng);
 
         });
-
     };
 
     self.changeEditPostId = function (post_id, post_name, lats, lngs, rec) {
@@ -118,6 +120,10 @@ var app = function () {
         PLANAPP.add_stop_from_location(lat, lng, name, address, place_id, placesUrl);
     };
 
+    self.setCenter = function(){
+
+        centerMap(self.vue.locationRec, self.vue.lat, self.vue.lng);
+    };
 //lat and lng will need to be queried from the users first input location.
     self.vue = new Vue({
         el: "#vue-div",
@@ -144,7 +150,8 @@ var app = function () {
             get_recommendations: self.get_recommendations,
             searchFn: self.searchFn,
             changeEditPostId: self.changeEditPostId,
-            add: self.add
+            add: self.add,
+            setCenter: self.setCenter
         }
 
     });

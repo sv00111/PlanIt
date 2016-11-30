@@ -4,7 +4,7 @@
  * Script for managing plan objects and their stops through Vue.
  */
 
-var planapp = function() {
+var planapp = function () {
 
     var self = {};
     var temp_lat = null;
@@ -19,9 +19,11 @@ var planapp = function() {
      * @param v : the array to be enumerated
      * @returns the array remapped with each element having a key _idx equal to it's index in the array
      */
-    var enumerate = function(v) {
-        var k=0;
-        return v.map(function(e) {e._idx = k++;});
+    var enumerate = function (v) {
+        var k = 0;
+        return v.map(function (e) {
+            e._idx = k++;
+        });
     };
 
     /**
@@ -33,24 +35,28 @@ var planapp = function() {
      * @param primer : (optional) function used to prime the data before sorting
      * @returns {Function} : to be passed into sort()
      */
-    var sort_by = function(field, reverse, primer){
+    var sort_by = function (field, reverse, primer) {
 
-       var key = primer ?
-           function(x) {return primer(x[field])} :
-           function(x) {return x[field]};
+        var key = primer ?
+            function (x) {
+                return primer(x[field])
+            } :
+            function (x) {
+                return x[field]
+            };
 
-       reverse = !reverse ? 1 : -1;
+        reverse = !reverse ? 1 : -1;
 
-       return function (a, b) {
-           return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
-         }
+        return function (a, b) {
+            return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
+        }
     };
 
     /**
      * Handles the event when the "add stop" button is pressed
      * Resets form inputs and flips is_adding_stop boolean
      */
-    self.add_stop_button = function() {
+    self.add_stop_button = function () {
         self.vue.is_adding_stop = !self.vue.is_adding_stop;
         self.vue.form_stop_label = "";
         self.vue.form_stop_start = "";
@@ -61,8 +67,8 @@ var planapp = function() {
 
 
     //Shrey wrote this:
-    self.add_stop_from_location = function(lat, lng, name, address, place_id, placesUrl) {
-        console.log("SHREY WROTE THIS");
+    self.add_stop_from_location = function (lat, lng, name, address, place_id, placesUrl) {
+        // console.log("address passed is " + address);
         self.vue.is_adding_stop = true;
         self.vue.form_stop_address = address;
         self.vue.form_stop_place = name;
@@ -81,8 +87,8 @@ var planapp = function() {
      */
 
     //TODO: if address is put in, then fill backend with lat and lng using google maps api. else keep it empty.
-    self.add_stop = function() {
-        if(self.vue.form_stop_end < self.vue.form_stop_start) {
+    self.add_stop = function () {
+        if (self.vue.form_stop_end < self.vue.form_stop_start) {
             $("#time_error_msg").show();
             $.web2py.enableElement($("#add_stop_submit"));
         } else {
@@ -106,6 +112,9 @@ var planapp = function() {
                     self.vue.stops.unshift(data.stop);                          // add stop to vue list object
                     self.vue.stops.sort(sort_by('start_time', false, null));    // sort by start time
                     enumerate(self.vue.stops);
+                     //TODO: add perm marker using lat and lng here
+                    addPermMarker(temp_lat, temp_lon);
+
                     $("#time_error_msg").hide();
                     temp_lat = null;
                     temp_lon = null;
@@ -140,11 +149,11 @@ var planapp = function() {
      *
      * if {@var pid} is defined call {@function get_plan_from_api()} else use placeholder
      */
-    self.get_plan = function() {
+    self.get_plan = function () {
         // initAutocomplete();
         self.vue.plan_id = pid;
-        if(self.vue.plan_id != -1) {
-            $.getJSON(get_plan_from_api(self.vue.plan_id), function(data) {
+        if (self.vue.plan_id != -1) {
+            $.getJSON(get_plan_from_api(self.vue.plan_id), function (data) {
                 self.vue.current_plan = data.plan;
                 self.vue.logged_in = data.logged_in;
             });
@@ -180,12 +189,13 @@ var planapp = function() {
      * Populates vue object with selected plan's stop data retrieved from db via api
      *
      */
-    self.get_stops = function() {
-        $.getJSON(get_stops_from_api(self.vue.plan_id), function(data) {
+    self.get_stops = function () {
+        $.getJSON(get_stops_from_api(self.vue.plan_id), function (data) {
             self.vue.stops = data.stops;
             self.vue.logged_in = data.logged_in;
             self.vue.stops.sort(sort_by('start_time', false, null));
             enumerate(self.vue.stops);
+            addPermMarkerFromDB(data.stops);
         })
     };
 
@@ -194,10 +204,10 @@ var planapp = function() {
      *
      * @param stop_idx : stop's index in self.vue.stops
      */
-    self.delete_stop = function(stop_idx) {
+    self.delete_stop = function (stop_idx) {
         if (confirm("Delete this stop from your plan?")) {
             $.post(del_stop_url,
-                { stop_id: self.vue.stops[stop_idx].id },
+                {stop_id: self.vue.stops[stop_idx].id},
                 function () {
                     self.vue.stops.splice(stop_idx, 1);
                     enumerate(self.vue.stops);
@@ -207,18 +217,17 @@ var planapp = function() {
     };
 
 
-    self.getPlanID = function() {
-        console.log("THIS US HERE R")
+    self.getPlanID = function () {
         if (self.vue.plan_id != null) {
             return self.vue.plan_id;
         }
         else return null;
     };
 
-    self.delete_plan = function() {
+    self.delete_plan = function () {
         if (confirm("Are you sure you want to delete this plan and all of its stops?")) {
             $.post(del_plan_url,
-                { plan_id: self.vue.plan_id },
+                {plan_id: self.vue.plan_id},
                 function () {
                     window.location.replace(home_url);
                 }
@@ -285,4 +294,6 @@ var planapp = function() {
 
 var PLANAPP = null;
 
-jQuery(function(){PLANAPP = planapp();});
+jQuery(function () {
+    PLANAPP = planapp();
+});

@@ -22,32 +22,32 @@ def get_recommendations():
         logged_in = True
     else:
         logged_in = False
-    if int(request.vars.plan_id) is -1:
-        return response.json(dict(
-            recommendation=[],
-            logged_in=logged_in,
-            has_more=False,
-            next_page='',
-            location='',
-        ))
+    # if int(request.vars.plan_id) is -1:
+    #     return response.json(dict(
+    #         recommendation=[],
+    #         logged_in=logged_in,
+    #         has_more=False,
+    #         next_page='',
+    #         location='',
+    #         lat=0,
+    #         lng=0
+    #     ))
     ID_counter = int(request.vars.lengthOfArr)
     searchRec = request.vars.searchRec
     locationRec = request.vars.locationRec
+    tempLocation = False
     # print "THE LOCATION IS "
     if searchRec is None or searchRec is "":
         print "searchEmpty"
     if locationRec is None or locationRec is "":
+        tempLocation = True
         pid = int(request.vars.plan_id) #//not defined yet
         locationRec = db(db.planit_plan.id == pid).select(db.planit_plan.ALL).first().start_location
         print "locationRec is {0}".format(locationRec)
-        return response.json(dict(
-            recommendation=[],
-            logged_in=logged_in,
-            has_more=False,
-            next_page='',
-            location=locationRec,
-            invalid = False
-        ))
+
+
+
+
 # <<<<<<< Updated upstream
 #     else:
 #         url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
@@ -68,6 +68,18 @@ def get_recommendations():
     location = resultLocation['results'][0]['formatted_address']
     print lat
     print long
+
+    if tempLocation is True:
+        return response.json(dict(
+            recommendation=[],
+            logged_in=logged_in,
+            has_more=False,
+            next_page='',
+            location=locationRec,
+            invalid=False,
+            lat = lat,
+            lng = long
+        ))
 
     token = request.vars.next_page
     if token is not '':
@@ -100,7 +112,9 @@ def get_recommendations():
             has_more=False,
             next_page='',
             location='',
-            invalid=True
+            invalid=True,
+            lat = lat,
+            lng = long
         ))
 
 
@@ -181,7 +195,9 @@ def get_recommendations():
         has_more=has_more,
         next_page=more_results_page,
         location=location,
-        invalid = False
+        invalid = False,
+        lat = lat,
+        lng = long
     ))
 
 def add_stop():

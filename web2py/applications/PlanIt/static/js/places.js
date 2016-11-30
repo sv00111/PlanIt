@@ -1,6 +1,7 @@
 var maps;
 var marker;
 var markers = [];
+var planMarker = [];
 var infowindows = [];
 var startIndex = 0;
 
@@ -17,6 +18,9 @@ function initMap() {
         zoom: 10,
         center: san_mat
     });
+
+    APP.setCenter();
+    //call set center here;
     // marker = new google.maps.Marker({
     //     position: uluru,
     //     map: maps
@@ -37,6 +41,54 @@ function setMapOnAll() {
     }
 }
 
+function centerMap(locationRec, lat, lng){
+    var center = {lat: (lat), lng: (lng)};
+    maps.setCenter(center);
+    maps.setZoom(13);
+}
+
+function addPermMarkerFromDB(inputArray){
+
+    // cust_lat, cust_lon
+    var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+
+
+    for (var i = 0; i < inputArray.length; i++) {
+
+        // infowindows[i] = new google.maps.InfoWindow({
+        //     content: contentString
+        // });
+        var position = {lat: inputArray[i].cust_lat, lng: inputArray[i].cust_lon};
+        // console.log("the id of current marker is " + inputArray[i].id);
+        // console.log("the ith element of current marker is " + i);
+        planMarker[i] = new google.maps.Marker({
+            position: position,
+            title: inputArray[i].name,
+            // label: (i + 1).toString(),
+            map: maps,
+            icon: image
+        });
+
+        // google.maps.event.addListener(markers[i], 'click', function (innerKey) {
+        //     return function () {
+        //         infowindows[innerKey].open(maps, markers[innerKey]);
+        //     }
+        // }(i));
+        maps.setCenter(planMarker[i].getPosition());
+        maps.setZoom(15);
+    }
+
+}
+
+function addPermMarker(lat, lng){
+    var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+      var beachMarker = new google.maps.Marker({
+        position: {lat: lat, lng: lng},
+        map: maps,
+        icon: image
+      });
+}
+
 function make_Markers(inputArray) {
     console.log(startIndex);
     console.log("length is " + inputArray.length);
@@ -55,7 +107,7 @@ function make_Markers(inputArray) {
             "<tr><th>" + inputArray[i].hours[5] + "</th></tr>" +
             "<tr><th>" + inputArray[i].hours[6] + "</th></tr>" +
             "</table>" +
-            "</div>"
+            "</div>";
 
         infowindows[i] = new google.maps.InfoWindow({
             content: contentString
