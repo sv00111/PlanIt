@@ -4,6 +4,8 @@ import time
 import urllib
 import urllib2
 
+from gluon.main import requests
+
 api_key = 'AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
 
 def get_place_icons(places):
@@ -22,16 +24,6 @@ def get_recommendations():
         logged_in = True
     else:
         logged_in = False
-    # if int(request.vars.plan_id) is -1:
-    #     return response.json(dict(
-    #         recommendation=[],
-    #         logged_in=logged_in,
-    #         has_more=False,
-    #         next_page='',
-    #         location='',
-    #         lat=0,
-    #         lng=0
-    #     ))
     ID_counter = int(request.vars.lengthOfArr)
     searchRec = request.vars.searchRec
     locationRec = request.vars.locationRec
@@ -277,3 +269,13 @@ def del_plan():
     db(db.planit_plan.id == pid).delete()
     redirect(URL('default', 'home'))
     return "ok"
+
+
+# def send_email():
+#     requests.post(
+#         "https://api.mailgun.net/v3/YOUR_DOMAIN_NAME/messages",
+#         auth=("api", "YOUR_API_KEY"),
+#         data={"from": "Excited User <mailgun@YOUR_DOMAIN_NAME>",
+#               "to": ["bar@example.com", "YOU@YOUR_DOMAIN_NAME"],
+#               "subject": "Hello",
+#               "text": "Testing some Mailgun awesomness!"})

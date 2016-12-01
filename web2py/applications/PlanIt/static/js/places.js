@@ -51,9 +51,9 @@ function addPermMarkerFromDB(inputArray){
         planMarker[i] = new google.maps.Marker({
             position: position,
             title: inputArray[i].name,
-            // label: (i + 1).toString(),
             map: maps,
             icon: image
+
         });
 
         // google.maps.event.addListener(markers[i], 'click', function (innerKey) {
