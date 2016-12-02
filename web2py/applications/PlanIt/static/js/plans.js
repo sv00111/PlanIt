@@ -186,6 +186,44 @@ var planapp = function() {
         }
     };
 
+    function get_comments_from_api(id) {
+        var pp = {
+            id: id
+        };
+        return get_comments_url + "?" + $.param(pp);
+    }
+
+    self.add_comment = function() {
+        $.post(add_comment_url,
+            {
+                //user email
+                //comment string
+                //stop id
+                label: self.vue.form_stop_label,
+                parent: self.vue.current_plan.id
+            },
+            function (data) {                                                // data is echoed back from db after insert
+                $.web2py.enableElement($("#add_stop_submit"));
+                self.add_stop_button();                                     // close the form
+                self.vue.comments.unshift(data.comment);                          // add stop to vue list object
+                self.vue.comments.sort(sort_by('start_time', false, null));    // sort by start time
+                enumerate(self.vue.comments);
+                $("#time_error_msg").hide();
+            }
+        );
+    };
+
+    /**
+     * Populates vue object with selected stop's comment data retrieved from db via api
+     *
+     */
+    self.get_comments = function(stop_idx) {
+        $.getJSON(get_comments_from_api(stop_idx), function(data) {
+            self.vue.comments = data.comments;
+            self.vue.comments.sort(sort_by('start_time', false, null));
+            enumerate(self.vue.comments);
+        })
+    };
 
     self.getPlanID = function() {
         console.log("THIS US HERE R")
@@ -234,6 +272,7 @@ var planapp = function() {
             plan_id: null,
             current_plan: {},
             stops: [],
+            comments:[],
             label: null,
             date: null,
             start: null,

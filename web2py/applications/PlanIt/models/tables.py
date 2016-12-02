@@ -66,5 +66,13 @@ db.define_table('planit_stop',
                 Field('cust_lat', 'double'),
                 Field('parent', 'reference planit_plan'),
                 Field('created_by', default=get_user_email()),
-                Field('created_on', default=datetime.datetime.utcnow())
+                Field('created_on', default=datetime.datetime.utcnow()),
+                Field('comments', 'list:reference stop_comments')
                 )
+
+db.define_table('stop_comments',
+                Field('stop_id', 'reference planit_stop'),
+                Field('created_by', default=get_user_email()),
+                Field('comment_string'),
+                Field('posted_on', default=datetime.datetime.utcnow()),
+                Field('likes', 'integer', default=0))
