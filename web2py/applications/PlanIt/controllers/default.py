@@ -48,8 +48,6 @@ def allplans():
     plans = db(db.planit_plan).select(db.planit_plan.label, db.planit_plan.id, orderby=~db.planit_plan.id)
     return dict(plans=plans)
 
-def share():
-    return dict()
 
 def user():
     """
@@ -148,8 +146,8 @@ def testMail():
     form = SQLFORM.factory(
     Field('name', requires=IS_NOT_EMPTY()),
     Field('email', requires =[ IS_EMAIL(error_message='invalid email!'), IS_NOT_EMPTY() ]),
-    Field('subject', requires=IS_NOT_EMPTY()),
-    Field('message', requires=IS_NOT_EMPTY(), type='text')
+    Field('subject', requires=IS_NOT_EMPTY(), default = 'I would like to share my plan with you!'),
+    Field('message', requires=IS_NOT_EMPTY(), type='text', default = 'Please check the link I sent you')
     )
     if form.process().accepted:
         session.name = form.vars.name
@@ -157,9 +155,9 @@ def testMail():
         session.subject = form.vars.subject
         session.message = form.vars.message
         if mail:
-            if mail.send(to=['shrey4fun@gmail.com'],
-                         subject='project minerva',
-                         message="Hello this is an email send from minerva.com from contact us form.\nName:" + session.name + " \nEmail : " + session.email + "\nSubject : " + session.subject + "\nMessage : " + session.message + ".\n "
+            if mail.send(to=[session.email],
+                         subject=session.subject,
+                         message= 'Hi ' + session.name + '!\n' + session.message + ".\n " + URL('default', 'home', args = [urlArg]) + "\n" + "From \n--" + auth.user.email
                          ):
                 response.flash = 'email sent sucessfully.'
                 print 'success'

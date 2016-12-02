@@ -38,25 +38,6 @@ def get_recommendations():
         print "locationRec is {0}".format(locationRec)
         locationRec = locationRec.replace (" ", "+")
 
-
-
-
-# <<<<<<< Updated upstream
-#     else:
-#         url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
-#         print "DA URL LOCATION IS {0}".format(url)
-#         resultLocation = json.loads(urllib.urlopen(url).read())
-#         lat = resultLocation['results'][0]['geometry']['location']['lat']
-#         long = resultLocation['results'][0]['geometry']['location']['lng']
-#         location = resultLocation['results'][0]['formatted_address']
-#         print lat
-#         print long
-#
-# ======
-
-    # url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
-
-
     url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
     print url
     resultLocation = json.loads(urllib.urlopen(url).read())
@@ -274,13 +255,3 @@ def del_plan():
     db(db.planit_plan.id == pid).delete()
     redirect(URL('default', 'home'))
     return "ok"
-
-
-# def send_email():
-#     requests.post(
-#         "https://api.mailgun.net/v3/YOUR_DOMAIN_NAME/messages",
-#         auth=("api", "YOUR_API_KEY"),
-#         data={"from": "Excited User <mailgun@YOUR_DOMAIN_NAME>",
-#               "to": ["bar@example.com", "YOU@YOUR_DOMAIN_NAME"],
-#               "subject": "Hello",
-#               "text": "Testing some Mailgun awesomness!"})
