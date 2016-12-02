@@ -237,6 +237,11 @@ var planapp = function () {
         }
     };
 
+    self.redirect_share = function(){
+        window.location.replace('testMail/' + self.vue.plan_id)
+    };
+
+
 
     /**
      * Plans vue object
@@ -283,7 +288,8 @@ var planapp = function () {
             delete_stop: self.delete_stop,
             get_plan: self.get_plan,
             add_stop_from_location: self.add_stop_from_location,
-            delete_plan: self.delete_plan
+            delete_plan: self.delete_plan,
+            redirect_share: self.redirect_share
         }
     });
 

@@ -12,7 +12,7 @@
         <button class="btn btn-danger pull-right" v-on:click="delete_plan()" v-bind:class="{'disabled': !logged_in}">
             <i class="fa fa-trash"></i>
         </button>
-        <a class="btn btn-primary pull-right" v-on:click="showModal()" v-bind:class="{'disabled': !logged_in}">
+        <a class="btn btn-primary pull-right" v-on:click="redirect_share()" v-bind:class="{'disabled': !logged_in}">
             Share!
         </a>
 
