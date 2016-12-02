@@ -155,6 +155,7 @@ def testMail():
         session.subject = form.vars.subject
         session.message = form.vars.message
         if mail:
+            # TODO: change  URL('default', 'home', args = [urlArg]) on line 161 when we host the url
             if mail.send(to=[session.email],
                          subject=session.subject,
                          message= 'Hi ' + session.name + '!\n' + session.message + ".\n " + URL('default', 'home', args = [urlArg]) + "\n" + "From \n--" + auth.user.email
