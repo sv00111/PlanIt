@@ -3,7 +3,7 @@ import json
 import time
 import urllib
 import urllib2
-
+from StringIO import StringIO
 from gluon.main import requests
 
 api_key = 'AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
@@ -36,6 +36,7 @@ def get_recommendations():
         pid = int(request.vars.plan_id) #//not defined yet
         locationRec = db(db.planit_plan.id == pid).select(db.planit_plan.ALL).first().start_location
         print "locationRec is {0}".format(locationRec)
+        locationRec = locationRec.replace (" ", "+")
 
 
 
@@ -51,9 +52,13 @@ def get_recommendations():
 #         print lat
 #         print long
 #
-# =======
+# ======
+
+    # url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
+
 
     url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
+    print url
     resultLocation = json.loads(urllib.urlopen(url).read())
     lat = resultLocation['results'][0]['geometry']['location']['lat']
     long = resultLocation['results'][0]['geometry']['location']['lng']
@@ -67,7 +72,7 @@ def get_recommendations():
             logged_in=logged_in,
             has_more=False,
             next_page='',
-            location=locationRec,
+            location= locationRec.replace ("+", " "),
             invalid=False,
             lat = lat,
             lng = long
