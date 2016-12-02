@@ -1,26 +1,18 @@
 var maps;
 var marker;
 var markers = [];
+var planMarker = [];
 var infowindows = [];
 var startIndex = 0;
 
 function initMap() {
-    // initAutocompletePlan();
-    // if ( APP.locationRec == null ){
-    //     // setTimeout(initMap, 1000);
-    // }
-    // var san_mat = APP.locationRec;
-    // console.log(san_mat);
-    // console.log(APP.lat + " " + APP.lng);
     var san_mat = {lat: 37.566969, lng: -122.326455};
     maps = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
         center: san_mat
     });
-    // marker = new google.maps.Marker({
-    //     position: uluru,
-    //     map: maps
-    // });
+
+    APP.setCenter();
 }
 
 function markerMapsZoom(lats, lgns, p_id) {
@@ -35,6 +27,53 @@ function setMapOnAll() {
     for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
     }
+}
+
+function centerMap(locationRec, lat, lng){
+    var center = {lat: (lat), lng: (lng)};
+    maps.setCenter(center);
+    maps.setZoom(13);
+}
+
+function addPermMarkerFromDB(inputArray){
+
+    // cust_lat, cust_lon
+    var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+
+    for (var i = 0; i < inputArray.length; i++) {
+
+        // infowindows[i] = new google.maps.InfoWindow({
+        //     content: contentString
+        // });
+        var position = {lat: inputArray[i].cust_lat, lng: inputArray[i].cust_lon};
+        // console.log("the id of current marker is " + inputArray[i].id);
+        // console.log("the ith element of current marker is " + i);
+        planMarker[i] = new google.maps.Marker({
+            position: position,
+            title: inputArray[i].name,
+            map: maps,
+            icon: image
+
+        });
+
+        // google.maps.event.addListener(markers[i], 'click', function (innerKey) {
+        //     return function () {
+        //         infowindows[innerKey].open(maps, markers[innerKey]);
+        //     }
+        // }(i));
+        maps.setCenter(planMarker[i].getPosition());
+        maps.setZoom(15);
+    }
+
+}
+
+function addPermMarker(lat, lng){
+    var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+      var beachMarker = new google.maps.Marker({
+        position: {lat: lat, lng: lng},
+        map: maps,
+        icon: image
+      });
 }
 
 function make_Markers(inputArray) {
@@ -55,7 +94,7 @@ function make_Markers(inputArray) {
             "<tr><th>" + inputArray[i].hours[5] + "</th></tr>" +
             "<tr><th>" + inputArray[i].hours[6] + "</th></tr>" +
             "</table>" +
-            "</div>"
+            "</div>";
 
         infowindows[i] = new google.maps.InfoWindow({
             content: contentString

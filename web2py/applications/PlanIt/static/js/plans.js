@@ -4,9 +4,13 @@
  * Script for managing plan objects and their stops through Vue.
  */
 
-var planapp = function() {
+var planapp = function () {
 
     var self = {};
+    var temp_lat = null;
+    var temp_lon = null;
+    var temp_place_id = null;
+    var temp_img_url = "http://studiord.com.au/wp-content/uploads/2016/06/placeholder-180x180.jpg";
     Vue.config.silent = false; // show all warnings
 
     /**
@@ -15,9 +19,11 @@ var planapp = function() {
      * @param v : the array to be enumerated
      * @returns the array remapped with each element having a key _idx equal to it's index in the array
      */
-    var enumerate = function(v) {
-        var k=0;
-        return v.map(function(e) {e._idx = k++;});
+    var enumerate = function (v) {
+        var k = 0;
+        return v.map(function (e) {
+            e._idx = k++;
+        });
     };
 
     /**
@@ -29,36 +35,50 @@ var planapp = function() {
      * @param primer : (optional) function used to prime the data before sorting
      * @returns {Function} : to be passed into sort()
      */
-    var sort_by = function(field, reverse, primer){
+    var sort_by = function (field, reverse, primer) {
 
-       var key = primer ?
-           function(x) {return primer(x[field])} :
-           function(x) {return x[field]};
+        var key = primer ?
+            function (x) {
+                return primer(x[field])
+            } :
+            function (x) {
+                return x[field]
+            };
 
-       reverse = !reverse ? 1 : -1;
+        reverse = !reverse ? 1 : -1;
 
-       return function (a, b) {
-           return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
-         }
+        return function (a, b) {
+            return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
+        }
     };
 
     /**
      * Handles the event when the "add stop" button is pressed
      * Resets form inputs and flips is_adding_stop boolean
      */
-    self.add_stop_button = function() {
+    self.add_stop_button = function () {
         self.vue.is_adding_stop = !self.vue.is_adding_stop;
         self.vue.form_stop_label = "";
         self.vue.form_stop_start = "";
         self.vue.form_stop_end = "";
         self.vue.form_stop_place = "";
         self.vue.form_stop_address = "";
+
+        // as supplied by the browser's 'navigator.geolocation' object.
+
     };
 
 
     //Shrey wrote this:
-    self.add_stop_from_location = function(lat, lng, name, address, place_id) {
-        console.log("SHREY WROTE THIS");
+    self.add_stop_from_location = function (lat, lng, name, address, place_id, placesUrl) {
+        // console.log("address passed is " + address);
+        self.vue.is_adding_stop = true;
+        self.vue.form_stop_address = address;
+        self.vue.form_stop_place = name;
+        temp_lat = lat;
+        temp_lon = lng;
+        temp_place_id = place_id;
+        temp_img_url = placesUrl;
     };
 
     /**
@@ -70,8 +90,8 @@ var planapp = function() {
      */
 
     //TODO: if address is put in, then fill backend with lat and lng using google maps api. else keep it empty.
-    self.add_stop = function() {
-        if(self.vue.form_stop_end < self.vue.form_stop_start) {
+    self.add_stop = function () {
+        if (self.vue.form_stop_end < self.vue.form_stop_start) {
             $("#time_error_msg").show();
             $.web2py.enableElement($("#add_stop_submit"));
         } else {
@@ -82,7 +102,11 @@ var planapp = function() {
                     end_time: self.vue.form_stop_end,
                     cust_place: self.vue.form_stop_place,
                     cust_address: self.vue.form_stop_address,
-                    parent: self.vue.current_plan.id
+                    parent: self.vue.current_plan.id,
+                    place_id: temp_place_id,
+                    cust_lat: temp_lat,
+                    cust_lon: temp_lon,
+                    thumbnail: temp_img_url
                 },
                 function (data) {                                                // data is echoed back from db after insert
                     $.web2py.enableElement($("#add_stop_submit"));
@@ -90,7 +114,14 @@ var planapp = function() {
                     self.vue.stops.unshift(data.stop);                          // add stop to vue list object
                     self.vue.stops.sort(sort_by('start_time', false, null));    // sort by start time
                     enumerate(self.vue.stops);
+                     //TODO: add perm marker using lat and lng here
+                    addPermMarker(temp_lat, temp_lon);
+
                     $("#time_error_msg").hide();
+                    temp_lat = null;
+                    temp_lon = null;
+                    temp_place_id = null;
+                    temp_img_url = "http://studiord.com.au/wp-content/uploads/2016/06/placeholder-180x180.jpg";
                 }
             );
         }
@@ -120,11 +151,11 @@ var planapp = function() {
      *
      * if {@var pid} is defined call {@function get_plan_from_api()} else use placeholder
      */
-    self.get_plan = function() {
+    self.get_plan = function () {
         // initAutocomplete();
         self.vue.plan_id = pid;
-        if(self.vue.plan_id != -1) {
-            $.getJSON(get_plan_from_api(self.vue.plan_id), function(data) {
+        if (self.vue.plan_id != -1) {
+            $.getJSON(get_plan_from_api(self.vue.plan_id), function (data) {
                 self.vue.current_plan = data.plan;
                 self.vue.logged_in = data.logged_in;
             });
@@ -160,12 +191,13 @@ var planapp = function() {
      * Populates vue object with selected plan's stop data retrieved from db via api
      *
      */
-    self.get_stops = function() {
-        $.getJSON(get_stops_from_api(self.vue.plan_id), function(data) {
+    self.get_stops = function () {
+        $.getJSON(get_stops_from_api(self.vue.plan_id), function (data) {
             self.vue.stops = data.stops;
             self.vue.logged_in = data.logged_in;
             self.vue.stops.sort(sort_by('start_time', false, null));
             enumerate(self.vue.stops);
+            addPermMarkerFromDB(data.stops);
         })
     };
 
@@ -174,10 +206,10 @@ var planapp = function() {
      *
      * @param stop_idx : stop's index in self.vue.stops
      */
-    self.delete_stop = function(stop_idx) {
+    self.delete_stop = function (stop_idx) {
         if (confirm("Delete this stop from your plan?")) {
             $.post(del_stop_url,
-                { stop_id: self.vue.stops[stop_idx].id },
+                {stop_id: self.vue.stops[stop_idx].id},
                 function () {
                     self.vue.stops.splice(stop_idx, 1);
                     enumerate(self.vue.stops);
@@ -225,24 +257,28 @@ var planapp = function() {
         })
     };
 
-    self.getPlanID = function() {
-        console.log("THIS US HERE R")
+    self.getPlanID = function () {
         if (self.vue.plan_id != null) {
             return self.vue.plan_id;
         }
         else return null;
     };
 
-    self.delete_plan = function() {
+    self.delete_plan = function () {
         if (confirm("Are you sure you want to delete this plan and all of its stops?")) {
             $.post(del_plan_url,
-                { plan_id: self.vue.plan_id },
+                {plan_id: self.vue.plan_id},
                 function () {
                     window.location.replace(home_url);
                 }
             )
         }
     };
+
+    self.redirect_share = function(){
+        window.location.replace('testMail/' + self.vue.plan_id)
+    };
+
 
 
     /**
@@ -283,7 +319,7 @@ var planapp = function() {
             form_stop_start: null,
             form_stop_end: null,
             form_stop_place: null,
-            form_stop_address: null,
+            form_stop_address: null
         },
         methods: {
             add_stop_button: self.add_stop_button,
@@ -291,7 +327,8 @@ var planapp = function() {
             delete_stop: self.delete_stop,
             get_plan: self.get_plan,
             add_stop_from_location: self.add_stop_from_location,
-            delete_plan: self.delete_plan
+            delete_plan: self.delete_plan,
+            redirect_share: self.redirect_share
         }
     });
 
@@ -304,4 +341,6 @@ var planapp = function() {
 
 var PLANAPP = null;
 
-jQuery(function(){PLANAPP = planapp();});
+jQuery(function () {
+    PLANAPP = planapp();
+});

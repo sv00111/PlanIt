@@ -67,7 +67,8 @@ db.define_table('planit_stop',
                 Field('parent', 'reference planit_plan'),
                 Field('created_by', default=get_user_email()),
                 Field('created_on', default=datetime.datetime.utcnow()),
-                Field('comments', 'list:reference stop_comments')
+                Field('comments', 'list:reference stop_comments'),
+                Field('thumbnail', default="http://studiord.com.au/wp-content/uploads/2016/06/placeholder-180x180.jpg")
                 )
 
 db.define_table('stop_comments',

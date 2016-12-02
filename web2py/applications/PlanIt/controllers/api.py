@@ -3,6 +3,8 @@ import json
 import time
 import urllib
 import urllib2
+from StringIO import StringIO
+from gluon.main import requests
 
 api_key = 'AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
 
@@ -22,40 +24,48 @@ def get_recommendations():
         logged_in = True
     else:
         logged_in = False
-    if int(request.vars.plan_id) is -1:
-        return response.json(dict(
-            recommendation=[],
-            logged_in=logged_in,
-            has_more=False,
-            next_page='',
-            location='',
-        ))
     ID_counter = int(request.vars.lengthOfArr)
     searchRec = request.vars.searchRec
     locationRec = request.vars.locationRec
+    tempLocation = False
     # print "THE LOCATION IS "
     if searchRec is None or searchRec is "":
         print "searchEmpty"
     if locationRec is None or locationRec is "":
+        tempLocation = True
         pid = int(request.vars.plan_id) #//not defined yet
         locationRec = db(db.planit_plan.id == pid).select(db.planit_plan.ALL).first().start_location
         print "locationRec is {0}".format(locationRec)
-        return response.json(dict(
-            recommendation=[],
-            logged_in=logged_in,
-            has_more=False,
-            next_page='',
-            location=locationRec,
-            invalid = False
-        ))
+        # return response.json(dict(
+        #     recommendation=[],
+        #     logged_in=logged_in,
+        #     has_more=False,
+        #     next_page='',
+        #     location=locationRec,
+        #     invalid = False
+        # ))
+        locationRec = locationRec.replace (" ", "+")
 
     url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
+    print url
     resultLocation = json.loads(urllib.urlopen(url).read())
     lat = resultLocation['results'][0]['geometry']['location']['lat']
     long = resultLocation['results'][0]['geometry']['location']['lng']
     location = resultLocation['results'][0]['formatted_address']
     print lat
     print long
+
+    if tempLocation is True:
+        return response.json(dict(
+            recommendation=[],
+            logged_in=logged_in,
+            has_more=False,
+            next_page='',
+            location= locationRec.replace ("+", " "),
+            invalid=False,
+            lat = lat,
+            lng = long
+        ))
 
     token = request.vars.next_page
     if token is not '':
@@ -88,7 +98,9 @@ def get_recommendations():
             has_more=False,
             next_page='',
             location='',
-            invalid=True
+            invalid=True,
+            lat = lat,
+            lng = long
         ))
 
 
@@ -169,7 +181,9 @@ def get_recommendations():
         has_more=has_more,
         next_page=more_results_page,
         location=location,
-        invalid = False
+        invalid = False,
+        lat = lat,
+        lng = long
     ))
 
 def add_comment():
@@ -225,7 +239,11 @@ def add_stop():
         end_time = request.vars.end_time,
         cust_place = request.vars.cust_place,
         cust_address = request.vars.cust_address,
-        parent = request.vars.parent
+        parent = request.vars.parent,
+        cust_lat=request.vars.cust_lat,
+        cust_lon=request.vars.cust_lon,
+        thumbnail=request.vars.thumbnail,
+        place_id=request.vars.place_id
     )
     plan = db(db.planit_plan.id == request.vars.parent).select().first()
     plan = plan.update_record(stops=plan.stops+[stop_id] if plan.stops is not None else [stop_id])
@@ -253,7 +271,11 @@ def get_stops():
                 cust_place = r.cust_place,
                 cust_address = r.cust_address,
                 created_by = r.created_by,
-                created_on = r.created_on
+                created_on = r.created_on,
+                cust_lat = r.cust_lat,
+                cust_lon = r.cust_lon,
+                thumbnail = r.thumbnail,
+                place_id = r.place_id
             )
             stops.append(s)
     logged_in = auth.user_id is not None

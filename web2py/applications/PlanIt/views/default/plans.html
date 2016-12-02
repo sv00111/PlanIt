@@ -14,10 +14,13 @@
         <button class="btn btn-danger pull-right" v-on:click="delete_plan()" v-bind:class="{'disabled': !logged_in}">
             <i class="fa fa-trash"></i>
         </button>
-        <a class="btn btn-primary pull-right" onclick="">
+        <a class="btn btn-primary pull-right" v-on:click="redirect_share()" v-bind:class="{'disabled': !logged_in}">
             Share!
         </a>
+
     </div>
+
+
 
     <div v-if="is_adding_stop" id="add-stop-div">
             <form action="#" v-on:submit.prevent="add_stop" class="" enctype="multipart/form-data" method="post">
@@ -84,7 +87,7 @@
 
             <div class="stop-inner"> <!-- stop-inner; display: inline-block; float: left; margin-left: 5px; -->
                 <div class="mask">
-                    <img class="imgClass-thumbnail" src=${stop.icon} alt="" onerror="if(this.src != 'http://studiord.com.au/wp-content/uploads/2016/06/placeholder-180x180.jpg') this.src = 'http://studiord.com.au/wp-content/uploads/2016/06/placeholder-180x180.jpg';" />
+                    <img class="imgClass-thumbnail" v-bind:src="stop.thumbnail" alt="" />
                 </div>
 
                 <div class="stop-content">
@@ -131,8 +134,3 @@
 
 <script src="{{=URL('static', 'js/plans.js')}}" ></script>
 <script src="{{=URL('static', 'js/autocomplete.js')}}"></script>
-<!--script async defer
-    src="https://maps.googleapis.com/maps/api/js?&callback=initAutocompletePlan">
-</script!-->
-
-<!--script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=autocomplete&callback=initAutocompletePlan"></script-->

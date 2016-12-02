@@ -48,8 +48,6 @@ def allplans():
     plans = db(db.planit_plan).select(db.planit_plan.label, db.planit_plan.id, orderby=~db.planit_plan.id)
     return dict(plans=plans)
 
-def share():
-    return dict()
 
 def user():
     """
@@ -129,3 +127,53 @@ def call():
     supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
     """
     return service()
+
+
+from gluon.tools import Mail
+
+def testMail():
+    if request.args is None:
+        response.flash = 'email sent sucessfully.'
+        print 'please click on a proper plan'
+        redirect(URL('default', 'home'))
+    else:
+        urlArg =  request.args(0)
+    mail = Mail()
+    # mail.settings.server = 'smtp@gmail.com:465'
+    mail.settings.server = 'smtp.gmail.com:587'
+    mail.settings.sender = 'planit183@gmail.com'
+    mail.settings.login = 'planit183@gmail.com:Plan-It183'
+    form = SQLFORM.factory(
+    Field('name', requires=IS_NOT_EMPTY()),
+    Field('email', requires =[ IS_EMAIL(error_message='invalid email!'), IS_NOT_EMPTY() ]),
+    Field('subject', requires=IS_NOT_EMPTY(), default = 'I would like to share my plan with you!'),
+    Field('message', requires=IS_NOT_EMPTY(), type='text', default = 'Please check the link I sent you')
+    )
+    if form.process().accepted:
+        session.name = form.vars.name
+        session.email = form.vars.email
+        session.subject = form.vars.subject
+        session.message = form.vars.message
+        if mail:
+            # TODO: change  URL('default', 'home', args = [urlArg]) on line 161 when we host the url
+            if mail.send(to=[session.email],
+                         subject=session.subject,
+                         message= 'Hi ' + session.name + '!\n' + session.message + ".\n " + URL('default', 'home', args = [urlArg]) + "\n" + "From \n--" + auth.user.email
+                         ):
+                response.flash = 'email sent sucessfully.'
+                print 'success'
+                redirect(URL('default', 'home', args = [urlArg]))
+                session.flash = T('Plan shared sucessfully')
+            else:
+                print "Error sending email"
+                response.flash = 'fail to send email sorry!'
+        else:
+            response.flash = 'Unable to send the email : email parameters not defined'
+    elif form.errors:
+        response.flash = 'form has errors.'
+
+        #response.flash = 'form accepted.'
+    elif form.errors:
+        response.flash='form has errors.'
+
+    return dict(form=form)
