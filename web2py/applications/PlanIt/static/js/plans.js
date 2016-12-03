@@ -153,8 +153,9 @@ var planapp = function () {
      */
     self.get_plan = function () {
         // initAutocomplete();
+        $("vue-plans").hide();
         self.vue.plan_id = pid;
-        if (self.vue.plan_id != -1) {
+        if (self.vue.plan_id != null) {
             $.getJSON(get_plan_from_api(self.vue.plan_id), function (data) {
                 self.vue.is_collab = data.is_collab;
                 if(self.vue.is_collab) {
@@ -198,11 +199,13 @@ var planapp = function () {
      */
     self.get_stops = function () {
         $.getJSON(get_stops_from_api(self.vue.plan_id), function (data) {
-            self.vue.stops = data.stops;
-            self.vue.logged_in = data.logged_in;
-            self.vue.stops.sort(sort_by('start_time', false, null));
-            enumerate(self.vue.stops);
-            addPermMarkerFromDB(data.stops);
+            if(self.vue.is_collab) {
+                self.vue.stops = data.stops;
+                self.vue.logged_in = data.logged_in;
+                self.vue.stops.sort(sort_by('start_time', false, null));
+                enumerate(self.vue.stops);
+                addPermMarkerFromDB(data.stops);
+            }
         })
     };
 
