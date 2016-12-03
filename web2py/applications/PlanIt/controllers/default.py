@@ -45,8 +45,13 @@ def plans():
 
 @auth.requires_login()
 def allplans():
-    plans = db(db.planit_plan).select(db.planit_plan.label, db.planit_plan.id, orderby=~db.planit_plan.id)
-    return dict(plans=plans)
+    p = db(db.planit_plan.created_by == auth.user.email).select(
+        db.planit_plan.label, db.planit_plan.id, orderby=~db.planit_plan.id)
+    print p
+    c = db((db.planit_plan.collabs.contains(auth.user.email)) & (db.planit_plan.created_by != auth.user.email)).select(
+        db.planit_plan.label, db.planit_plan.id, orderby=~db.planit_plan.id)
+    print c
+    return dict(plans=p, collabs=c)
 
 
 def user():
@@ -160,6 +165,13 @@ def testMail():
                          subject=session.subject,
                          message= 'Hi ' + session.name + '!\n' + session.message + ".\n " + URL('default', 'home', args = [urlArg]) + "\n" + "From \n--" + auth.user.email
                          ):
+                # add the receiver to the plan's collab list
+                row = db(db.planit_plan.id == urlArg).select().first()
+                print "before"
+                print row.collabs
+                row.update_record(collabs=row.collabs+[session.email] if row.collabs is not None else [session.email])
+                print "after"
+                print row.collabs
                 response.flash = 'email sent sucessfully.'
                 print 'success'
                 redirect(URL('default', 'home', args = [urlArg]))

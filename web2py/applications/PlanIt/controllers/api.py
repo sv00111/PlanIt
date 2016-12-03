@@ -243,11 +243,13 @@ def select_plan():
         latitude = s.latitude,
         stops = s.stops,
         created_by = s.created_by,
-        created_on = s.created_on
+        created_on = s.created_on,
+        collabs = s.collabs
     )
     print selection
     logged_in = auth.user_id is not None
-    return response.json(dict(plan=selection, logged_in=logged_in))
+    is_collab = auth.user.email in selection['collabs']
+    return response.json(dict(plan=selection, logged_in=logged_in, is_collab=is_collab))
 
 def del_plan():
     pid = int(request.vars.plan_id)

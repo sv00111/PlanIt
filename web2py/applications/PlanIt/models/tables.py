@@ -52,7 +52,8 @@ db.define_table('planit_plan',
                 Field('latitude', 'double'),
                 Field('stops', 'list:reference planit_stop'),
                 Field('created_by', default=get_user_email()),
-                Field('created_on', default=datetime.datetime.utcnow())
+                Field('created_on', default=datetime.datetime.utcnow()),
+                Field('collabs', 'list:string', default=[get_user_email()]),
                 )
 
 db.define_table('planit_stop',

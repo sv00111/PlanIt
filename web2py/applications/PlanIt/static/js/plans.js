@@ -156,8 +156,13 @@ var planapp = function () {
         self.vue.plan_id = pid;
         if (self.vue.plan_id != -1) {
             $.getJSON(get_plan_from_api(self.vue.plan_id), function (data) {
-                self.vue.current_plan = data.plan;
-                self.vue.logged_in = data.logged_in;
+                self.vue.is_collab = data.is_collab;
+                if(self.vue.is_collab) {
+                    self.vue.current_plan = data.plan;
+                    self.vue.logged_in = data.logged_in;
+                } else {
+                    window.location.replace(home_url);
+                }
             });
         } else {
             var p = {
@@ -218,7 +223,11 @@ var planapp = function () {
         }
     };
 
-
+    /**
+     * Gets the db id of the current plan displayed on home
+     *
+     * @returns self.vue.plan_id if plan_id is not null, null otherwise
+     */
     self.getPlanID = function () {
         if (self.vue.plan_id != null) {
             return self.vue.plan_id;
@@ -226,6 +235,9 @@ var planapp = function () {
         else return null;
     };
 
+    /**
+     * Cascade deletes the current plan and all it's stops
+     */
     self.delete_plan = function () {
         if (confirm("Are you sure you want to delete this plan and all of its stops?")) {
             $.post(del_plan_url,
@@ -238,7 +250,7 @@ var planapp = function () {
     };
 
     self.redirect_share = function(){
-        window.location.replace('testMail/' + self.vue.plan_id)
+        window.location.replace(mail_url + "/" + self.vue.plan_id)
     };
 
 
@@ -267,6 +279,7 @@ var planapp = function () {
         data: {
             is_adding_stop: false,
             logged_in: true,
+            is_collab: false,
             plan_id: null,
             current_plan: {},
             stops: [],

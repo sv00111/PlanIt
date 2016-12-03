@@ -14,6 +14,7 @@
     var del_plan_url = "{{=URL('api', 'del_plan')}}";
     var get_plan_url = "{{=URL('api', 'select_plan')}}";
     var home_url = "{{=URL('default', 'home')}}";
+    var mail_url = "{{=URL('default', 'testMail')}}";
     var pid = parseInt("{{=p_id}}");
 </script>
 {{end}}
@@ -47,7 +48,7 @@
                         <div class="dropdown-content">
                             <!-- This is where you would iterate over the plans retrieved
                                 from the database and create a link for each one -->
-                            {{plans = db().select(db.planit_plan.label, db.planit_plan.id, orderby=~db.planit_plan.id, limitby=(0, 5))}}
+                            {{plans = db(db.planit_plan.created_by == auth.user.email).select(db.planit_plan.label, db.planit_plan.id, orderby=~db.planit_plan.id, limitby=(0, 5))}}
                             {{for plan in plans:}}
                             <!-- When clicked the link should NOT reload the page but
                                 instead populate the appropriate containers with the
