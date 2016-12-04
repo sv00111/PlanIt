@@ -9,7 +9,7 @@ def get_place_icons(places):
     url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=' + places + '&key=' + api_key
     return url
 
-
+'''Function queries google places api for more indepth information about selected stop'''
 def get_more_info(place_id):
     query_url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + place_id + '&key=' + api_key
     results = json.loads(urllib.urlopen(query_url).read())
@@ -33,14 +33,6 @@ def get_recommendations():
         pid = int(request.vars.plan_id) #//not defined yet
         locationRec = db(db.planit_plan.id == pid).select(db.planit_plan.ALL).first().start_location
         print "locationRec is {0}".format(locationRec)
-        # return response.json(dict(
-        #     recommendation=[],
-        #     logged_in=logged_in,
-        #     has_more=False,
-        #     next_page='',
-        #     location=locationRec,
-        #     invalid = False
-        # ))
         locationRec = locationRec.replace (" ", "+")
 
     url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
@@ -184,21 +176,21 @@ def get_recommendations():
         lng = long
     ))
 
+'''Function adds comments to a stop'''
 def add_comment():
     comment_id = db.stop_comments.insert(
         stop_id = request.vars.stop_id,
         comment_string = request.vars.comment_string,
     )
-    plan = db(db.planit_stop.id == request.vars.stop_id).select().first()
-    plan = plan.update_record(stops=plan.comments+[comment_id] if plan.comments is not None else [comment_id])
+    stop = db(db.planit_stop.id == request.vars.stop_id).select().first()
+    stop = stop.update_record(comments=stop.comments+[comment_id] if stop.comments is not None else [comment_id])
     comment = db.stop_comments(comment_id)
-    print plan
-    print comment
     return response.json(dict(comment=comment))
 
+'''Function loads comments that have been posted to a specific stop'''
 def get_comments():
     comments = []
-    rows = db(db.planit_stop.id == int(request.vars.id)).select(db.stop_comments.ALL)
+    rows = db(db.stop_comments.stop_id == int(request.vars.id)).select(db.stop_comments.ALL)
     for i, r in enumerate(rows):
             s = dict(
                 id = r.id,
@@ -211,24 +203,6 @@ def get_comments():
     return response.json(dict(
         comments=comments
     ))
-
-# def like_comment():
-#     pid = int(request.vars.plan_id) if request.vars.plan_id is not None else 0
-#     s = db(db.planit_plan.id == pid).select(db.planit_plan.ALL).first()
-#     selection = dict(
-#         id=s.id,
-#         label=s.label,
-#         start_date=s.start_date,
-#         start_location=s.start_location,
-#         longitude=s.longitude,
-#         latitude=s.latitude,
-#         stops=s.stops,
-#         created_by=s.created_by,
-#         created_on=s.created_on
-#     )
-#     print selection
-#     logged_in = auth.user_id is not None
-#     return response.json(dict(plan=selection, logged_in=logged_in))
 
 def add_stop():
     stop_id = db.planit_stop.insert(
@@ -246,8 +220,6 @@ def add_stop():
     plan = db(db.planit_plan.id == request.vars.parent).select().first()
     plan = plan.update_record(stops=plan.stops+[stop_id] if plan.stops is not None else [stop_id])
     stop = db.planit_stop(stop_id)
-    print plan
-    print stop
     return response.json(dict(stop=stop))
 
 

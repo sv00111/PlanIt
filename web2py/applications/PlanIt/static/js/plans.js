@@ -236,28 +236,36 @@ var planapp = function () {
         console.log(stop_idx);
         console.log(self.vue.stops);
         self.vue.stop_id = self.vue.stops[stop_idx].id;
-        self.get_comments(self.vue.stop_id);
+        console.log(self.vue.stop_id);
+        self.get_comments();
         self.vue.comment_string = "";
     };
 
+    /**
+     * Helper function to get comments
+     * @param id id of the stop that has comments
+     */
     function get_comments_from_api(id) {
         var pp = {
             id: id
+
         };
         return get_comments_url + "?" + $.param(pp);
     }
 
+    /**
+     * Function that adds a user comment to a stop
+     */
     self.add_comment = function() {
         $.post(add_comment_url,
             {
                 comment_string: self.vue.comment_string,
-                stop_id: self.vue.current_stop.id
+                stop_id: self.vue.stop_id
             },
-            function (data) {                                                // data is echoed back from db after insert
-                $.web2py.enableElement($("#add_stop_submit"));
-                self.add_stop_button();                                     // close the form
+            function (data) {                                                // data is echoed back from db after insert                 // close the form
                 self.vue.comments.unshift(data.comment);                          // add stop to vue list object
                 self.vue.comments.sort(sort_by('start_time', false, null));    // sort by start time
+                self.vue.comment_string = '';
                 enumerate(self.vue.comments);
                 $("#time_error_msg").hide();
             }
@@ -268,9 +276,8 @@ var planapp = function () {
      * Populates vue object with selected stop's comment data retrieved from db via api
      *
      */
-    self.get_comments = function(stop_idx) {
-        $.getJSON(get_comments_from_api(stop_idx), function(data) {
-            self.vue.current_stop = data.stops[stop_idx];
+    self.get_comments = function() {
+        $.getJSON(get_comments_from_api(self.vue.stop_id), function(data) {
             self.vue.comments = data.comments;
             self.vue.comments.sort(sort_by('created_on', false, null));
             enumerate(self.vue.comments);
@@ -339,7 +346,6 @@ var planapp = function () {
             stop_id: null,
             comment_string: '',
             current_plan: {},
-            current_stop: {},
             stops: [],
             comments:[],
             label: null,
