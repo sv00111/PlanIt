@@ -2,9 +2,6 @@ import random
 import json
 import time
 import urllib
-import urllib2
-from StringIO import StringIO
-from gluon.main import requests
 
 api_key = 'AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
 
@@ -12,13 +9,13 @@ def get_place_icons(places):
     url = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=' + places + '&key=' + api_key
     return url
 
-import json
 
 def get_more_info(place_id):
     query_url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + place_id + '&key=' + api_key
     results = json.loads(urllib.urlopen(query_url).read())
     return (results)
 
+"""Function to get the recommended items, suggested to users based on search location."""
 def get_recommendations():
     if auth.user:
         logged_in = True
@@ -104,6 +101,7 @@ def get_recommendations():
         ))
 
 
+    # TODO: uncomment line 99, and delete line 100
     recommendation = []
     lengthOfQuery = len(resultStuff["results"])
     # for i in range(0, lengthOfQuery):
@@ -125,7 +123,7 @@ def get_recommendations():
             places = get_place_icons(place_id)
         else:
             # TODO: Replace default image with PlanIt Logo
-            places = "http://www.w3schools.com/css/trolltunga.jpg"
+            places = URL('static', 'images/planit_logo_black.png')
 
         if 'formatted_address' not in more_info['result']:
             addr = ''
