@@ -218,6 +218,20 @@ var planapp = function () {
         }
     };
 
+    /**
+     * Handles event when viewing comments
+     * Resets comment string
+     */
+    self.view_comment_button = function (stop_idx) {
+        self.vue.is_viewing_comment = !self.vue.is_viewing_comment;
+        console.log(self.vue.is_viewing_comment);
+        console.log(stop_idx);
+        console.log(self.vue.stops);
+        self.vue.stop_id = self.vue.stops[stop_idx].id;
+        self.get_comments(self.vue.stop_id);
+        self.vue.comment_string = "";
+    };
+
     function get_comments_from_api(id) {
         var pp = {
             id: id
@@ -228,11 +242,8 @@ var planapp = function () {
     self.add_comment = function() {
         $.post(add_comment_url,
             {
-                //user email
-                //comment string
-                //stop id
-                label: self.vue.form_stop_label,
-                parent: self.vue.current_plan.id
+                comment_string: self.vue.comment_string,
+                stop_id: self.vue.current_stop.id
             },
             function (data) {                                                // data is echoed back from db after insert
                 $.web2py.enableElement($("#add_stop_submit"));
@@ -251,8 +262,9 @@ var planapp = function () {
      */
     self.get_comments = function(stop_idx) {
         $.getJSON(get_comments_from_api(stop_idx), function(data) {
+            self.vue.current_stop = data.stops[stop_idx];
             self.vue.comments = data.comments;
-            self.vue.comments.sort(sort_by('start_time', false, null));
+            self.vue.comments.sort(sort_by('created_on', false, null));
             enumerate(self.vue.comments);
         })
     };
@@ -304,9 +316,13 @@ var planapp = function () {
         unsafeDelimiters: ['!{', '}'],
         data: {
             is_adding_stop: false,
+            is_viewing_comment: false,
             logged_in: true,
             plan_id: null,
+            stop_id: null,
+            comment_string: '',
             current_plan: {},
+            current_stop: {},
             stops: [],
             comments:[],
             label: null,
@@ -328,7 +344,10 @@ var planapp = function () {
             get_plan: self.get_plan,
             add_stop_from_location: self.add_stop_from_location,
             delete_plan: self.delete_plan,
-            redirect_share: self.redirect_share
+            redirect_share: self.redirect_share,
+            add_comment: self.add_comment,
+            get_comments: self.get_comments,
+            view_comment_button: self.view_comment_button
         }
     });
 

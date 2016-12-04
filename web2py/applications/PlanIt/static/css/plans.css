@@ -116,8 +116,8 @@ input.form-control, #submit_record__row {
 
 
 
-.modalCC {
-    /*display: none; !* Hidden by default *!*/
+#myModal {
+    display:block;
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     padding-top: 100px; /* Location of the box */

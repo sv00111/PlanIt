@@ -189,7 +189,7 @@ def get_recommendations():
 def add_comment():
     comment_id = db.stop_comments.insert(
         stop_id = request.vars.stop_id,
-        comment_string = request.vars.comment_string
+        comment_string = request.vars.comment_string,
     )
     plan = db(db.planit_stop.id == request.vars.stop_id).select().first()
     plan = plan.update_record(stops=plan.comments+[comment_id] if plan.comments is not None else [comment_id])
@@ -200,7 +200,7 @@ def add_comment():
 
 def get_comments():
     comments = []
-    rows = db(db.planit_stop.id == int(request.vars.stop_id)).select(db.stop_comments.ALL)
+    rows = db(db.planit_stop.id == int(request.vars.id)).select(db.stop_comments.ALL)
     for i, r in enumerate(rows):
             s = dict(
                 id = r.id,
@@ -286,6 +286,24 @@ def get_stops():
 
 
 def select_plan():
+    pid = int(request.vars.plan_id) if request.vars.plan_id is not None else 0
+    s = db(db.planit_plan.id == pid).select(db.planit_plan.ALL).first()
+    selection = dict(
+        id = s.id,
+        label = s.label,
+        start_date = s.start_date,
+        start_location = s.start_location,
+        longitude = s.longitude,
+        latitude = s.latitude,
+        stops = s.stops,
+        created_by = s.created_by,
+        created_on = s.created_on
+    )
+    print selection
+    logged_in = auth.user_id is not None
+    return response.json(dict(plan=selection, logged_in=logged_in))
+
+def select_stop():
     pid = int(request.vars.plan_id) if request.vars.plan_id is not None else 0
     s = db(db.planit_plan.id == pid).select(db.planit_plan.ALL).first()
     selection = dict(
