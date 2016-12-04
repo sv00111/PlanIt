@@ -39,32 +39,17 @@ function addPermMarkerFromDB(inputArray){
 
     // cust_lat, cust_lon
     var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
-
     for (var i = 0; i < inputArray.length; i++) {
-
-        // infowindows[i] = new google.maps.InfoWindow({
-        //     content: contentString
-        // });
         var position = {lat: inputArray[i].cust_lat, lng: inputArray[i].cust_lon};
-        // console.log("the id of current marker is " + inputArray[i].id);
-        // console.log("the ith element of current marker is " + i);
         planMarker[i] = new google.maps.Marker({
             position: position,
             title: inputArray[i].name,
             map: maps,
             icon: image
-
         });
-
-        // google.maps.event.addListener(markers[i], 'click', function (innerKey) {
-        //     return function () {
-        //         infowindows[innerKey].open(maps, markers[innerKey]);
-        //     }
-        // }(i));
         maps.setCenter(planMarker[i].getPosition());
         maps.setZoom(15);
     }
-
 }
 
 function addPermMarker(lat, lng){
@@ -80,21 +65,24 @@ function make_Markers(inputArray) {
     console.log(startIndex);
     console.log("length is " + inputArray.length);
     for (var i = startIndex; i < inputArray.length; i++) {
-        console.log("running " + i);
-        var contentString =  "<h3>" + inputArray[i].name +"</h3>"+
+        var contentString = "<h3>" + inputArray[i].name +"</h3>"+
                 "<div id= 'infocontent'> " +
-            "<p><b>Address: </b>" + inputArray[i].address + "</p>" +
-            "<p><b>Phone number: </b>" + inputArray[i].phone_number + "</p>" +
-                "<b>Hours</b>" +
-            "<table>" + "<tr><th>" + inputArray[i].hours[0] + "</th></tr>" +
-            "<tr><th>" + inputArray[i].hours[1] + "</th></tr>" +
-            "<tr><th>" + inputArray[i].hours[2] + "</th></tr>" +
-            "<tr><th>" + inputArray[i].hours[3] + "</th></tr>" +
-            "<tr><th>" + inputArray[i].hours[4] + "</th></tr>" +
-            "<tr><th>" + inputArray[i].hours[5] + "</th></tr>" +
-            "<tr><th>" + inputArray[i].hours[6] + "</th></tr>" +
-            "</table>" +
-            "</div>";
+                "<p><b>Address: </b>" + inputArray[i].address + "</p>" +
+                "<p><b>Phone number: </b>" + inputArray[i].phone_number + "</p>";
+        if(inputArray[i].hours[0] != null) {
+                 contentString = contentString.concat(
+                "<table>" + "<tr><th>" + inputArray[i].hours[0] + "</th></tr>" +
+                "<tr><th>" + inputArray[i].hours[1] + "</th></tr>" +
+                "<tr><th>" + inputArray[i].hours[2] + "</th></tr>" +
+                "<tr><th>" + inputArray[i].hours[3] + "</th></tr>" +
+                "<tr><th>" + inputArray[i].hours[4] + "</th></tr>" +
+                "<tr><th>" + inputArray[i].hours[5] + "</th></tr>" +
+                "<tr><th>" + inputArray[i].hours[6] + "</th></tr>" +
+                "</table>" +
+                "</div>");
+        } else {
+            contentString =  contentString.concat("</div>");
+        }
 
         infowindows[i] = new google.maps.InfoWindow({
             content: contentString

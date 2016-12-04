@@ -76,5 +76,5 @@ db.define_table('stop_comments',
                 Field('stop_id', 'reference planit_stop'),
                 Field('created_by', default=get_user_email()),
                 Field('comment_string'),
-                Field('posted_on', default=datetime.datetime.utcnow()),
+                Field('posted_on', default=datetime.datetime.now().strftime('%b %d, %Y %X')),
                 Field('likes', 'integer', default=0))
