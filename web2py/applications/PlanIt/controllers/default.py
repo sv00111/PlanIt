@@ -84,6 +84,7 @@ def register():
     return dict(register=auth.register(), login=auth.login())
 
 
+@auth.requires_login()
 def newPlan():
     form = SQLFORM.factory(
         Field('plan_name', length=256, requires=IS_NOT_EMPTY()),
