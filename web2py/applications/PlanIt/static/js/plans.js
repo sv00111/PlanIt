@@ -161,6 +161,7 @@ var planapp = function () {
                 if(self.vue.is_collab) {
                     self.vue.current_plan = data.plan;
                     self.vue.logged_in = data.logged_in;
+                    self.vue.is_creator = data.is_creator;
                 } else {
                     window.location.replace(home_url);
                 }
@@ -173,6 +174,7 @@ var planapp = function () {
             };
             self.vue.current_plan = p;
             self.vue.logged_in = false;
+            self.vue.is_creator=false;
         }
     };
 
@@ -342,6 +344,7 @@ var planapp = function () {
             is_viewing_comment: false,
             logged_in: true,
             is_collab: false,
+            is_creator: false,
             plan_id: null,
             stop_id: null,
             comment_string: '',

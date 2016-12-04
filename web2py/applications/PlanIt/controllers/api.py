@@ -276,7 +276,8 @@ def select_plan():
         selection = None;
     logged_in = auth.user_id is not None
     is_collab = auth.user.email in selection['collabs'] if selection is not None else False
-    return response.json(dict(plan=selection, logged_in=logged_in, is_collab=is_collab))
+    is_creator = auth.user.email == selection['created_by'] if selection is not None else False
+    return response.json(dict(plan=selection, logged_in=logged_in, is_collab=is_collab, is_creator=is_creator))
 
 def select_stop():
     pid = int(request.vars.plan_id) if request.vars.plan_id is not None else 0
