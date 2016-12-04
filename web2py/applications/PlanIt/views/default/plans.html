@@ -10,7 +10,7 @@
         <button v-if="is_adding_stop" class="btn btn-success pull-right" v-on:click="add_stop_button()" v-bind:class="{'disabled': !logged_in}">
             <i class="fa fa-minus"></i>
         </button>
-        <button class="btn btn-danger pull-right" v-on:click="delete_plan()" v-bind:class="{'disabled': !logged_in}">
+        <button v-if="is_creator" class="btn btn-danger pull-right" v-on:click="delete_plan()" v-bind:class="{'disabled': !is_creator}">
             <i class="fa fa-trash"></i>
         </button>
         <a class="btn btn-primary pull-right" v-on:click="redirect_share()" v-bind:class="{'disabled': !logged_in}">

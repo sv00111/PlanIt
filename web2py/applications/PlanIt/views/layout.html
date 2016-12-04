@@ -43,23 +43,16 @@
 
                 <!-- Override this in extended file with the navigation buttons specific to the page -->
                 {{block nav-buttons}}
-                    <a href="{{=URL('default', 'home')}}">
-                        <div class="navbar pull-left nav-link">
-                            <span class="navbar nav-link-text">
-                                Home
-                            </span>
-                        </div>
-                    </a>
-
-                    <a href="{{=URL('default', 'newPlan')}}">
-                        <div class="navbar pull-left nav-link">
-                            <span class="navbar nav-link-text">
-                                New Plan
-                            </span>
-                        </div>
-                    </a>
 
                     {{if auth.user_id:}}
+                        <a href="{{=URL('default', 'home')}}">
+                            <div class="navbar pull-left nav-link">
+                                <span class="navbar nav-link-text">
+                                    Home
+                                </span>
+                            </div>
+                        </a>
+
                         <div class="navbar pull-right nav-link">
                             <span class="navbar nav-link-text dropdown">
                                 {{=auth.user.first_name}}

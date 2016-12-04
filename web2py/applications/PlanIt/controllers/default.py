@@ -15,7 +15,6 @@ import urllib
 import urllib2
 
 
-@auth.requires_login()
 def index():
     # Generate a random number betw 1 and 6.
     n = random.randint(1, 6)
@@ -32,7 +31,7 @@ def forgotPass():
 def home():
     p_id = request.args(0)
     if p_id is None:
-        p_id = db(db.planit_plan.created_by == auth.user.email).select(db.planit_plan.id).last()
+        p_id = db(db.planit_plan.collabs.contains(auth.user.email)).select(db.planit_plan.id).last()
         if p_id is None:
             redirect(URL('default', 'newPlan'))
         else:
@@ -85,16 +84,17 @@ def register():
     return dict(register=auth.register(), login=auth.login())
 
 
+@auth.requires_login()
 def newPlan():
     form = SQLFORM.factory(
-        Field('label', length=256, default="New Plan"),
-        Field('start_date', 'date', default=datetime.date.today()),
-        Field('start_location')
+        Field('plan_name', length=256, requires=IS_NOT_EMPTY()),
+        Field('date', 'date', default=datetime.date.today()),
+        Field('start_location', requires=IS_NOT_EMPTY())
     )
     if form.process().accepted:
         db.planit_plan.insert(
-            label = form.vars.label,
-            start_date = form.vars.start_date,
+            label = form.vars.plan_name,
+            start_date = form.vars.date,
             start_location = form.vars.start_location
         )
         session.flash = T('Plan created.')
