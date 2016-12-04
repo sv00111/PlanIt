@@ -71,8 +71,6 @@ def user():
     """
     # return dict(form = auth())
 
-    # TODO: make this from comment to example 'example@gmail.com'
-    # TODO: try and make it a placeholder, intsead of under the input type.
 
     if request.args(0) == 'login':
         db.auth_user.email.comment = 'Enter your email address'

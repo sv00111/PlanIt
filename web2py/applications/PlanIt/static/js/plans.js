@@ -114,8 +114,7 @@ var planapp = function () {
                     self.vue.stops.unshift(data.stop);                          // add stop to vue list object
                     self.vue.stops.sort(sort_by('start_time', false, null));    // sort by start time
                     enumerate(self.vue.stops);
-                     //TODO: add perm marker using lat and lng here
-                    addPermMarker(temp_lat, temp_lon);
+                    addPermMarkerFromDB(self.vue.stops);
 
                     $("#time_error_msg").hide();
                     temp_lat = null;
@@ -218,6 +217,7 @@ var planapp = function () {
      */
     self.delete_stop = function (stop_idx) {
         if (confirm("Delete this stop from your plan?")) {
+            deleteMarker(stop_idx);
             $.post(del_stop_url,
                 {stop_id: self.vue.stops[stop_idx].id},
                 function () {

@@ -114,7 +114,6 @@ def get_recommendations():
             place_id = resultStuff['results'][i]['photos'][0]['photo_reference']
             places = get_place_icons(place_id)
         else:
-            # TODO: Replace default image with PlanIt Logo
             places = URL('static', 'images/planit_logo_black.png')
 
         if 'formatted_address' not in more_info['result']:
