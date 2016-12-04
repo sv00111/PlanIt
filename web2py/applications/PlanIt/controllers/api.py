@@ -288,20 +288,25 @@ def get_stops():
 def select_plan():
     pid = int(request.vars.plan_id) if request.vars.plan_id is not None else 0
     s = db(db.planit_plan.id == pid).select(db.planit_plan.ALL).first()
-    selection = dict(
-        id = s.id,
-        label = s.label,
-        start_date = s.start_date,
-        start_location = s.start_location,
-        longitude = s.longitude,
-        latitude = s.latitude,
-        stops = s.stops,
-        created_by = s.created_by,
-        created_on = s.created_on
-    )
-    print selection
+    if s is not None:
+        selection = dict(
+            id = s.id,
+            label = s.label,
+            start_date = s.start_date,
+            start_location = s.start_location,
+            longitude = s.longitude,
+            latitude = s.latitude,
+            stops = s.stops,
+            created_by = s.created_by,
+            created_on = s.created_on,
+            collabs = s.collabs
+        )
+        print selection
+    else:
+        selection = None;
     logged_in = auth.user_id is not None
-    return response.json(dict(plan=selection, logged_in=logged_in))
+    is_collab = auth.user.email in selection['collabs'] if selection is not None else False
+    return response.json(dict(plan=selection, logged_in=logged_in, is_collab=is_collab))
 
 def select_stop():
     pid = int(request.vars.plan_id) if request.vars.plan_id is not None else 0
