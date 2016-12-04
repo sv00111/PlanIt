@@ -100,8 +100,8 @@
                 <div class="pull-right del_stop_button">
                     <i v-on:click="delete_stop(stop._idx)" class="fa fa-close"></i>
                 </div>
-                <div class="pull-right">
-                    <button class="btn btn-info btn-lg"  v-on:click = "view_comment_button(stop._idx)" data-target="#myModal">Comments</button>
+                <div>
+                    <button class="btn"  v-on:click = "view_comment_button(stop._idx)" data-target="#myModal"> View Comments</button>
                 </div>
             </div>
 
@@ -118,9 +118,13 @@
           <h4 class="modal-title">Comments</h4>
         </div>
         <div v-for="comment in comments" class="modal-body">
-            Post: ${comment.comment_string}
-            Created on: ${comment.posted_on}
-            By: ${comment.created_by}
+
+            ${comment.created_by} said:
+            <br>
+            <p style = "margin-left: 50px">
+                ${comment.comment_string}
+            </p>
+            on ${comment.posted_on}
         </div>
         <div class="modal-footer">
             <textarea v-model="comment_string" type="text" placeholder="Comment"></textarea>

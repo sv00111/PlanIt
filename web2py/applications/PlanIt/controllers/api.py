@@ -224,6 +224,7 @@ def add_stop():
 
 def del_stop():
     db(db.planit_stop.id == request.vars.stop_id).delete()
+    db(db.stop_comments.stop_id == request.vars.stop_id).delete()
     # TODO: need to also delete the stop from its plan's list of stop references
     return "stop deleted"
 
