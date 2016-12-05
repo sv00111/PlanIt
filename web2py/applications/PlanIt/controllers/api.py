@@ -96,8 +96,8 @@ def get_recommendations():
     # TODO: uncomment line 99, and delete line 100
     recommendation = []
     lengthOfQuery = len(resultStuff["results"])
-    # for i in range(0, lengthOfQuery):
-    for i in range(0, 2):
+    for i in range(0, lengthOfQuery):
+    # for i in range(0, 2):
         place_id = resultStuff['results'][i]["place_id"]
         more_info = get_more_info(place_id)
         if "price_level" not in resultStuff['results'][i]:

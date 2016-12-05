@@ -77,6 +77,12 @@ function deleteMarker(stop_id) {
     planMarker.splice(stop_id, 1);
     // enumerate(planMarker);
 }
+function clearMarkers(){
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers = [];
+}
 
 function make_Markers(inputArray) {
     console.log(startIndex);

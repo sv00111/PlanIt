@@ -106,6 +106,7 @@ var app = function () {
 
     self.searchFn = function (searchRec, locationRec) {
         setMapOnAll();
+        self.vue.locationRec = locationRec;
         self.vue.next_page = '';
         self.vue.has_more = false;
         self.vue.recommendation = [];
@@ -113,7 +114,7 @@ var app = function () {
         self.vue.lng = 0;
         self.get_recommendations();
         //self.init();
-        //makeMarkers();
+        clearMarkers();
     };
 
     self.add = function(lat, lng, name, address, place_id, placesUrl){
