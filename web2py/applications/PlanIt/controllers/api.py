@@ -1,7 +1,7 @@
 import random
 import json
 import time
-import urllib
+import urllib3
 
 api_key = 'AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w'
 
@@ -11,8 +11,11 @@ def get_place_icons(places):
 
 '''Function queries google places api for more indepth information about selected stop'''
 def get_more_info(place_id):
-    query_url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + place_id + '&key=' + api_key
-    results = json.loads(urllib.urlopen(query_url).read())
+    #query_url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + place_id + '&key=' + api_key
+    http = urllib3.PoolManager()
+    url = http.request('GET', 'https://maps.googleapis.com/maps/api/place/details/json?placeid=' + place_id + '&key=' + api_key)
+    # results = json.loads(urllib.urlopen(query_url).read())
+    results = json.loads(url.data)
     return (results)
 
 """Function to get the recommended items, suggested to users based on search location."""
@@ -35,9 +38,17 @@ def get_recommendations():
         print "locationRec is {0}".format(locationRec)
         locationRec = locationRec.replace (" ", "+")
 
-    url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
-    print url
-    resultLocation = json.loads(urllib.urlopen(url).read())
+    http = urllib3.PoolManager()
+    print "Location IS {0}".format(locationRec)
+    locationRec = locationRec.replace(" ", '+');
+    url = http.request('GET',
+                       "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key)
+    # results = json.loads(urllib.urlopen(query_url).read())
+    results = json.loads(url.data)
+
+    # url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationRec + '&key=' + api_key
+    # print url
+    resultLocation = json.loads(url.data)
     lat = resultLocation['results'][0]['geometry']['location']['lat']
     long = resultLocation['results'][0]['geometry']['location']['lng']
     location = resultLocation['results'][0]['formatted_address']
@@ -50,7 +61,7 @@ def get_recommendations():
             logged_in=logged_in,
             has_more=False,
             next_page='',
-            location= locationRec.replace ("+", " "),
+            location= locationRec.replace("+", " "),
             invalid=False,
             lat = lat,
             lng = long
@@ -68,16 +79,26 @@ def get_recommendations():
 
     if searchRec is not '':
         print "search  is {0}, and next paage query is {1}".format(searchRec, next_page_query)
-        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + repr(lat) + ',' + repr(
-            long) + '&radius=1000&keyword=' + searchRec + '&key=' + api_key + next_page_query
+        url = http.request('GET',
+                           'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' +
+                           repr(lat) + ',' + repr(long) + '&radius=1000&keyword=' + searchRec + '&key=' + api_key +
+                           next_page_query)
+        # url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + repr(lat) + ',' + repr(
+        #     long) + '&radius=1000&keyword=' + searchRec + '&key=' + api_key + next_page_query
     elif searchRec is '':
-        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + repr(lat) + ',' + repr(
-            long) + '&radius=1000&type=point_of_interest&key=' + api_key + next_page_query
-    print("url is ")
-    print(url)
+        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + repr(lat) + ',' + \
+              repr(long) + '&radius=1000&type=point_of_interest&key=' + api_key + next_page_query
+        print "print print {0}".format(url)
+        url = http.request('GET',
+                           'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' +
+                           repr(lat) + ',' +
+                           repr(long) + '&radius=1000&type=point_of_interest&key=' + api_key + next_page_query)
 
-    print "THE URL IS {0}".format(url)
-    resultStuff = json.loads(urllib.urlopen(url).read())
+    # print("url is ")
+    # print(url.data)
+
+    # print "THE URL IS {0}".format(url.data)
+    resultStuff = json.loads(url.data)
 
     print len(resultStuff['results'])
     if len(resultStuff['results']) is 0:
@@ -96,8 +117,8 @@ def get_recommendations():
     # TODO: uncomment line 99, and delete line 100
     recommendation = []
     lengthOfQuery = len(resultStuff["results"])
-    for i in range(0, lengthOfQuery):
-    # for i in range(0, 2):
+    # for i in range(0, lengthOfQuery):
+    for i in range(0, 3):
         place_id = resultStuff['results'][i]["place_id"]
         more_info = get_more_info(place_id)
         if "price_level" not in resultStuff['results'][i]:
@@ -112,9 +133,11 @@ def get_recommendations():
 
         if 'photos' in resultStuff['results'][i]:
             place_id = resultStuff['results'][i]['photos'][0]['photo_reference']
+            #places = URL('static', 'images/planit_logo_black.png')
             places = get_place_icons(place_id)
         else:
-            places = URL('static', 'images/planit_logo_black.png')
+            places = "http://studiord.com.au/wp-content/uploads/2016/06/placeholder-180x180.jpg"
+            #places = URL('static', 'images/planit_logo_black.png')
 
         if 'formatted_address' not in more_info['result']:
             addr = ''

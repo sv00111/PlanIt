@@ -112,9 +112,10 @@ var app = function () {
         self.vue.recommendation = [];
         self.vue.lat = 0;
         self.vue.lng = 0;
+        clearMarkers();
         self.get_recommendations();
         //self.init();
-        clearMarkers();
+
     };
 
     self.add = function(lat, lng, name, address, place_id, placesUrl){
