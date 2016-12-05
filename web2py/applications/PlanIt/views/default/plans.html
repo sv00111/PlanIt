@@ -4,10 +4,10 @@
 
     <div id="plan-header">
         <H2>${current_plan.label}</H2>
-        <button v-if="!is_adding_stop" class="btn btn-success pull-right" v-on:click="add_stop_button()" v-bind:class="{'disabled': !logged_in}">
+        <button v-if="!is_adding_stop" data-toggle="tooltip" title="Add a Stop" class="btn btn-success pull-right" v-on:click="add_stop_button()" v-bind:class="{'disabled': !logged_in}">
             <i class="fa fa-plus"></i>
         </button>
-        <button v-if="is_adding_stop" class="btn btn-success pull-right" v-on:click="add_stop_button()" v-bind:class="{'disabled': !logged_in}">
+        <button v-if="is_adding_stop" data-toggle="tooltip" title="Close This Form" class="btn btn-success pull-right" v-on:click="add_stop_button()" v-bind:class="{'disabled': !logged_in}">
             <i class="fa fa-minus"></i>
         </button>
         <button v-if="is_creator" class="btn btn-danger pull-right" v-on:click="delete_plan()" v-bind:class="{'disabled': !is_creator}">

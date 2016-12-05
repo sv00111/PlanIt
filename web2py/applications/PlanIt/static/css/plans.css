@@ -17,7 +17,7 @@ input.form-control, #submit_record__row {
 
 #stop-list {
     background-color: lightgrey;
-    height: 100%;
+    height: calc(100% - 40px);
     overflow-y: auto;
 }
 
@@ -111,6 +111,7 @@ input.form-control, #submit_record__row {
     padding-left: 5px;
     padding-right: 5px;
     padding-bottom: 10px;
+
 }
 
 
