@@ -62,7 +62,7 @@ input.form-control, #submit_record__row {
     margin-left: 5px;
     width: calc(100% - 75px);
     padding: 5px;
-
+    position: relative;
 }
 
 .mask {
@@ -152,4 +152,11 @@ input.form-control, #submit_record__row {
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+
+.comment_button {
+    position: absolute;
+    margin-bottom: 5px;
+    right: 0;
+    bottom: 0;
 }
