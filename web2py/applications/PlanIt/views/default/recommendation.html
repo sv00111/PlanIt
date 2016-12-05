@@ -23,12 +23,10 @@
     <div v-for="rec in recommendation">
 
         <div class="sugg-card">
-            <div class="row text-right">
-                <div class="row post-content" style="text-align: center; padding-bottom: 2%; font-size: 150%">
-                    <div class="row editDelButton">
-                        <i class="fa fa-pencil" id="editIcon" v-on:click="changeEditPostId(rec.id, rec.name, rec.lat, rec.lng, rec)"></i>
-                        <i class="fa fa-plus" id="addIcon" v-on:click="add(rec.lat, rec.lng, rec.name, rec.address, rec.place_id, rec.image)"></i>
-                    </div>
+            <div class="text-left">
+                <div class="editDelButton">
+                    <i class="fa fa-map-marker fa-2x" id="editIcon" v-on:click="changeEditPostId(rec.id, rec.name, rec.lat, rec.lng, rec)"></i>
+                    <i class="fa fa-plus fa-2x" id="addIcon" v-on:click="add(rec.lat, rec.lng, rec.name, rec.address, rec.place_id, rec.image)"></i>
                 </div>
 
                 <!--div v-if = "is_edit_post && rec.id == editPostId" class="post-content" style="text-align: center; padding-bottom: 2%; font-size: 150%">
@@ -36,9 +34,7 @@
                 </div-->
             </div>
             <div class="pull-left">
-                <a href="#">
-                    <img class="imgClass-thumbnail" v-bind:src="rec.image">
-                </a>
+                <img class="imgClass-thumbnail" v-bind:src="rec.image">
             </div>
             <div class="sugg-card-body">
                 <h2>${rec.name}</h2>
