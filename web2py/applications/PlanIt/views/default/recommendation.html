@@ -24,7 +24,7 @@
 
         <div class="sugg-card">
             <div class="text-left">
-                <div class="editDelButton">
+                <div class="pull-right editDelButton">
                     <i class="fa fa-map-marker fa-2x" id="editIcon" v-on:click="changeEditPostId(rec.id, rec.name, rec.lat, rec.lng, rec)"></i>
                     <i class="fa fa-plus fa-2x" id="addIcon" v-on:click="add(rec.lat, rec.lng, rec.name, rec.address, rec.place_id, rec.image)"></i>
                 </div>
@@ -37,7 +37,7 @@
                 <img class="imgClass-thumbnail" v-bind:src="rec.image">
             </div>
             <div class="sugg-card-body">
-                <h2>${rec.name}</h2>
+                <h2>${rec.id}. ${rec.name}</h2>
                 <p>${rec.neighborhood}</p>
             </div>
             <div class="sugg-card-footer">
