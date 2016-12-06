@@ -1,0 +1,7 @@
+{{extend 'layout.html'}}
+<H3 class="col-lg-offset-3" style="display:block">Please Enter Some Basic Info About Your New Plan</H3>
+        <div>{{=form}}</div>
+
+        <script src="{{=URL('static', 'js/autocomplete.js')}}"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCrzytQrfKI_aoLWOJeb-N7TNUUxGmn2g&libraries=places&callback=initAutocomplete"
+        async defer></script>

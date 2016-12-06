@@ -1,0 +1,26 @@
+{{extend 'layout.html'}}
+
+<h2>My Plans</h2>
+{{if len(plans) > 0:}}
+{{for plan in plans:}}
+<!-- When clicked the link should NOT reload the page but
+instead populate the appropriate containers with the
+selected plan's information -->
+<a style="display: block; padding: 10px;" href="{{=URL('default', 'home', args=[plan.id])}}">
+{{=plan.label}}
+</a>
+{{pass}}
+{{else:}}
+<H3 style="display: block; padding: 10px;">You don't have any plans yet!</H3>
+{{pass}}
+
+<h2>My Collaborations</h2>
+{{if len(collabs) > 0:}}
+{{for collab in collabs:}}
+<a style="display: block; padding: 10px;" href="{{=URL('default', 'home', args=[collab.id])}}">
+{{=collab.label}}
+</a>
+{{pass}}
+{{else:}}
+<span style="display: block; padding: 10px;">You're not collaborating on any plans right now!</span>
+{{pass}}

@@ -1,0 +1,163 @@
+#plan-header, #plan-title {
+    display: table;
+    height: 40px;
+    width: 100%;
+    padding-left: 20px;
+}
+
+#plan-header h2 {
+    display: table-cell;
+    text-align: left;
+    vertical-align: middle;
+}
+
+input.form-control, #submit_record__row {
+    width: 100%;
+}
+
+#stop-list {
+    background-color: lightgrey;
+    height: calc(100% - 40px);
+    overflow-y: auto;
+}
+
+.stop-outer {
+    margin-bottom: 10px;
+    height: 200px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.stop-time, .stop-inner {
+    display: inline-block;
+    float: left;
+    height: 100%;
+    background-color: white;
+}
+
+.stop-time {
+    display: inline-block;
+    width: 70px;
+}
+
+.float-middle {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.stop-time span{
+    display: block;
+    text-align: center;
+}
+
+.stop-time a:hover {
+    text-decoration: none;
+}
+
+.stop-inner {
+    box-shadow: 2px 2px 4px -2px #999;
+    margin-left: 5px;
+    width: calc(100% - 75px);
+    padding: 5px;
+    position: relative;
+}
+
+.mask {
+    height: 100%;
+    width: 25%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    align-content: center;
+    display: inline-block;
+    float: left;
+}
+
+.stop-inner img {
+    height: 100%;
+    width: auto;
+    transform: translate(-22%, 0);
+}
+
+.stop-inner .stop-content {
+    display: inline-block;
+    height: 100%;
+    max-width: 70%;
+    float: left;
+    padding-left: 10px;
+    padding-right: 5px;
+}
+
+.stop-inner .stop-content span, .stop-inner .stop-content p {
+    display: block;
+}
+
+.stop-inner .stop-content .stop-label{
+    font-size: 20px;
+}
+
+.stop-inner .stop-content .place-name{
+    font-size: 14px;
+}
+
+.stop-inner .stop-content p{
+    font-size: 11px;
+}
+
+#add-stop-div {
+    width: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+
+}
+
+
+
+
+#myModal {
+    display:block;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.comment_button {
+    position: absolute;
+    margin-bottom: 5px;
+    right: 0;
+    bottom: 0;
+}

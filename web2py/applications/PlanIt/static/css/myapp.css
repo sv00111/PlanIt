@@ -1,0 +1,470 @@
+/*=== 1. General Structure ===*/
+html, body {
+    background: white;
+    padding: 10px;
+    font-family: 'Roboto';
+    padding-top: 40px;
+}
+
+/*=== 2. Anchor Link ===*/
+a {
+    color: #111111;
+}
+
+a:hover {
+    color: #333333;
+}
+
+/* Login Page Styling **************************/
+
+#auth_user_remember_me__label {
+    display: block;
+    position: relative;
+    font-size: 15px;
+    width: 100%;
+    padding-left: 20px;
+}
+
+a.forgot {
+    width: 100%;
+    text-align: center;
+    font-size: 15px;
+    padding-left: 20px;
+}
+
+/*#auth_user_email, #auth_user_password, #auth_user_first_name, #auth_user_last_name, #auth_user_password_two{*/
+/*height: 45px;*/
+/*border: 1px solid #ddd;*/
+/*font-size: 14px;*/
+/*-webkit-transition: all 0.1s linear;*/
+/*-moz-transition: all 0.1s linear;*/
+/*padding-left: 10px;*/
+/*padding-right: 10px;*/
+/*display:inline-block;*/
+/*}*/
+
+.sign-up, .forgot {
+    text-decoration: underline;
+    color: #00CD00;
+}
+
+.register {
+    padding-top: 20px;
+}
+
+.register, .forgot {
+    text-align: center;
+    display: block;
+    clear: both;
+    font-size: 15px;
+    padding-left: 35px;
+}
+
+#auth_user_email__label, #auth_user_password__label, #auth_user_first_name__label,
+#auth_user_last_name__label, #auth_user_password_two__label {
+    text-align: right;
+    font-size: 15px;
+}
+
+#reset_password {
+    margin: auto;
+    position: relative;
+}
+
+.login-form-main-message {
+    position: relative;
+    width: 100%;
+    font-size: 27px;
+    padding-bottom: 20px;
+}
+
+.error_wrapper {
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+input[type=submit] {
+    width: 100%;
+    background-color: #5b90f6;
+}
+
+/*=== 4. Main Form ===*/
+.login-form-1 {
+    margin: auto;
+    max-width: 500px;
+    border-radius: 5px;
+}
+
+.main-login-form {
+    position: relative;
+}
+
+/*.login-form-1 .form-control {*/
+/*border: 0;*/
+/*box-shadow: 0 0 0;*/
+/*border-radius: 0;*/
+/*background: transparent;*/
+/*color: #555555;*/
+/*padding: 7px 0;*/
+/*font-weight: bold;*/
+/*height:auto;*/
+/*}*/
+
+.login-group {
+    background: #ffffff;
+    color: #999999;
+    border-radius: 8px;
+    padding: 10px 20px;
+}
+
+/* Navbar Styling **********************************/
+
+.navbar-default {
+    display: inline-block;
+    background-color: white;
+    border: none;
+    box-shadow: 0 2px 4px -2px #999;
+    margin: 0;
+    padding-right: 15px;
+}
+
+span.navbar {
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+}
+
+div.nav-link {
+  display: table;
+  text-align: center;
+  width: 110px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.nav-link-text {
+    color: #999;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.nav-link-text:hover {
+    color: #00CD00;
+    background-color: #FCFCFC;
+    border-radius: 5px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  margin-top: 15px;
+  padding: 12px 16px;
+  right: 0;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-item, .dropdown-content span {
+  position: relative;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-item:hover, .dropdown-content span:hover {
+    background-color: #f1f1f1;
+    text-decoration: none;
+}
+
+#see_all_plans_link {
+    font-size: 15px;
+    display: block;
+}
+
+.navbar {
+    display: inline-block;
+    border-radius: 0px;
+    margin: 0;
+}
+
+.logo-container {
+    display: table;
+    text-align: center;
+    background-color: #5b90f6;
+    width: 200px;
+}
+
+.logo {
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.footer {
+    background-color: #5b90f6;
+    color: white;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.footer a {
+    color: black;
+    text-decoration: underline;
+}
+
+div {
+    display: block;
+}
+
+/** Default Page Styling *************************/
+
+.main-container {
+    margin: 0;
+    padding: 60px 0 60px 0;
+    position: absolute;
+    overflow-y: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+/* Styling for home.html ******************************/
+div.home-container {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background-color: #d3d3d3;
+}
+
+#suggestion-container {
+    display: inline-block;
+    background-color: white;
+    box-shadow: 2px 2px 4px -2px #999;
+    height: 100%;
+    width: 20%;
+    overflow-y: auto;
+    border-right: #000000;
+    border-right-width: 1px;
+}
+
+#calendar-container {
+    display: inline-block;
+    background-color: white;
+    box-shadow: 2px 2px 4px -2px #999;
+    height: calc(100%);
+    width: 40%;
+    overflow-y: hidden;
+}
+
+#map-container {
+    display: inline-block;
+    background-color: white;
+    box-shadow: 2px 2px 4px -2px #999;
+    height: 100%;
+    width: 40%;
+    overflow-y: auto;
+}
+
+.sugg-card {
+    max-height: 200px;
+    border: 1px #FFFFFF solid;
+    width: 100%;
+    float: left;
+    margin-top: 0;
+    padding: 0;
+    box-shadow: 1px 1px 8px #d8d8d8;
+    background-color: #FFFFFF;
+    position: relative;
+}
+
+.editDelButton i {
+    /*padding-left: 5px;*/
+    padding-right: 10px;
+}
+
+.sugg-card .imgClass-thumbnail {
+    width: 80px;
+    height: 80px;
+    padding-top: 4px;
+    padding-left: 4px;
+}
+
+.sugg-card .sugg-card-body {
+    min-height: 80px;
+    text-align: center;
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+.sugg-card-footer {
+    display: block;
+    padding-bottom: 4px;
+    padding-left: 4px;
+}
+
+.sugg-card-footer span {
+    display: inline-block;
+    margin-left: 10%;
+}
+
+/*Scrollbar styling*/
+.scrollbar::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+}
+
+.scrollbar::-webkit-scrollbar {
+    width: 5px;
+    background-color: #F5F5F5;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background-color: #00cd00;
+}
+
+/*#map {*/
+/*height: 60%;*/
+/*}*/
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#right-panel {
+    font-family: 'Roboto', 'sans-serif';
+    line-height: 30px;
+    padding-left: 10px;
+}
+
+#right-panel select, #right-panel input {
+    font-size: 15px;
+}
+
+#right-panel select {
+    width: 100%;
+}
+
+#right-panel i {
+    font-size: 12px;
+}
+
+#right-panel {
+    font-family: Arial, Helvetica, sans-serif;
+    position: absolute;
+    right: 5px;
+    top: 60%;
+    margin-top: -195px;
+    height: 330px;
+    width: 200px;
+    padding: 5px;
+    z-index: 5;
+    border: 1px solid #999;
+    background: #fff;
+}
+
+h2 {
+    font-size: 22px;
+    margin: 0 0 5px 0;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    height: 271px;
+    width: 200px;
+    overflow-y: scroll;
+}
+
+li {
+    background-color: #f1f1f1;
+    padding: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+li:nth-child(odd) {
+    background-color: #fcfcfc;
+}
+
+#more {
+    width: 100%;
+    margin: 5px 0 0 0;
+}
+
+.Wrapper {
+    width: 98%;
+}
+
+.wrapper {
+    border: 1px solid #000;
+    width: 100%;
+}
+
+input {
+    background-color: white;
+    border: 0;
+}
+
+.searchBar {
+    /*width: 100%;*/
+    padding-left: 5px;
+    font-size: 20px;
+    /*padding-right: 110px;*/
+    /*margin-right:110px;*/
+    /*margin-left: 5px;*/
+    /*margin-right: ;*/
+    height: 100%;
+    width: 100%;
+}
+
+#loading {
+    position: fixed;
+    background-image: url('../../static/images/loader.gif');
+    background-repeat: no-repeat;
+    background-position: top left;
+    width: 25%;
+    height: 25%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    padding: 0;
+    top: 25%;
+    left: 10px;
+}
+
+#overlayDiv {
+    position: absolute;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+
+}

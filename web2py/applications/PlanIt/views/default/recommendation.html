@@ -1,0 +1,61 @@
+
+<div id="vue-div" class="display:none">
+
+    <div class="Wrapper">
+        <div class="wrapper">
+            <input placeholder="Keyword" class="searchBar" v-model="searchRec"
+                   v-on:keyup.enter="searchFn(searchRec, locationRec)" type="text"/>
+        </div>
+        <div class="wrapper">
+            <input placeholder="Location" class="searchBar" v-model="locationRec"
+                   v-on:keyup.enter="searchFn(searchRec, locationRec)" type="text"/>
+        </div>
+
+        <input class="btn btn-primary" v-on:click="searchFn(searchRec, locationRec)" type="submit" value="Search">
+
+    </div>
+
+    <!--makes sure that there is a location added before a search is done-->
+    <div v-if="locationRec == ''">
+        Please enter a location
+    </div>
+
+    <div v-for="rec in recommendation">
+
+        <div class="sugg-card">
+            <div class="text-left">
+                <div class="pull-right editDelButton">
+                    <i class="fa fa-map-marker fa-2x" id="editIcon" v-on:click="changeEditPostId(rec.id, rec.name, rec.lat, rec.lng, rec)"></i>
+                    <i class="fa fa-plus fa-2x" id="addIcon" v-on:click="add(rec.lat, rec.lng, rec.name, rec.address, rec.place_id, rec.image)"></i>
+                </div>
+
+                <!--div v-if = "is_edit_post && rec.id == editPostId" class="post-content" style="text-align: center; padding-bottom: 2%; font-size: 150%">
+
+                </div-->
+            </div>
+            <div class="pull-left">
+                <img class="imgClass-thumbnail" v-bind:src="rec.image">
+            </div>
+            <div class="sugg-card-body">
+                <h2>${rec.id}. ${rec.name}</h2>
+                <p>${rec.neighborhood}</p>
+            </div>
+            <div class="sugg-card-footer">
+                    <span style="display: inline-block; float: left;">
+                        Price: ${rec.price}
+                    </span>
+                <span class="rating">
+                        Rating: ${rec.rating}
+                    </span>
+            </div>
+        </div>
+    </div>
+
+    <div id = "overlayDiv" v-if="loading == 1">
+        <img id="loading" url="../../static/images/default.gif">
+    </div>
+
+    <div v-if="has_more" class="show_more">
+        <button class="btn btn-default" v-on:click="get_more_rec()">Load more</button>
+    </div>
+</div>

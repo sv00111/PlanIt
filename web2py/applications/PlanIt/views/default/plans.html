@@ -1,0 +1,142 @@
+<link rel="stylesheet" href="{{=URL('static','css/plans.css')}}"/>
+
+<!-- Start Vue --> <div id="vue-plans" style="display:none; height: 100%;">
+
+    <div id="plan-header">
+        <H2>${current_plan.label}</H2>
+        <button v-if="!is_adding_stop" data-toggle="tooltip" title="Add a Stop" class="btn btn-success pull-right" v-on:click="add_stop_button()" v-bind:class="{'disabled': !logged_in}">
+            <i class="fa fa-plus"></i>
+        </button>
+        <button v-if="is_adding_stop" data-toggle="tooltip" title="Close This Form" class="btn btn-success pull-right" v-on:click="add_stop_button()" v-bind:class="{'disabled': !logged_in}">
+            <i class="fa fa-minus"></i>
+        </button>
+        <button v-if="is_creator" class="btn btn-danger pull-right" v-on:click="delete_plan()" v-bind:class="{'disabled': !is_creator}">
+            <i class="fa fa-trash"></i>
+        </button>
+        <a class="btn btn-primary pull-right" v-on:click="redirect_share()" v-bind:class="{'disabled': !logged_in}">
+            Share!
+        </a>
+
+    </div>
+
+
+
+    <div v-if="is_adding_stop" id="add-stop-div">
+            <form action="#" v-on:submit.prevent="add_stop" class="" enctype="multipart/form-data" method="post">
+                <div class="form-group" id="no_table_label__row">
+                    <div>
+                        <input class="form-control string" v-model="form_stop_label" required="required" placeholder="Summary" type="text" />
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group" id="no_table_start__row">
+                    <span> Start Time </span>
+                    <div>
+                        <input class="form-control string" v-model="form_stop_start" required="required" type="time" />
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group" id="no_table_end__row">
+                    <span> End Time </span>
+                    <div>
+                        <input class="form-control string" v-model="form_stop_end" required="required" type="time" />
+                        <span id="time_error_msg" style="color: red; display: none;">End time must be later than the start time.</span>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group" id="no_table_place__row">
+                    <div>
+                        <input class="form-control string" v-model="form_stop_place" placeholder="Name of the place" type="text" />
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group" id="no_table_address__row">
+                    <div>
+                        <input class="form-control string" v-model="form_stop_address" id = "addressPlan" placeholder="Address (optional)" type="text" />
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group" id="submit_record__row">
+                    <div>
+                        <input class="btn btn-primary" id="add_stop_submit" type="submit" value="Submit" />
+                    </div>
+                </div>
+            </form>
+    </div>
+
+    <div id="stop-list" class="scrollbar"> <!-- stop-list scrollbar; -->
+
+        <div v-if="stops.length <= 0" style="width: 100%; margin-top: 20px; text-align: center;">
+            This plan doesn't have any stops yet!
+        </div>
+
+        <div class="stop-outer" v-for="stop in stops"> <!-- stop-outer; v-for="stop in stops"; margin-top/bottom: 10px; -->
+
+            <div class="stop-time"> <!-- stop-time; display:inline-block; float: left; -->
+                <div class="float-middle">
+                    <a href=""> <!-- Make this clickable and editable in-line -->
+                        <span>${stop.start_time}</span>
+                    </a>
+                    <span> - </span>
+                    <a href=""> <!-- Make this clickable and editable in-line -->
+                        <span>${stop.end_time}</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="stop-inner"> <!-- stop-inner; display: inline-block; float: left; margin-left: 5px; -->
+                <div class="mask">
+                    <img class="imgClass-thumbnail" v-bind:src="stop.thumbnail" alt="" />
+                </div>
+
+                <div class="stop-content">
+                    <span class="stop-label">${stop.label}</span>
+                    <span class="place-name">${stop.cust_place}</span>
+                    <p>${stop.cust_address}</p>
+                    <div class="pull-right user_tag">
+                    <span class="user_tag_created_by" style="display:block;">Created By: ${stop.created_by}</span>
+                </div>
+                </div>
+                <div class="pull-right del_stop_button">
+                    <i v-on:click="delete_stop(stop._idx)" class="fa fa-close"></i>
+                </div>
+                <div class="pull-right comment_button">
+                    <button class="btn"  v-on:click = "view_comment_button(stop._idx)" data-target="#myModal"> View Comments</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+      <!-- Modal -->
+  <div v-if="is_viewing_comment" class="" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Comments</h4>
+        </div>
+        <div v-for="comment in comments" class="modal-body">
+
+            ${comment.created_by} said:
+            <br>
+            <p style = "margin-left: 50px">
+                ${comment.comment_string}
+            </p>
+            on ${comment.posted_on}
+        </div>
+        <div class="modal-footer">
+            <textarea v-model="comment_string" type="text" placeholder="Comment"></textarea>
+            <button type="button" class="btn btn-default" v-on:click="add_comment()">Post</button>
+          <button type="button" class="btn btn-default" v-on:click="view_comment_button(0)">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<!-- End Vue --> </div>
+
+<script src="{{=URL('static', 'js/plans.js')}}" ></script>
+<script src="{{=URL('static', 'js/autocomplete.js')}}"></script>

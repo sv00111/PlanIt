@@ -1,0 +1,114 @@
+{{extend 'layout.html'}}
+
+{{block header}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+
+<script>
+    var recommendations_url = "{{=URL('api', 'get_recommendations')}}";
+</script>
+
+<script>
+    var add_stop_url = "{{=URL('api', 'add_stop', user_signature=True)}}";
+    var get_stops_url = "{{=URL('api', 'get_stops')}}";
+    var del_stop_url = "{{=URL('api', 'del_stop')}}";
+    var del_plan_url = "{{=URL('api', 'del_plan')}}";
+    var get_plan_url = "{{=URL('api', 'select_plan')}}";
+    var add_comment_url = "{{=URL('api', 'add_comment')}}";
+    var get_comments_url = "{{=URL('api', 'get_comments')}}";
+    var home_url = "{{=URL('default', 'home')}}";
+    var mail_url = "{{=URL('default', 'testMail')}}";
+    var pid = parseInt("{{=p_id}}");
+</script>
+{{end}}
+
+
+{{if auth.user_id:}}
+    {{block top-nav}} <!-- Overwrite nav bar -->
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <a href="{{=URL('default', 'index')}}">
+                <div class="navbar logo-container pull-left">
+                    <img src="{{=URL('static', 'images/planit_logo_white.png')}}" style="max-width: 50%; height: auto;">
+                </div>
+            </a>
+
+            {{block nav-buttons}} <!-- Overwrite nav buttons -->
+                <a href="{{=URL('default', 'home')}}">
+                    <div class="navbar pull-left nav-link">
+                        <span class="navbar nav-link-text">
+                            Home
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Dropdown menu for Plan selection -->
+                <div class="navbar pull-left nav-link">
+                    <span class="navbar nav-link-text dropdown">
+                    My Plans
+                        <i class="fa fa-angle-down"></i>
+                        <div class="dropdown-content">
+                            <!-- This is where you would iterate over the plans retrieved
+                                from the database and create a link for each one -->
+                            {{plans = db(db.planit_plan.created_by == auth.user.email).select(db.planit_plan.label, db.planit_plan.id, orderby=~db.planit_plan.id, limitby=(0, 5))}}
+                            {{for plan in plans:}}
+                            <!-- When clicked the link should NOT reload the page but
+                                instead populate the appropriate containers with the
+                                selected plan's information -->
+                            <a class="dropdown-item" href="{{=URL('default', 'home', args=[plan.id])}}">
+                                {{=plan.label}}
+                            </a>
+                            {{pass}}
+                            <a id="see_all_plans_link" class="pull-right" href="{{=URL('default', 'allplans')}}">
+                                See All
+                            </a>
+                        </div>
+                    </span>
+                </div>
+
+                <a href="{{=URL('default', 'newPlan')}}">
+                    <div class="navbar pull-left nav-link">
+                        <span class="navbar nav-link-text">
+                           New Plan
+                        </span>
+                    </div>
+                </a>
+
+                <div class="navbar pull-right nav-link">
+                    <span class="navbar nav-link-text dropdown">
+                    {{=auth.user.first_name}}
+                        <i class="fa fa-angle-down"></i>
+                        <div class="dropdown-content">
+                            <a href="{{=URL('default','user',args=['logout'])}}">Logout</a>
+                        </div>
+                    </span>
+                </div>
+            {{end}}
+        </nav>
+    {{end}}
+
+    <div class="home-container">
+        <div id="suggestion-container" class="pull-left scrollbar">
+            {{include "default/recommendation.html"}}
+        </div>
+        <div id="calendar-container" class="pull-left">
+            {{include 'default/plans.html'}}
+        </div>
+
+        <div id="map-container" class = "pull-left scrollbar">
+            <div id = "map">
+            </div>
+        </div>
+    </div>
+
+{{else:}}
+
+    {{=redirect(URL('default', 'user', args=['login']))}}
+
+{{pass}}
+
+
+<script src="{{=URL('static', 'js/default_index.js')}}"></script>
+<script src="{{=URL('static', 'js/places.js')}}"></script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxR53fN_ZDwYgoJ31tYUcAc-riycqih-w&callback=initMap">
+</script>
